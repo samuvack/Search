@@ -1,0 +1,11 @@
+<?php
+
+/*
+ * Configure database connection parameters here
+ */
+return array(
+	"host" => "localhost",
+	"dbname" => "Wikidata",
+	"user" => "postgres",
+	"password" => "postgres",
+);

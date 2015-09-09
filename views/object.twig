@@ -1,0 +1,12 @@
+{% for  key,elements in layers %}
+    {% if elements|length > 0 %}
+        <div class='infotitle'>{{ key }}</div>
+        {% for element in elements %}
+            <div class='infoobject'>
+                <div class='infoname'>{{ element.name }}</div>
+                <div class='infopar'><b>Samenvatting:</b> {{ element.summary }}</div>
+
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endfor %}
