@@ -95,8 +95,7 @@ map.on('singleclick', function(evt) {
     
     echo $url;
 
-   ?>
-
+   ?>;
   
   document.getElementById("info").style.display="block";
   ajax (url,'info','','');

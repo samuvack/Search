@@ -73,8 +73,11 @@ $app->match('ajax/featureinfo', function(Application $app) {
 	$tempLayers = $app['orm.em']->getRepository(':Layer')->findBy(array());
 	$layers = [];
 	foreach($tempLayers as $layer) {
-		$layers[$layer->getLegendName()] =
-			$app['orm.em']->getRepository(':Element')->findInCircle($layer, $_GET['x'], $_GET['y'], $_GET['res']);
+		if($_GET['l'.$layer->getId()]=='true') {
+			echo $layer->getName();
+			$layers[$layer->getLegendName()] =
+				$app['orm.em']->getRepository(':Element')->findInCircle($layer, $_GET['x'], $_GET['y'], $_GET['res']);
+		}
 	}
 
 	return $app['twig']->render('object.twig', array('layers'=>$layers));

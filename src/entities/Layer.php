@@ -35,6 +35,10 @@ class Layer implements \JsonSerializable {
 		return $this->id;
 	}
 
+	public function getName() {
+		return $this->name;
+	}
+
 	public function getLegendName() {
 		return $this->name_legend;
 	}

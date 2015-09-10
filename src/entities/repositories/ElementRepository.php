@@ -20,5 +20,4 @@ class ElementRepository extends EntityRepository {
 		));
 		return $query->getResult();
 	}
-
 }

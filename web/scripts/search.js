@@ -36,7 +36,7 @@ function initGeoSearch(layerObjects) {
     });
 
     function visible(nr) {
-        return $('#l'+nr).hasClass('layer');
+        return ! $('#l'+nr).hasClass('layer');
     }
 
 
@@ -55,7 +55,6 @@ function initGeoSearch(layerObjects) {
             url += "l" + tlayer.id + '=' + visible(tlayer.id);
 
         }
-        console.log(url);
 
         document.getElementById("info").style.display = "block";
         ajax(url, 'info', '', '');
