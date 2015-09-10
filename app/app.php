@@ -74,7 +74,6 @@ $app->match('ajax/featureinfo', function(Application $app) {
 	$layers = [];
 	foreach($tempLayers as $layer) {
 		if($_GET['l'.$layer->getId()]=='true') {
-			echo $layer->getName();
 			$layers[$layer->getLegendName()] =
 				$app['orm.em']->getRepository(':Element')->findInCircle($layer, $_GET['x'], $_GET['y'], $_GET['res']);
 		}
