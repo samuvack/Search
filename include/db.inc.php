@@ -1,7 +1,8 @@
 <?php
 
-
-$conn_string = "host=we12s007.ugent.be port=5432 dbname=search user=search_website password=PH5se8GeeR4GFZ6Q";
+$conf = require __DIR__.'/../app/config/db.include.php';
+$conn_string = "host=%s port=%d dbname=%s user=%s password=%s";
+$conn_string = sprintf($conn_string, $conf['host'], 5432, $conf['dbname'], $conf['user'], $conf['password']);
 
 $GLOBALS['dbconn'] = pg_connect($conn_string) or die("Could not connect");
 
