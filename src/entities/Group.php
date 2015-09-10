@@ -1,5 +1,5 @@
 <?php
-namespace MyApp\Entities;
+namespace SeArch\Entities;
 /**
  * @Entity
  * @Table(name="website_groups")

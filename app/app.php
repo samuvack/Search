@@ -41,7 +41,7 @@ $app->register(new DoctrineOrmServiceProvider, array(
 		"mappings" => array(
 			array(
 				"type" => "annotation",
-				"namespace" => "MyApp\Entities",
+				"namespace" => "SeArch\Entities",
 				"path" => __DIR__ . "/../src/entities/",
 				"alias" => ""
 			)

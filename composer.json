@@ -15,8 +15,8 @@
     },
     "autoload": {
         "psr-4": {
-            "MyApp\\Entities\\": "src/entities",
-            "MyApp\\Entities\\Repositories\\": "src/entities/repositories"
+            "SeArch\\Entities\\": "src/entities",
+            "SeArch\\Entities\\Repositories\\": "src/entities/repositories"
         }
     }
 }

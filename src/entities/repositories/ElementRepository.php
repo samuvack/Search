@@ -1,5 +1,5 @@
 <?php
-namespace MyApp\Entities\Repositories;
+namespace SeArch\Entities\Repositories;
 use Doctrine\ORM\EntityRepository;
 
 /**

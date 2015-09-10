@@ -1,9 +1,9 @@
 <?php
 
-namespace MyApp\Entities;
+namespace SeArch\Entities;
 
 /**
- * @Entity(repositoryClass="MyApp\Entities\Repositories\ElementRepository")
+ * @Entity(repositoryClass="SeArch\Entities\Repositories\ElementRepository")
  * @Table(name="website_elements")
  */
 class Element {
