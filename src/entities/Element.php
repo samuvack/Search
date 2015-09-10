@@ -4,12 +4,12 @@ namespace MyApp\Entities;
 
 /**
  * @Entity(repositoryClass="MyApp\Entities\Repositories\ElementRepository")
- * @Table(name="website_entities")
+ * @Table(name="website_elements")
  */
 class Element {
 	/**
 	 * @Id @Column(type="integer")
-	 * @GeneratedValue
+	 *
 	 */
 	private $id;
 	/** @Column(type="text") */
@@ -19,10 +19,11 @@ class Element {
 	/** @Column(type="text") */
 	private $geom; //todo: give type geometry
 	/**
+	 * @Id
 	 * @ManyToOne(targetEntity="Layer")
-	 * @JoinColumn(name="table", referencedColumnName="db_table")
+	 * @JoinColumn(name="layer_id")
 	 */
-	private $origin_table;
+	private $layer;
 
 	public function getName() {
 		return $this->name;

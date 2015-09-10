@@ -10,7 +10,8 @@
         "symfony/config": "~2.3",
         "symfony/translation": "~2.3",
         "knplabs/console-service-provider": "^1.0",
-        "dflydev/doctrine-orm-service-provider": "1.0.*"
+        "dflydev/doctrine-orm-service-provider": "1.0.*",
+        "jsor/doctrine-postgis": "^1.0"
     },
     "autoload": {
         "psr-4": {

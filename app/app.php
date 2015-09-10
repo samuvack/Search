@@ -8,7 +8,7 @@ use Knp\Provider\ConsoleServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 
 use Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
-
+use Jsor\Doctrine\PostGIS\Event\ORMSchemaEventSubscriber;
 
 use Silex\Provider;
 
@@ -47,8 +47,18 @@ $app->register(new DoctrineOrmServiceProvider, array(
 			)
 		),
 	),
+	// Postgis functions
+	"orm.custom.functions.string" => array(
+		"ST_Intersects" => "Jsor\Doctrine\PostGIS\Functions\ST_Intersects",
+		"ST_Transform" => "Jsor\Doctrine\PostGIS\Functions\ST_Transform",
+		"ST_Buffer" => "Jsor\Doctrine\PostGIS\Functions\ST_Buffer",
+		"ST_SetSRID" => "Jsor\Doctrine\PostGIS\Functions\ST_SetSRID",
+		"ST_Point" => "Jsor\Doctrine\PostGIS\Functions\ST_Point"
+	),
 	'orm.auto_generate_proxies' => $app['debug']
 ));
+
+$app['orm.em']->getEventManager()->addEventSubscriber(new ORMSchemaEventSubscriber());
 
 $app->match('/', function(Application $app) {
 	$em = $app['orm.em'];
