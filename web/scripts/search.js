@@ -55,7 +55,6 @@ function initGeoSearch(layerObjects) {
             url += "l" + tlayer.id + '=' + visible(tlayer.id);
 
         }
-        console.log(url);
 
         document.getElementById("info").style.display = "block";
         ajax(url, 'info', '', '');

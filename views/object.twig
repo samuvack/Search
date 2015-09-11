@@ -6,11 +6,10 @@
                 <div class='infoname'>{{ element.name }}</div>
                 {% for relation in element.relations %}
                     <div class='infopar'><b>{{ relation.property.name }}</b>
-                        {{ render(relation.value) }}
+                        {{ render(relation.value,{plain: true}) }}
                     </div>
                 {% endfor %}
                 <div class='infopar'><b>Samenvatting:</b> {{ element.description }}</div>
-
             </div>
         {% endfor %}
     {% endif %}
