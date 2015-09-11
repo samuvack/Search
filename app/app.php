@@ -33,9 +33,6 @@ $app->register(new ConsoleServiceProvider(), array(
 ));
 $app->register(new \Silex\Provider\TwigServiceProvider(), array('twig.path' => __DIR__ . '/../views'));
 $app['twig.loader.filesystem']->addPath($config['wiki_dir'] .'/views/values', 'values');
-$app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
-$app->register(new \Silex\Provider\FormServiceProvider());
-$app->register(new \Silex\Provider\ValidatorServiceProvider());
 
 
 // Import Database config, and start Doctrine service

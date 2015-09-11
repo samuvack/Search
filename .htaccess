@@ -3,8 +3,10 @@ allow from all
 <IfModule mod_rewrite.c>
     Options -MultiViews
 
+
     RewriteEngine On
-    #RewriteBase /path/to/app
+    RewriteCond  %{DOCUMENT_ROOT}/geosearch/web/$1 -f
+    RewriteRule  ^(.*)$  /geosearch/web/$1  [L,QSA]
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ bootstrap2.php [QSA,L]
+    RewriteRule ^ bootstrap.php [QSA]
 </IfModule>
