@@ -1,6 +1,8 @@
 <?php
+
+$config = require __DIR__ .'/config/main.php';
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/../web/admin/vendor/autoload.php';
+require_once $config['wiki_dir'].'/vendor/autoload.php';
 
 
 use Doctrine\DBAL\Types\Type;
@@ -30,7 +32,7 @@ $app->register(new ConsoleServiceProvider(), array(
 	'console.project_directory' => __DIR__ . '/..'
 ));
 $app->register(new \Silex\Provider\TwigServiceProvider(), array('twig.path' => __DIR__ . '/../views'));
-$app['twig.loader.filesystem']->addPath(__DIR__.'/../web/admin/views/values', 'values');
+$app['twig.loader.filesystem']->addPath($config['wiki_dir'] .'/views/values', 'values');
 $app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new \Silex\Provider\FormServiceProvider());
 $app->register(new \Silex\Provider\ValidatorServiceProvider());
@@ -55,7 +57,7 @@ $app->register(new DoctrineOrmServiceProvider, array(
 			array(
 				"type" => "annotation",
 				"namespace" => "MyApp\Entities",
-				"path" => __DIR__ . "/../web/admin/src/entities/",
+				"path" => $config['wiki_dir']."/src/entities/",
 				"alias" => "app"
 			)
 		),
@@ -94,6 +96,6 @@ $app->match('ajax/featureinfo', function(Application $app) {
 
 	return $app['twig']->render('object.twig', array('layers'=>$layers));
 });
-include __DIR__.'/../web/admin/app/common_app.php';
+include $config['wiki_dir'] .'/app/common_app.php';
 
 return $app;
