@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 
+use Doctrine\DBAL\Types\Type;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Knp\Provider\ConsoleServiceProvider;
@@ -28,6 +29,11 @@ $app->register(new ConsoleServiceProvider(), array(
 	'console.project_directory' => __DIR__ . '/..'
 ));
 $app->register(new \Silex\Provider\TwigServiceProvider(), array('twig.path' => __DIR__ . '/../views'));
+$app['twig.loader.filesystem']->addPath(__DIR__.'/../web/admin/views/values', 'values');
+$app->register(new \Silex\Provider\UrlGeneratorServiceProvider());
+$app->register(new \Silex\Provider\FormServiceProvider());
+$app->register(new \Silex\Provider\ValidatorServiceProvider());
+
 
 // Import Database config, and start Doctrine service
 $dbconfig = include __DIR__ . "/config/db.include.php";
@@ -44,6 +50,12 @@ $app->register(new DoctrineOrmServiceProvider, array(
 				"namespace" => "SeArch\Entities",
 				"path" => __DIR__ . "/../src/entities/",
 				"alias" => ""
+			),
+			array(
+				"type" => "annotation",
+				"namespace" => "MyApp\Entities",
+				"path" => __DIR__ . "/../web/admin/src/entities/",
+				"alias" => "app"
 			)
 		),
 	),
@@ -73,14 +85,14 @@ $app->match('ajax/featureinfo', function(Application $app) {
 	$tempLayers = $app['orm.em']->getRepository(':Layer')->findBy(array());
 	$layers = [];
 	foreach($tempLayers as $layer) {
-		if($_GET['l'.$layer->getId()]=='true') {
+		if($layer->hasFeatureInfo() && $_GET['l'.$layer->getId()]=='true') {
 			$layers[$layer->getLegendName()] =
-				$app['orm.em']->getRepository(':Element')->findInCircle($layer, $_GET['x'], $_GET['y'], $_GET['res']);
+				$app['orm.em']->getRepository(':Node')->findInCircle($layer, $_GET['x'], $_GET['y'], $_GET['res']);
 		}
 	}
 
 	return $app['twig']->render('object.twig', array('layers'=>$layers));
 });
+include __DIR__.'/../web/admin/app/common_app.php';
 
-$app['debug'] = true;
 return $app;

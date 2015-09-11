@@ -8,9 +8,9 @@ use Doctrine\ORM\EntityRepository;
  * Date: 09/09/15
  * Time: 15:47
  */
-class ElementRepository extends EntityRepository {
+class NodeRepository extends EntityRepository {
 	public function findInCircle($layer, $x, $y, $radius) {
-		$query = $this->getEntityManager()->createQuery("SELECT el FROM :Element el WHERE ST_Intersects(ST_Transform(".
+		$query = $this->getEntityManager()->createQuery("SELECT el FROM :Node el WHERE ST_Intersects(ST_Transform(".
 		"el.geom,3857),ST_Buffer(ST_SetSRID(ST_Point( :x, :y),3857), :radius)) = true AND el.layer = :layer");
 		$query->setParameters(array(
 			'x'=>$x,

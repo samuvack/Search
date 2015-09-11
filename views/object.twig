@@ -4,7 +4,12 @@
         {% for element in elements %}
             <div class='infoobject'>
                 <div class='infoname'>{{ element.name }}</div>
-                <div class='infopar'><b>Samenvatting:</b> {{ element.summary }}</div>
+                {% for relation in element.relations %}
+                    <div class='infopar'><b>{{ relation.property.name }}</b>
+                        {{ render(relation.value) }}
+                    </div>
+                {% endfor %}
+                <div class='infopar'><b>Samenvatting:</b> {{ element.description }}</div>
 
             </div>
         {% endfor %}

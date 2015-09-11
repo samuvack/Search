@@ -54,9 +54,8 @@ class Layer implements \JsonSerializable {
 	public function getGroup() {
 		return $this->group_id;
 	}
-
-	public function getTable() {
-		return $this->db_table;
+	public function hasFeatureInfo() {
+		return $this->feature_info;
 	}
 	/**
 	 * (PHP 5 &gt;= 5.4.0)<br/>
