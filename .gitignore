@@ -57,3 +57,5 @@ Temporary Items
 /app/config/db.include.php
 
 /files/
+
+/admin/

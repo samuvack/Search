@@ -1,5 +1,5 @@
 <?php
 return  [
-	'wiki_dir'=>__DIR__. '/../../web/admin'
+	'wiki_dir'=>__DIR__. '/../../admin'
 ];
 
