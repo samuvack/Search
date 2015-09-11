@@ -16,14 +16,7 @@
     "autoload": {
         "psr-4": {
             "SeArch\\Entities\\": "src/entities",
-            "SeArch\\Entities\\Repositories\\": "src/entities/repositories",
-            "MyApp\\Entities\\": "web/admin/src/entities",
-            "MyApp\\Entities\\Listeners\\": "web/admin/src/entities/listeners",
-            "MyApp\\Values\\": "web/admin/src/values",
-            "Utils\\Database\\Types\\": "web/admin/utils/database/types",
-            "MyApp\\Converters\\": "web/admin/src/converters",
-            "Utils\\Services\\Mapping\\": "web/admin/utils/services/mapping",
-            "MyApp\\User\\": "web/admin/src/user"
+            "SeArch\\Entities\\Repositories\\": "src/entities/repositories"
         }
     }
 }

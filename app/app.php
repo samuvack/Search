@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../web/admin/vendor/autoload.php';
 
 
 use Doctrine\DBAL\Types\Type;
