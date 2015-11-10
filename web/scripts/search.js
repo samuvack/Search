@@ -23,6 +23,12 @@ function initGeoSearch(layerObjects) {
         layersById[tlayer.id] = image;
     }
 
+
+
+
+
+
+
     var view = new ol.View({
         center: [375000, 6700000],
         zoom: 9
