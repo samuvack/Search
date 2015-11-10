@@ -36,7 +36,7 @@ $app['twig.loader.filesystem']->addPath($config['wiki_dir'] .'/views/values', 'v
 
 
 // Import Database config, and start Doctrine service
-$dbconfig = include __DIR__ . "/config/db.include.php";
+$dbconfig = include $config['wiki_dir']. "/app/config/db.include.php";
 $dbconfig["driver"] = 'pdo_pgsql';
 $app->register(new DoctrineServiceProvider, array(
 	"db.options" => $dbconfig
