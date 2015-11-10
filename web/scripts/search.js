@@ -77,8 +77,14 @@ function initGeoSearch(layerObjects) {
     }
 
     $('.toggle-layer').click(layer);
+
+    // TODO: generify
     $("#insert-link").click(function() {
         window.open('admin/insert','Popup', 'width=500px, height=300px, status=no, location=no, titlebar=no, toolbar=no,menubar=no');
+    });
+
+    $("#search-link").click(function() {
+        window.open('admin/search','Popup', 'width=500px, height=300px, status=no, location=no, titlebar=no, toolbar=no,menubar=no');
     });
 
     function toggle_legende() {
