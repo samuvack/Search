@@ -6,48 +6,73 @@
     <script src="http://openlayers.org/en/v3.0.0/build/ol.js" type="text/javascript"></script>
     <script src="{{ app.request.basepath }}/scripts/search.js" type="text/javascript"></script>
     <script src="http://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+          integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
+          crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+            integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
+            crossorigin="anonymous"></script>
     <title>Search Demo 2</title>
 </head>
 <body>
-<div id="map" class="map"></div>
-
-<div id="info">
-
-</div>
-
-<div class="layers">
-    {% for group in groups %}
-        <div class="layertitle">{{ group.name }}</div>
-        {% for layer in group.layers %}
-            <a data-layer-id="{{ layer.id }}"
-               class="toggle-layer layer{{ layer.visible?'_active':''}}" id="l{{ layer.id }}">{{ layer.legendName }}</a>
-        {% endfor %}
-    {% endfor %}
-
-</div>
-
-
-<div class="legende_knop">
-    Legende
-</div>
-
-<div class="legende" id="leg">
-    <div class="legende_content">
+<nav class="navbar navbar-default hidden-sm hidden-xs">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">GeoSearch</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="nav navbar-nav">
+                <li class="legende_knop">
+                    <a>Legende</a>
+                </li>
+                <li id="insert-link"><a>Toevoegen</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    <span class="layers">
         {% for group in groups %}
+            <div class="layertitle">{{ group.name }}</div>
             {% for layer in group.layers %}
-               <div class="legende_item {{ layer.visible?'':'display-none' }}" id="legende_{{ layer.id }}">'
-                   {{ layer.legendName }}
-                   <br>
-                   <img src="http://we12s007.ugent.be:8080/geoserver/search/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style={{ layer.style }}">
-               </div>
+                <a data-layer-id="{{ layer.id }}"
+                   class="toggle-layer layer{{ layer.visible?'_active':''}}" id="l{{ layer.id }}">{{ layer.legendName }}</a>
             {% endfor %}
         {% endfor %}
+
+    </span>
+
+    <span class="legende hidden-sm hidden-xs display-none" id="leg">
+        <div class="legende_content">
+            {% for group in groups %}
+                {% for layer in group.layers %}
+                    <div class="legende_item {{ layer.visible?'':'display-none' }}" id="legende_{{ layer.id }}">'
+                        {{ layer.legendName }}
+                        <br>
+                        <img src="http://we12s007.ugent.be:8080/geoserver/search/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style={{ layer.style }}">
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </span>
+    <span id="map" class="map"></span>
+
+    <div id="info">
+        <span id='close-info'>x</span>
+        <div id="info-contents">
+
+        </div>
     </div>
-</div>
 
 
-<script type="text/javascript">
-    initGeoSearch({{layers|json_encode|raw}});
-</script>
+
+    <script type="text/javascript">
+        initGeoSearch({{layers|json_encode|raw}});
+    </script>
 </body>
 </html>

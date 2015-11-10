@@ -57,7 +57,7 @@ function initGeoSearch(layerObjects) {
         }
 
         document.getElementById("info").style.display = "block";
-        ajax(url, 'info', '', '');
+        ajax(url, 'info', '', '', 'info-contents');
 
     });
 
@@ -71,15 +71,21 @@ function initGeoSearch(layerObjects) {
     }
 
     $('.toggle-layer').click(layer);
+    $("#insert-link").click(function() {
+        window.open('admin/insert','Popup', 'width=500px, height=300px, status=no, location=no, titlebar=no, toolbar=no,menubar=no');
+    });
 
     function toggle_legende() {
         $("#leg").toggleClass('display-none');
     }
 
     $('.legende_knop').click(toggle_legende);
+    $('#close-info').click(function() {
+        $("#info").css( "opacity", 0 );
+    });
 
 
-    function ajax(alink, aelementid, adata, aconfirm) {
+    function ajax(alink, aelementid, adata, aconfirm, contentelementid) {
 
 
 
@@ -111,7 +117,7 @@ function initGeoSearch(layerObjects) {
                 if (xmlHttp.readyState == 4) {
 
                     // uitvoeren als pagina is opgeroepen.  xmlHttp.responseText is de inhoud van de opgeroepen pagina
-                    document.getElementById(aelementid).innerHTML = xmlHttp.responseText;
+                    document.getElementById(contentelementid).innerHTML = xmlHttp.responseText;
                     document.getElementById(aelementid).style.opacity = 1;
 
                 }
@@ -134,8 +140,8 @@ function initGeoSearch(layerObjects) {
 
 
                     if (arr_data[0] == "t") {
-                        waarde = document.getElementById(arr_data[1]).value
-                        waarde = waarde.replace(/&/g, "�")
+                        waarde = document.getElementById(arr_data[1]).value;
+                        waarde = waarde.replace(/&/g, "�");
                         sdata = sdata + en + arr_data[1] + '=' + waarde;
                     }
                     if (arr_data[0] == "c") {
