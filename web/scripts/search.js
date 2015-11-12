@@ -35,7 +35,39 @@ function initGeoSearch(layerObjects) {
     });
 
     var map = new ol.Map({
-        controls: [],
+        controls: [
+
+
+            new ol.control.Zoom(),
+
+            new ol.control.MousePosition({
+                projection: 'EPSG:4326',
+                coordinateFormat: ol.coordinate.createStringXY(4)
+            }),
+
+
+            //new ol.control.Attribution(),
+
+            new ol.control.ZoomToExtent({
+                extent: [
+                    250000, 6630000,
+                    500000, 6770000
+                ]
+            }),
+
+
+
+          /*  new ol.control.OverviewMap(),
+
+
+            new ol.control.Rotate(),
+            new ol.control.ScaleLine(),
+*/
+
+
+
+
+        ],
         layers: layers,
         target: 'map',
         view: view
