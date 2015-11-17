@@ -2,7 +2,7 @@ html, body{
     padding:0;
     margin:0;
     width:100%;
-    height:800px;
+    height:900px;
     font-family: sans-serif;
     overflow: hidden;
 }
@@ -81,6 +81,8 @@ html, body{
     left: 20px;
     height:33px;
     float:left;
+    text-indent: 100%;
+    text-color: transparent;
     overflow: hidden;
     z-index: 1;
     position: relative;
@@ -88,7 +90,9 @@ html, body{
 }
 
 .layers:hover {
-    width: 190px;
+    text-indent: 0%;
+    text-color: white;
+    width: 205px;
     height: 700px;
     overflow-y: auto;
     left: 30px;
@@ -161,7 +165,149 @@ text-decoration:none;
 }
 
 .infopar a:hover{
-text-decoration:underline;
+text-decoration:none;
+}
+
+a:focus, a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.legende_knop{
+    left: 50px;
+}
+#insert-link{
+    left: 50px;
+}
+
+
+#info-link{
+     left: 50px;
+}
+
+
+
+
+#draw-link{
+    right: 50px;
+    position: absolute;
+    background-image:  url('../Images/draw.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    top: 15px;
+    height: 20px;
+    width: 20px;
+}
+
+#draw-link:hover{
+top: 10px;
+}
+
+
+#depth-link{
+    right: 90px;
+    position: absolute;
+    background-image:  url('../Images/Depth.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    top: 15px;
+    height: 20px;
+    width: 20px;
+}
+
+#depth-link:hover{
+    top: 10px;
+
+}
+#measure-link{
+    right: 130px;
+    position: absolute;
+    background-image:  url('../Images/tool.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    top: 15px;
+    height: 20px;
+    width: 20px;
+}
+
+#measure-link:hover{
+
+    top: 10px;
+}
+
+
+#share-link{
+    right: 170px;
+    position: absolute;
+    background-image:  url('../Images/social.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    top: 15px;
+    height: 20px;
+    width: 20px;
+}
+
+#share-link:hover {
+    top: 10px;
+}
+
+#print-link{
+    right: 210px;
+    position: absolute;
+    background-image:  url('../Images/printer.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    top: 15px;
+    height: 20px;
+    width: 20px;
+}
+
+
+#print-link:hover{
+
+    top: 10px;
+
+}
+
+#question-link{
+    right: 250px;
+    position: absolute;
+    background-image:  url('../Images/question.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    top: 15px;
+    height: 20px;
+    width: 20px;
+}
+
+
+
+
+#question-link:hover{
+
+    top: 10px;
+
+}
+
+#fullscreen-link{
+    right: 10px;
+    position: absolute;
+    background-image:  url('../Images/fullscreen.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    top: 15px;
+    height: 20px;
+    width: 20px;
+}
+
+#fullscreen-link:hover{
+    top: 10px;
+
+}
+
+
+#search-link{
+    left: 50px;
 }
 
 .layer, .layer_active{
@@ -206,5 +352,29 @@ text-decoration:underline;
 
 .display-none {
     display: none;
+}
+
+/*D3 chart */
+.form_control{
+    color: grey;
+}
+
+.colored circle {
+    fill:red;
+}
+
+path {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+line {
+    stroke: black;
+}
+
+text {
+    font-family: Arial;
+    font-size: 9pt;
 }
 
