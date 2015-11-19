@@ -313,10 +313,8 @@ a:focus, a:hover {
 
 }
 
-#polygon-link:hover{
-
-    top: 10px;
-
+#polygon-link:hover, .selected-drawer {
+    top: 10px !important;
 }
 
 #draw-link{
@@ -525,4 +523,3 @@ text {
     height: 400px;
     width: 300px;
 }
-
