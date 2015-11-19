@@ -109,7 +109,7 @@ function initGeoSearch(layerObjects) {
 
     var depth_profile_layer = function(start, end, image) {
         var viewResolution = /** @type {number} */ (view.getResolution());
-        var steps = 20;
+        var steps = 40;
         var diff = [
             (end[0] - start[0])/steps,
             (end[1] - start[1])/steps
