@@ -90,7 +90,8 @@ text-decoration:none;
 }
 
 .infopar a:hover{
-text-decoration:underline;
+text-decoration:none;
+color: white;
 }
 
 .layer, .layer_active{
@@ -112,11 +113,18 @@ text-decoration:underline;
 }
 
 .layer:hover{
-    background-color:#373C5A;	
+    background-color:#373C5A;
+    color: white;
+    text-color: white;
+
 }
 
 .layer_active:hover{
-    background-color:#FFAD65;	
+    background-color:#FFAD65;
+    color: white;
+    text-color: white;
+
+
 }
 
 .legende_knop{

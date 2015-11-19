@@ -10,6 +10,8 @@ $helperSet = new \Symfony\Component\Console\Helper\HelperSet(array(
     'em' => new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper($em)
 ));
 
+
+
 $cli = $app['console'];
 $cli->setHelperSet($helperSet);
 $cli->addCommands(array(

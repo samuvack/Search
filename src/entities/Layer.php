@@ -9,6 +9,7 @@ class Layer implements \JsonSerializable {
 	 * @Id @Column(type="integer")
 	 * @GeneratedValue
 	 */
+
 	private $id;
 	/** @Column(type="text") */
 	private $name;
@@ -30,6 +31,8 @@ class Layer implements \JsonSerializable {
 	 * @ManyToOne(targetEntity="Group", inversedBy="layer")
 	 * @JoinColumn(name="group_id")
 	 */
+
+
 	private $group_id;
 	public function getId() {
 		return $this->id;

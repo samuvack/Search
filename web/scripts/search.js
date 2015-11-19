@@ -5,8 +5,8 @@ function initGeoSearch(layerObjects) {
             source: new ol.source.OSM()
         })
     ];
-    var layersById = [];
 
+    var layersById = [];
 
     for (var i = 0; i < layerObjects.length; ++i) {
         var tlayer = layerObjects[i];
@@ -24,13 +24,27 @@ function initGeoSearch(layerObjects) {
     }
 
 
+    var archeologiepoly = new ol.layer.Image({
+        title: 'artefacts',
+        extent: [250000, 6630000, 500000, 6770000],
+        source: new ol.source.ImageWMS({
+            url: 'http://geo.vliz.be:80/geoserver/Scheldemonitor/wms',
+            params: {'LAYERS': 'Scheldemonitor:archeologiepoly'},
+            serverType: 'archeologiepoly'
+        }),
+        visible:true
+    });
 
 
 
 
+
+    layers.push(archeologiepoly);
+    layersById[i+1] = archeologiepoly;
 
     var view = new ol.View({
-        center: [375000, 6700000],
+       // projection: 'EPSG:4326',
+        center: ol.proj.transform([2.70, 51.34], 'EPSG:4326', 'EPSG:3857'),
         zoom: 9
     });
 
@@ -57,14 +71,12 @@ function initGeoSearch(layerObjects) {
 
 
 
-          /*  new ol.control.OverviewMap(),
 
 
-            new ol.control.Rotate(),
             new ol.control.ScaleLine(),
-*/
+            new ol.control.Rotate(),
 
-
+          /*  new ol.control.OverviewMap(),  */
 
 
         ],
@@ -72,6 +84,10 @@ function initGeoSearch(layerObjects) {
         target: 'map',
         view: view
     });
+
+
+
+    //TODO: DEZE functie heeft weer wanneer een laag zichtbaar is en er dus getfeature info mag weergegeven worden
 
     function visible(nr) {
         return ! $('#l'+nr).hasClass('layer');
@@ -90,7 +106,9 @@ function initGeoSearch(layerObjects) {
                 url += "&";
             }
 
-            url += "l" + tlayer.id + '=' + visible(tlayer.id);
+            url += "l" + tlayer.id + '=' + //TODO: DEZE TRUE/FALSE zichtbaarheid dient aangepast te worden met behulp van JAVA BOLEAN
+
+                visible(tlayer.id);
 
         }
 
@@ -103,7 +121,11 @@ function initGeoSearch(layerObjects) {
         var $this = $(this);
         var nr = $this.data('layer-id');
         layersById[nr].setVisible($this.hasClass("layer"));
+        //bijvoorbeeld id legende_1 ==> toggleClass
+        // (Add or remove one or more classes from each element in the set of matched elements,
+        // depending on either the class's presence or the value of the state argument.)
         $('#legende_'+nr).toggleClass("display-none");
+        //div this slaat op div layer <div>
         $this.toggleClass("layer_active");
         $this.toggleClass("layer");
     }
@@ -112,18 +134,41 @@ function initGeoSearch(layerObjects) {
 
     // TODO: generify
     $("#insert-link").click(function() {
-        window.open('admin/insert','Popup', 'width=500px, height=300px, status=no, location=no, titlebar=no, toolbar=no,menubar=no');
+        window.open('admin/insert','Popup', 'top=150px, left=400px width=500px, height=650px, status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
+
     });
 
     $("#search-link").click(function() {
-        window.open('admin/search','Popup', 'width=500px, height=300px, status=no, location=no, titlebar=no, toolbar=no,menubar=no');
+        window.open('admin/search','Popup', 'top=150px, left=400px width=500px, height=650px, status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
     });
+
+
+    $("#info-link").ready(function() {
+        $('#Div3').hide();
+    });
+
+
+    $("#info-link").click(function() {
+            $('#Div3').toggle();
+    });
+
+
+    $("#button_close").click(function() {
+        $('#Div3').hide();
+    });
+
+
+    $("#depth-link").click(function() {
+    });
+
 
     function toggle_legende() {
         $("#leg").toggleClass('display-none');
     }
 
-    $('.legende_knop').click(toggle_legende);
+    $('#legende_knop').click(toggle_legende);
+
+
     $('#close-info').click(function() {
         $("#info").css( "opacity", 0 );
     });
@@ -152,7 +197,7 @@ function initGeoSearch(layerObjects) {
                     try {
                         xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
                     } catch (e) {
-                        alert("Deze functie werkt niet op jouw computer, gelieve contact op te nemen met webmaster@kazou-gent.be");
+                        alert("Deze functie werkt niet op jouw computer, gelieve contact op te nemen met samuel.vanackere@ugent.be");
                         return false;
                     }
                 }
