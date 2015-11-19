@@ -301,7 +301,23 @@ a:focus, a:hover {
     background-repeat: no-repeat;
     position: relative;
 }
+#polygon-link{
+    right: 340px;
+    position: absolute;
+    background-image:  url('../Images/polygon.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    top: 15px;
+    height: 20px;
+    width: 20px;
 
+}
+
+#polygon-link:hover{
+
+    top: 10px;
+
+}
 
 #draw-link{
     right: 100px;
