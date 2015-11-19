@@ -16,6 +16,7 @@ html, body{
     background-repeat: no-repeat;
     margin-left: 0px;
     top:0px;
+    z-index:0;
 
 }
 
@@ -28,6 +29,7 @@ html, body{
     padding: 1px;
     color: darkslategrey;
     top: 0px;
+    z-index: 0;
 }
 
 
@@ -102,8 +104,13 @@ html, body{
 
 #close-info {
     position: absolute;
-    top: 0;
-    right: 0;
+    height: 20px;
+    width: 20px;
+    background-image: url('../Images/Close white.png');
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    top: 0px;
+    right: 0px;
 }
 
 
@@ -173,23 +180,131 @@ a:focus, a:hover {
     text-decoration: none;
 }
 
-.legende_knop{
-    left: 50px;
-}
-#insert-link{
-    left: 50px;
+#legende_knop{
+    left: 130px;
+    top: 15px;
+    position: absolute;
+    background-image:  url('../Images/Legend.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    height: 20px;
+    width: 20px;
 }
 
+#legende_knop:hover{
+    top: 10px;
+
+}
+
+
+
+#two{
+    visibility:visible;
+    background: none repeat scroll 0 0 #EEEEEE;
+    border: 1px solid #DADADA;
+    color: #333333;
+    overflow:hidden;
+    left: 10px;
+    line-height: 20px;
+    position: absolute;
+    top: -20px;.
+    z-index: 5;
+}
+
+.popupBox {
+    visibility:hidden;
+    opacity:0;
+    -webkit-transition:visibility 0s linear 0.3s, opacity 0.3s linear;
+    -moz-transition:visibility 0s linear 0.3s, opacity 0.3s linear;
+    -o-transition:visibility 0s linear 0.3s, opacity 0.3s linear;
+    transition:visibility 0s linear 0.3s, opacity 0.3s linear;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition:all 0.4s ease;
+    transition: all 0.4s ease;
+    -webkit-transition-delay: 0s;
+    -moz-transition-delay: 0s;
+    -o-transition-delay:0s;
+    transition-delay: 0s;
+    z-index: 5;
+
+}
+.popupHoverElement:hover > .popupBox {
+    visibility:visible;
+    opacity:1;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    -webkit-transition-delay: 0s;
+    -moz-transition-delay: 0s;
+    -o-transition-delay: 0s;
+    transition-delay: 0s;
+    z-index: 5;
+}
+
+#insert-link{
+    top: 15px;
+    left: 50px;
+    position: absolute;
+    background-image:  url('../Images/Insert.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    height: 20px;
+    width: 20px;
+}
+
+
+#insert-link:hover{
+        top: 10px;
+
+}
 
 #info-link{
-     left: 50px;
+     left: 90px;
+    top: 15px;
+    position: absolute;
+    background-image:  url('../Images/info.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    height: 20px;
+    width: 20px;
+}
+#info-link:hover{
+
+    top: 10px;
+    }
+
+
+
+#Div3 {
+    height: 400px;
+    width: 400px;
+    left: 600px;
+    top: 100px;
+    color: black;
+    z-index: 5;
+    position: absolute;
+    background: white;
+    border: 1px solid #999;
+
+
 }
 
-
+#button_close {
+    left: 380px;
+    top: 0px;
+    height: 20px;
+    width: 20px;
+    background-image: url('../Images/button_close.png');
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    position: relative;
+}
 
 
 #draw-link{
-    right: 50px;
+    right: 100px;
     position: absolute;
     background-image:  url('../Images/draw.png');
     background-size: 20px 20px;
@@ -205,7 +320,7 @@ top: 10px;
 
 
 #depth-link{
-    right: 90px;
+    right: 140px;
     position: absolute;
     background-image:  url('../Images/Depth.png');
     background-size: 20px 20px;
@@ -220,7 +335,7 @@ top: 10px;
 
 }
 #measure-link{
-    right: 130px;
+    right: 180px;
     position: absolute;
     background-image:  url('../Images/tool.png');
     background-size: 20px 20px;
@@ -237,7 +352,7 @@ top: 10px;
 
 
 #share-link{
-    right: 170px;
+    right: 220px;
     position: absolute;
     background-image:  url('../Images/social.png');
     background-size: 20px 20px;
@@ -252,7 +367,7 @@ top: 10px;
 }
 
 #print-link{
-    right: 210px;
+    right: 260px;
     position: absolute;
     background-image:  url('../Images/printer.png');
     background-size: 20px 20px;
@@ -270,7 +385,7 @@ top: 10px;
 }
 
 #question-link{
-    right: 250px;
+    right: 300px;
     position: absolute;
     background-image:  url('../Images/question.png');
     background-size: 20px 20px;
@@ -284,13 +399,12 @@ top: 10px;
 
 
 #question-link:hover{
-
     top: 10px;
 
 }
 
 #fullscreen-link{
-    right: 10px;
+    right: 60px;
     position: absolute;
     background-image:  url('../Images/fullscreen.png');
     background-size: 20px 20px;
@@ -307,8 +421,21 @@ top: 10px;
 
 
 #search-link{
-    left: 50px;
+    left: 170px;
+    position: absolute;
+    background-image:  url('../Images/search2.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    top: 15px;
+    height: 20px;
+    width: 20px;
+
 }
+#search-link:hover{
+    top: 10px;
+
+}
+
 
 .layer, .layer_active{
     width:200px;
