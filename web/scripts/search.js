@@ -37,7 +37,7 @@ function initGeoSearch(layerObjects) {
         layersById[tlayer.id] = tile;
     }
 
-
+/*
     var archeologiepoly = new ol.layer.Image({
         title: 'artefacts',
         extent: [250000, 6630000, 500000, 6770000],
@@ -49,12 +49,12 @@ function initGeoSearch(layerObjects) {
         visible:true
     });
 
+*/
 
 
 
-
-    layers.push(archeologiepoly);
-    layersById[i+1] = archeologiepoly;
+    //layers.push(archeologiepoly);
+    //layersById[i+1] = archeologiepoly;
 
     var view = new ol.View({
        // projection: 'EPSG:4326',
