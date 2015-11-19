@@ -27,6 +27,10 @@ class Layer implements \JsonSerializable {
 	private $order_draw;
 	/** @Column(type="integer") */
 	private $order_legend;
+
+	/** @Column(type="boolean") */
+	private $depth_profiling;
+
 	/**
 	 * @ManyToOne(targetEntity="Group", inversedBy="layer")
 	 * @JoinColumn(name="group_id")
@@ -71,7 +75,8 @@ class Layer implements \JsonSerializable {
 		return [
 			'id'=>$this->id,
 			'name'=>$this->name,
-			'visible'=>$this->visible
+			'visible'=>$this->visible,
+			'depth_profiling' => $this->depth_profiling
 		];
 	}
 }

@@ -1,26 +1,40 @@
 
 function initGeoSearch(layerObjects) {
+    function setHTML(response) {
+        console.log(response);
+    }
+
     var layers = [
         new ol.layer.Tile({
             source: new ol.source.OSM()
         })
     ];
 
+    var depth_profile_tiles = [];
+    var depth_profile_images = [];
+
     var layersById = [];
 
     for (var i = 0; i < layerObjects.length; ++i) {
         var tlayer = layerObjects[i];
-        var image = new ol.layer.Image({
+        var image = new ol.source.TileWMS({
+            url: 'http://we12s007.ugent.be:8080/geoserver/search/wms',
+            params: {'LAYERS': tlayer.name},
+            serverType: 'geoserver'
+        });
+
+        var tile = new ol.layer.Tile({
             extent: [250000, 6630000, 500000, 6770000],
-            source: new ol.source.ImageWMS({
-                url: 'http://we12s007.ugent.be:8080/geoserver/search/wms',
-                params: {'LAYERS': tlayer.name},
-                serverType: 'geoserver'
-            }),
+            source: image,
             visible: tlayer.visible
         });
-        layers.push(image);
-        layersById[tlayer.id] = image;
+         if(tlayer.depth_profiling) {
+             depth_profile_images.push(image);
+             depth_profile_tiles.push(tile);
+         }
+
+        layers.push(tile);
+        layersById[tlayer.id] = tile;
     }
 
 
@@ -93,6 +107,25 @@ function initGeoSearch(layerObjects) {
         return ! $('#l'+nr).hasClass('layer');
     }
 
+    function depth_profiling(evt) {
+        for(var i = 0; i < depth_profile_tiles.length; ++i) {
+            var tile = depth_profile_tiles[i];
+            var image = depth_profile_images[i];
+            var viewResolution = /** @type {number} */ (view.getResolution());
+            console.log(evt.coordinate);
+            var url = image.getGetFeatureInfoUrl(
+                evt.coordinate, viewResolution, 'EPSG:3857',
+                {'INFO_FORMAT': 'text/html'});
+            if (url) {
+                $.get('http://localhost/cgi-bin/proxy.cgi', {
+                    url: url
+                }, function(result) {
+                    $("#info-depth").text($($(result).find("td")[1]).text());
+                    console.log(parseFloat($($(result).find("td")[1]).text()));
+                });
+            }
+        }
+    }
 
     map.on('singleclick', function (evt) {
         var url = 'ajax/featureinfo?x=' + evt.coordinate[0] + '&y=' + evt.coordinate[1] + '&res=' + view.getResolution();
@@ -115,6 +148,7 @@ function initGeoSearch(layerObjects) {
         document.getElementById("info").style.display = "block";
         ajax(url, 'info', '', '', 'info-contents');
 
+        depth_profiling(evt);
     });
 
     function layer() {

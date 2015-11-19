@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
           integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
           crossorigin="anonymous">
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
+
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
             integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
             crossorigin="anonymous"></script>
@@ -14,7 +16,6 @@
     <link rel="stylesheet" href="{{ app.request.basepath }}/style/style.css" type="text/css">
     <script src="http://openlayers.org/en/v3.0.0/build/ol.js" type="text/javascript"></script>
     <script src="{{ app.request.basepath }}/scripts/search.js" type="text/javascript"></script>
-    <script src="http://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
 
 
     <title>Sea-Arch</title>
@@ -35,11 +36,6 @@
                 <li id="legende_knop" class="popupHoverElement"><div id="two" class="popupBox">Legende</div></li>
                 <li id="insert-link"class="popupHoverElement"><div id="two" class="popupBox">Toevoegen</div></li>
                 <li id="search-link" class="popupHoverElement"><div id="two" class="popupBox">Zoek</div></li>
-
-
-
-
-
                 <li id="info-link"class="popupHoverElement"><div id="two" class="popupBox">Info</div></li>
 
                     <div id="Div3" style=" ">
@@ -50,7 +46,6 @@
 
                     </div>
 
-
                 <li id="fullscreen-link" class="popupHoverElement"><div id="two" class="popupBox">Vergroten</div><a></a></li>
                 <insert id="depth-link" class="popupHoverElement"><div id="two" class="popupBox">Diepteprofiel</div><a></a></insert>
                 <li id="share-link" class="popupHoverElement"><div id="two" class="popupBox">Share</div><a></a></li>
@@ -60,8 +55,6 @@
                 <li id="draw-link" class="popupHoverElement"><div id="two" class="popupBox">Tekenen</div></li>
 
                 <li id="measure-link" class="popupHoverElement"><div id="two" class="popupBox">Meten</div></li>
-
-
 
             </ul>
         </div>
@@ -98,6 +91,9 @@
     <div id="info">
         <span id='close-info'></span>
         <div id="info-contents">
+
+        </div>
+        <div id="info-depth">
 
         </div>
     </div>
