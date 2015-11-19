@@ -4,7 +4,7 @@
 var drawCurve = function(svgSelector, data) {
     var w = 400,
         h = 200,
-        margin = 20,
+        margin = 20,//om de hoeveel stappen
         y = d3.scale.linear().domain([0, d3.max(data)]).range([margin, h - margin]),
         x = d3.scale.linear().domain([0, data.length]).range([margin, w - margin]);
 

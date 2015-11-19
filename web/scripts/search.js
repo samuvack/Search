@@ -137,6 +137,7 @@ function initGeoSearch(layerObjects) {
                          * O the joys of multithreading.
                          */
                         return function (result) {
+
                             depth_at_points[k] = -parseFloat($($(result).find("td")[1]).text());
                         };
                     })(i)
