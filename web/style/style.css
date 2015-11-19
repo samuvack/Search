@@ -505,3 +505,8 @@ text {
     font-size: 9pt;
 }
 
+#depthsvg {
+    height: 400px;
+    width: 300px;
+}
+

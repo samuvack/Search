@@ -8,6 +8,7 @@ var drawCurve = function(svgSelector, data) {
         y = d3.scale.linear().domain([0, d3.max(data)]).range([margin, h - margin]),
         x = d3.scale.linear().domain([0, data.length]).range([margin, w - margin]);
 
+    d3.select(svgSelector).selectAll("*").remove();
     var vis = d3.select(svgSelector)
         .attr("width", w)
         .attr("height", h);
