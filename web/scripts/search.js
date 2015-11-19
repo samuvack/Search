@@ -10,7 +10,7 @@ function initGeoSearch(layerObjects) {
         })
     ];
 
-    var depth_profile_tiles = [];
+    var depth_profile_layers = [];
     var depth_profile_images = [];
 
     var layersById = [];
@@ -30,7 +30,7 @@ function initGeoSearch(layerObjects) {
         });
          if(tlayer.depth_profiling) {
              depth_profile_images.push(image);
-             depth_profile_tiles.push(tile);
+             depth_profile_layers.push(tlayer);
          }
 
         layers.push(tile);
@@ -107,25 +107,67 @@ function initGeoSearch(layerObjects) {
         return ! $('#l'+nr).hasClass('layer');
     }
 
-    function depth_profiling(evt) {
-        for(var i = 0; i < depth_profile_tiles.length; ++i) {
-            var tile = depth_profile_tiles[i];
-            var image = depth_profile_images[i];
-            var viewResolution = /** @type {number} */ (view.getResolution());
-            console.log(evt.coordinate);
+    var depth_profile_layer = function(start, end, image) {
+        var viewResolution = /** @type {number} */ (view.getResolution());
+        var steps = 20;
+        var diff = [
+            (end[0] - start[0])/steps,
+            (end[1] - start[1])/steps
+        ];
+        var depth_at_points = [];
+        var threads = [];
+        for(var i = 0; i < steps; ++i) {
+            var point = [
+                start[0] + i*diff[0],
+                start[1] + i*diff[1]
+            ];
             var url = image.getGetFeatureInfoUrl(
-                evt.coordinate, viewResolution, 'EPSG:3857',
+                point, viewResolution, 'EPSG:3857',
                 {'INFO_FORMAT': 'text/html'});
             if (url) {
-                $.get('http://localhost/cgi-bin/proxy.cgi', {
-                    url: url
-                }, function(result) {
-                    $("#info-depth").text($($(result).find("td")[1]).text());
-                    console.log(parseFloat($($(result).find("td")[1]).text()));
-                });
+                threads.push($.get('http://localhost/cgi-bin/proxy.cgi',
+                    {
+                        url: url
+                    },
+                    (function(k) {
+                        /*
+                         * We need two functions here because the inner function gets evaluated
+                         * after the AJAX request is complete, but at this time i has long been changed.
+                         *
+                         * O the joys of multithreading.
+                         */
+                        return function (result) {
+                            depth_at_points[k] = -parseFloat($($(result).find("td")[1]).text());
+                        };
+                    })(i)
+                ));
             }
         }
-    }
+
+        // Wait for all AJAX calls to return
+        $.when.apply($, threads).done(function() {
+            console.log(depth_at_points);
+            drawCurve("#depthsvg",depth_at_points );
+        });
+
+    };
+
+    var firstCoordinates = null;
+    var depth_profiling = function(evt) {
+        if(firstCoordinates == null) {
+            firstCoordinates = evt.coordinate;
+        } else {
+            for (var i = 0; i < depth_profile_images.length; ++i) {
+                if(! visible(depth_profile_layers[i].id)) {
+                    continue;
+                }
+                var image = depth_profile_images[i];
+                depth_profile_layer(firstCoordinates, evt.coordinate, image);
+
+            }
+            firstCoordinates = null;
+        }
+    };
 
     map.on('singleclick', function (evt) {
         var url = 'ajax/featureinfo?x=' + evt.coordinate[0] + '&y=' + evt.coordinate[1] + '&res=' + view.getResolution();
