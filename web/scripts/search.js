@@ -147,17 +147,19 @@ function initGeoSearch(layerObjects) {
 
         // Wait for all AJAX calls to return
         $.when.apply($, threads).done(function() {
-            console.log(depth_at_points);
             drawCurve("#depthsvg",depth_at_points );
         });
 
     };
 
     var firstCoordinates = null;
+    var enable_depth_profiling = false;
     var depth_profiling = function(evt) {
         if(firstCoordinates == null) {
+            resetFeatures();
             firstCoordinates = evt.coordinate;
         } else {
+            draw.finishDrawing();
             for (var i = 0; i < depth_profile_images.length; ++i) {
                 if(! visible(depth_profile_layers[i].id)) {
                     continue;
@@ -190,8 +192,74 @@ function initGeoSearch(layerObjects) {
 
         document.getElementById("info").style.display = "block";
         ajax(url, 'info', '', '', 'info-contents');
+        if(enable_depth_profiling)
+            depth_profiling(evt);
+    });
 
-        depth_profiling(evt);
+    var draw = null; // global so we can remove it later
+    var featureOverlay = null;
+    var resetFeatures = function() {
+        if(featureOverlay != null)
+            featureOverlay.getFeatures().clear();
+    };
+    featureOverlay = new ol.FeatureOverlay({
+        style: new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 255, 255, 0.2)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#ffcc33',
+                width: 2
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: '#ffcc33'
+                })
+            })
+        })
+    });
+    map.addOverlay(featureOverlay);
+
+    var changeInteraction = function(type) {
+        resetFeatures();
+
+        removeInteraction();
+        draw = new ol.interaction.Draw({
+            features: featureOverlay.getFeatures(),
+            type: /** @type {ol.geom.GeometryType} */ type
+        });
+        map.addInteraction(draw);
+    };
+
+    var removeInteraction = function() {
+        enable_depth_profiling = false;
+        if(draw != null) {
+            map.removeInteraction(draw);
+        }
+        draw = null;
+
+    };
+
+    $('#polygon-link').click(function(){
+        if($(this).hasClass("selected-drawer")) {
+            resetFeatures();
+            removeInteraction();
+        } else {
+            changeInteraction('Polygon');
+        }
+        $(this).toggleClass("selected-drawer")
+    });
+    $('#depth-link').click(function(){
+        if($(this).hasClass("selected-drawer")) {
+            resetFeatures();
+            removeInteraction();
+        } else {
+            changeInteraction('LineString');
+            enable_depth_profiling = true;
+        }
+        $(this).toggleClass("selected-drawer")
+
     });
 
     function layer() {
@@ -235,10 +303,6 @@ function initGeoSearch(layerObjects) {
     });
 
 
-    $("#depth-link").click(function() {
-    });
-
-
     function toggle_legende() {
         $("#leg").toggleClass('display-none');
     }
@@ -249,66 +313,6 @@ function initGeoSearch(layerObjects) {
     $('#close-info').click(function() {
         $("#info").css( "opacity", 0 );
     });
-
-
-    //TODO: DRAWING FUNCTION ------------------------------------------------------------------------
-    var featureOverlay = new ol.FeatureOverlay({
-        style: new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: 'rgba(255, 255, 255, 0.2)'
-            }),
-            stroke: new ol.style.Stroke({
-                color: '#ffcc33',
-                width: 2
-            }),
-            image: new ol.style.Circle({
-                radius: 7,
-                fill: new ol.style.Fill({
-                    color: '#ffcc33'
-                })
-            })
-        })
-    });
-    featureOverlay.setMap(map);
-
-    var modify = new ol.interaction.Modify({
-        features: featureOverlay.getFeatures(),
-        // the SHIFT key must be pressed to delete vertices, so
-        // that new vertices can be drawn at the same position
-        // of existing vertices
-        deleteCondition: function(event) {
-            return ol.events.condition.shiftKeyOnly(event) &&
-                ol.events.condition.singleClick(event);
-        }
-    });
-    map.addInteraction(modify);
-
-    var draw; // global so we can remove it later
-    function addInteraction() {
-        draw = new ol.interaction.Draw({
-            features: featureOverlay.getFeatures(),
-            type: /** @type {ol.geom.GeometryType} */ (typeSelect.value)
-        });
-        map.addInteraction(draw);
-    }
-
-    var typeSelect = document.getElementById('type');
-
-
-    /**
-     * Let user change the geometry type.
-     * @param {Event} e Change event.
-     */
-    typeSelect.onchange = function(e) {
-        map.removeInteraction(draw);
-        addInteraction();
-    };
-
-    addInteraction();
-
-    //TODO: ----------------------------------------------------------------------------------------
-
-
 
     function ajax(alink, aelementid, adata, aconfirm, contentelementid) {
 

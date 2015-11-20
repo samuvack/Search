@@ -271,6 +271,7 @@ a:focus, a:hover {
     width: 20px;
 }
 #info-link:hover{
+
     top: 10px;
     }
 
@@ -286,6 +287,8 @@ a:focus, a:hover {
     position: absolute;
     background: white;
     border: 1px solid #999;
+
+
 }
 
 #button_close {
@@ -298,8 +301,6 @@ a:focus, a:hover {
     background-repeat: no-repeat;
     position: relative;
 }
-
-
 #polygon-link{
     right: 340px;
     position: absolute;
@@ -309,13 +310,12 @@ a:focus, a:hover {
     top: 15px;
     height: 20px;
     width: 20px;
+
 }
 
-#polygon-link:hover{
-    top: 10px;
+#polygon-link:hover, .selected-drawer {
+    top: 10px !important;
 }
-
-
 
 #draw-link{
     right: 100px;
@@ -346,8 +346,8 @@ top: 10px;
 
 #depth-link:hover{
     top: 10px;
-}
 
+}
 #measure-link{
     right: 180px;
     position: absolute;
@@ -360,6 +360,7 @@ top: 10px;
 }
 
 #measure-link:hover{
+
     top: 10px;
 }
 
@@ -392,7 +393,9 @@ top: 10px;
 
 
 #print-link:hover{
+
     top: 10px;
+
 }
 
 #question-link{
