@@ -15,6 +15,8 @@ function initGeoSearch(layerObjects) {
 
     var layersById = [];
 
+
+    //TODO: dieptemodel enkel als TileWMS opvragen !!!
     for (var i = 0; i < layerObjects.length; ++i) {
         var tlayer = layerObjects[i];
         var image = new ol.source.TileWMS({
@@ -24,7 +26,7 @@ function initGeoSearch(layerObjects) {
         });
 
         var tile = new ol.layer.Tile({
-            extent: [250000, 6630000, 500000, 6770000],
+            extent: [240000, 6630000, 500000, 6780000],
             source: image,
             visible: tlayer.visible
         });
@@ -36,21 +38,6 @@ function initGeoSearch(layerObjects) {
         layers.push(tile);
         layersById[tlayer.id] = tile;
     }
-
-/*
-    var archeologiepoly = new ol.layer.Image({
-        title: 'artefacts',
-        extent: [250000, 6630000, 500000, 6770000],
-        source: new ol.source.ImageWMS({
-            url: 'http://geo.vliz.be:80/geoserver/Scheldemonitor/wms',
-            params: {'LAYERS': 'Scheldemonitor:archeologiepoly'},
-            serverType: 'archeologiepoly'
-        }),
-        visible:true
-    });
-
-*/
-
 
 
     //layers.push(archeologiepoly);
@@ -65,25 +52,18 @@ function initGeoSearch(layerObjects) {
     var map = new ol.Map({
         controls: [
 
-
             new ol.control.Zoom(),
-
             new ol.control.MousePosition({
                 projection: 'EPSG:4326',
                 coordinateFormat: ol.coordinate.createStringXY(4)
             }),
-
-
             //new ol.control.Attribution(),
-
             new ol.control.ZoomToExtent({
                 extent: [
                     250000, 6630000,
                     500000, 6770000
                 ]
             }),
-
-
 
 
 
@@ -101,6 +81,7 @@ function initGeoSearch(layerObjects) {
 
 
 
+
     //TODO: DEZE functie heeft weer wanneer een laag zichtbaar is en er dus getfeature info mag weergegeven worden
 
     function visible(nr) {
@@ -109,7 +90,7 @@ function initGeoSearch(layerObjects) {
 
     var depth_profile_layer = function(start, end, image) {
         var viewResolution = /** @type {number} */ (view.getResolution());
-        var steps = 40;
+        var steps = 40; //aantal onderverdeling
         var diff = [
             (end[0] - start[0])/steps,
             (end[1] - start[1])/steps
@@ -138,7 +119,7 @@ function initGeoSearch(layerObjects) {
                          */
                         return function (result) {
 
-                            depth_at_points[k] = -parseFloat($($(result).find("td")[1]).text());
+                            depth_at_points[k] = parseFloat($($(result).find("td")[1]).text());
                         };
                     })(i)
                 ));
@@ -154,6 +135,33 @@ function initGeoSearch(layerObjects) {
 
     var firstCoordinates = null;
     var enable_depth_profiling = false;
+    var enable_info = false;
+
+
+    //Dieptepunt
+    function depthpoint_profiling(evt) {
+        for(var i = 0; i < depth_profile_layers.length; ++i) {
+            var tile = depth_profile_layers[i];
+            var image = depth_profile_images[i];
+            var viewResolution = /** @type {number} */ (view.getResolution());
+            console.log(evt.coordinate);
+            var url = image.getGetFeatureInfoUrl(
+                evt.coordinate, viewResolution, 'EPSG:3857',
+                {'INFO_FORMAT': 'text/html'});
+            if (url) {
+                $.get('http://localhost/cgi-bin/proxy.cgi', {
+                    url: url
+                }, function(result) {
+                    $("#info-depth").text($($(result).find("td")[1]).text());
+                    console.log(parseFloat($($(result).find("td")[1]).text()));
+
+                    
+                });
+            }
+        }
+    }
+
+
     var depth_profiling = function(evt) {
         if(firstCoordinates == null) {
             resetFeatures();
@@ -166,35 +174,53 @@ function initGeoSearch(layerObjects) {
                 }
                 var image = depth_profile_images[i];
                 depth_profile_layer(firstCoordinates, evt.coordinate, image);
-
+                $('#Div3').show();
             }
             firstCoordinates = null;
         }
     };
 
-    map.on('singleclick', function (evt) {
-        var url = 'ajax/featureinfo?x=' + evt.coordinate[0] + '&y=' + evt.coordinate[1] + '&res=' + view.getResolution();
-        var first = true;
-        for (var i = 0; i < layerObjects.length; ++i) {
-            var tlayer = layerObjects[i];
-            if (first) {
-                url += "?";
-                first = false;
-            } else {
-                url += "&";
-            }
 
-            url += "l" + tlayer.id + '=' + //TODO: DEZE TRUE/FALSE zichtbaarheid dient aangepast te worden met behulp van JAVA BOLEAN
 
-                visible(tlayer.id);
-
+    //Use escape button
+    $(document).keyup(function(e) {
+        if (e.keyCode == 27) { // escape key maps to keycode `27`
+            // <DO YOUR WORK HERE>
+            resetFeatures();
+            $("#info").css( "opacity", 0 );
         }
-
-        document.getElementById("info").style.display = "block";
-        ajax(url, 'info', '', '', 'info-contents');
-        if(enable_depth_profiling)
-            depth_profiling(evt);
     });
+
+
+        map.on('singleclick', function (evt) {
+            var url = 'ajax/featureinfo?x=' + evt.coordinate[0] + '&y=' + evt.coordinate[1] + '&res=' + view.getResolution();
+            var first = true;
+            for (var i = 0; i < layerObjects.length; ++i) {
+                var tlayer = layerObjects[i];
+                if (first) {
+                    url += "?";
+                    first = false;
+                } else {
+                    url += "&";
+                }
+
+                url += "l" + tlayer.id + '=' +  //TODO: DEZE TRUE/FALSE zichtbaarheid dient aangepast te worden met behulp van JAVA BOLEAN
+
+                    visible(tlayer.id);
+
+            }
+            if (enable_info) {
+                        document.getElementById("info").style.display = "block";
+                        ajax(url, 'info', '', '', 'info-contents');
+                        depthpoint_profiling(evt);
+                    }
+            //wanneer knop is aangeklikt TODO: DIENT ZELFDE ALS INFO
+            if (enable_depth_profiling)
+                depth_profiling(evt);
+
+
+        });
+
 
     var draw = null; // global so we can remove it later
     var featureOverlay = null;
@@ -234,6 +260,7 @@ function initGeoSearch(layerObjects) {
 
     var removeInteraction = function() {
         enable_depth_profiling = false;
+        enable_info = false;
         if(draw != null) {
             map.removeInteraction(draw);
         }
@@ -250,6 +277,21 @@ function initGeoSearch(layerObjects) {
         }
         $(this).toggleClass("selected-drawer")
     });
+
+
+    $('#info-link').click(function(){
+        if($(this).hasClass("selected-drawer")) {
+            resetFeatures();
+            removeInteraction();
+        } else {
+            enable_info = true;
+        }
+        $(this).toggleClass("selected-drawer")
+    });
+
+
+
+
     $('#depth-link').click(function(){
         if($(this).hasClass("selected-drawer")) {
             resetFeatures();
@@ -257,10 +299,11 @@ function initGeoSearch(layerObjects) {
         } else {
             changeInteraction('LineString');
             enable_depth_profiling = true;
-        }
+                    }
         $(this).toggleClass("selected-drawer")
-
     });
+
+
 
     function layer() {
         var $this = $(this);
@@ -288,14 +331,11 @@ function initGeoSearch(layerObjects) {
     });
 
 
-    $("#info-link").ready(function() {
+    $(document).ready(function() {
         $('#Div3').hide();
     });
 
 
-    $("#info-link").click(function() {
-            $('#Div3').toggle();
-    });
 
 
     $("#button_close").click(function() {
