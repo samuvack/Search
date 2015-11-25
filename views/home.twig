@@ -41,30 +41,37 @@
                 <li id="search-link" class="popupHoverElement"><div id="two" class="popupBox">Zoek</div></li>
                 <li id="info-link"class="popupHoverElement"><div id="two" class="popupBox">Info</div></li>
 
-                    <div id="Div3" draggable="true" style=" ">
+                    <div id="Div3" style=" ">
 
 
                         <li id="button_close"></li>
-                        <p><h3> SeArch - Archeologisch Erfgoed in de Noordzee</h3></p>
-                        <svg id="depthsvg">
-
-                        </svg>
+                        <p><h3> Diepteprofiel</h3></p>
+                        <svg id="depthsvg">    </svg> <!--hier komt de grafiek -->
 
                     </div>
 
                 <li id="fullscreen-link" class="popupHoverElement"><div id="two" class="popupBox">Vergroten</div><a></a></li>
-                <insert id="depth-link" class="popupHoverElement"><div id="two" class="popupBox">Diepteprofiel</div><a></a></insert>
+                <li id="depth-link" class="popupHoverElement"><div id="two" class="popupBox">Diepteprofiel</div><a></a></li>
                 <li id="share-link" class="popupHoverElement"><div id="two" class="popupBox">Share</div><a></a></li>
-                <li id="print-link" class="popupHoverElement"><div id="two" class="popupBox">Print</div><a></a></li>
+                <li id="download-link" download="map.png" class="popupHoverElement"><div id="two" class="popupBox"><i class="icon-download"></i> Download</div><a></a></li>
                 <li id="question-link" class="popupHoverElement"><div id="two" class="popupBox">Handleiding</div><a></a></li>
 
                 <li id="draw-link" class="popupHoverElement"><div id="two" class="popupBox">Tekenen</div></li>
 
                 <li id="measure-link" class="popupHoverElement"><div id="two" class="popupBox">Meten</div></li>
                 <li id="polygon-link" class="popupHoverElement"><div id="two" class="popupBox">Polygon</div></li>
+                <li id="depthpoint-link" class="popupHoverElement"><div id="two" class="popupBox">Dieptepunt</div></li>
+
+
+
             </ul>
         </div>
     </div>
+
+
+
+
+
 </nav>
     <span class="layers">
         {% for group in groups %}
@@ -91,6 +98,12 @@
         </div>
     </span>
     <span id="map" class="map"></span>
+
+<div id="no-download" class="alert alert-error" style="display: none">
+    This example requires a browser that supports the
+    <a href="http://caniuse.com/#feat=download">link download</a> attribute.
+</div>
+
     <span id="ol.control.Zoom" class="ol.control.Zoom"></span>
     <span id="ol.Zoom" class="ol.Zoom"></span>
 
@@ -99,10 +112,18 @@
         <div id="info-contents">
 
         </div>
+
+    </div>
+
+    <div id="depthpoint_box">
+        <div id="depth-contents">
+        </div>
         <div id="info-depth">
 
         </div>
-    </div>
+        </div>
+
+
 
 <div id="logo" class="logo"></div>
 <div id="logo2" class="logo2"><h4>Archeologisch erfgoed in de Noordzee</h4></div>

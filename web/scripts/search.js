@@ -16,6 +16,7 @@ function initGeoSearch(layerObjects) {
     var layersById = [];
 
 
+
     //TODO: dieptemodel enkel als TileWMS opvragen !!!
     for (var i = 0; i < layerObjects.length; ++i) {
         var tlayer = layerObjects[i];
@@ -82,6 +83,21 @@ function initGeoSearch(layerObjects) {
 
 
 
+/*
+        //create 3d globe view
+         var ol3d = new olcs.OLCesium({
+                map: map,
+                target: '3dmap'
+            });
+            /*commented terrainprovider since problem with displaying features
+             var scene = ol3d.getCesiumScene();
+             var terrainProvider = new Cesium.CesiumTerrainProvider({
+             url: '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
+             });
+             scene.terrainProvider = terrainProvider;*/
+          // console.log(ol3d.setEnabled(false));
+
+
     //TODO: DEZE functie heeft weer wanneer een laag zichtbaar is en er dus getfeature info mag weergegeven worden
 
     function visible(nr) {
@@ -94,7 +110,8 @@ function initGeoSearch(layerObjects) {
         var diff = [
             (end[0] - start[0])/steps,
             (end[1] - start[1])/steps
-        ];
+          ];
+        console.log(diff);
         var depth_at_points = [];
         var threads = [];
         for(var i = 0; i < steps; ++i) {
@@ -136,7 +153,7 @@ function initGeoSearch(layerObjects) {
     var firstCoordinates = null;
     var enable_depth_profiling = false;
     var enable_info = false;
-
+    var enable_depthpoint = false;
 
     //Dieptepunt
     function depthpoint_profiling(evt) {
@@ -153,13 +170,15 @@ function initGeoSearch(layerObjects) {
                     url: url
                 }, function(result) {
                     $("#info-depth").text($($(result).find("td")[1]).text());
-                    console.log(parseFloat($($(result).find("td")[1]).text()));
+                    var depth = console.log(parseFloat($($(result).find("td")[1]).text()));
+                    console.log(depth.float());
 
-                    
                 });
             }
         }
     }
+
+
 
 
     var depth_profiling = function(evt) {
@@ -181,7 +200,6 @@ function initGeoSearch(layerObjects) {
     };
 
 
-
     //Use escape button
     $(document).keyup(function(e) {
         if (e.keyCode == 27) { // escape key maps to keycode `27`
@@ -190,7 +208,6 @@ function initGeoSearch(layerObjects) {
             $("#info").css( "opacity", 0 );
         }
     });
-
 
         map.on('singleclick', function (evt) {
             var url = 'ajax/featureinfo?x=' + evt.coordinate[0] + '&y=' + evt.coordinate[1] + '&res=' + view.getResolution();
@@ -212,15 +229,21 @@ function initGeoSearch(layerObjects) {
             if (enable_info) {
                         document.getElementById("info").style.display = "block";
                         ajax(url, 'info', '', '', 'info-contents');
-                        depthpoint_profiling(evt);
+
                     }
+
+            if(enable_depthpoint){
+                document.getElementById("depthpoint_box").style.display = "block";
+                ajax(url, 'depthpoint_box', '', '', 'depth-contents');
+                depthpoint_profiling(evt);
+            }
+
             //wanneer knop is aangeklikt TODO: DIENT ZELFDE ALS INFO
             if (enable_depth_profiling)
                 depth_profiling(evt);
 
 
         });
-
 
     var draw = null; // global so we can remove it later
     var featureOverlay = null;
@@ -261,6 +284,8 @@ function initGeoSearch(layerObjects) {
     var removeInteraction = function() {
         enable_depth_profiling = false;
         enable_info = false;
+        enable_depthpoint=false;
+        $("#depthpoint_box").css( "opacity", 0 );
         if(draw != null) {
             map.removeInteraction(draw);
         }
@@ -289,7 +314,15 @@ function initGeoSearch(layerObjects) {
         $(this).toggleClass("selected-drawer")
     });
 
-
+    $('#depthpoint-link').click(function(){
+        if($(this).hasClass("selected-drawer")) {
+            resetFeatures();
+            removeInteraction();
+        } else {
+            enable_depthpoint = true;
+        }
+        $(this).toggleClass("selected-drawer")
+    });
 
 
     $('#depth-link').click(function(){
@@ -304,6 +337,45 @@ function initGeoSearch(layerObjects) {
     });
 
 
+    //TODO: DOWNLOAD
+    var exportPNGElement = document.getElementById('download-link');
+
+    if ('download' in exportPNGElement) {
+        exportPNGElement.addEventListener('click', function(e) {
+            map.once('postcompose', function(event) {
+                var canvas = event.context.canvas;
+                exportPNGElement.href = canvas.toDataURL('image/png');
+            });
+            map.renderSync();
+        }, false);
+    } else {
+        var info = document.getElementById('no-download');
+        /**
+         * display error message
+         */
+        //info.style.display = '';
+    }
+
+
+
+    //TODO: Measuring !!
+    function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+        var R = 6371; // Radius of the earth in km
+        var dLat = deg2rad(lat2-lat1);  // deg2rad below
+        var dLon = deg2rad(lon2-lon1);
+        var a =
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                Math.sin(dLon/2) * Math.sin(dLon/2)
+            ;
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var distance = R * c; // Distance in km
+        return distance;
+    }
+
+    function deg2rad(deg) {
+        return deg * (Math.PI/180)
+    }
 
     function layer() {
         var $this = $(this);
@@ -333,9 +405,8 @@ function initGeoSearch(layerObjects) {
 
     $(document).ready(function() {
         $('#Div3').hide();
+        $('#depthpoint_box').hide();
     });
-
-
 
 
     $("#button_close").click(function() {
