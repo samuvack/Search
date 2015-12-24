@@ -1,6 +1,5 @@
 
 
-
 var drawCurve = function(svgSelector, data) {
     var w = 400,
         h = 200,
@@ -23,24 +22,23 @@ var drawCurve = function(svgSelector, data) {
         .x(function(d,i) { return x(i); })
         .y(function(d) { return -1 * y(d); });
 
-/*
-
-    var area = d3.svg.area()
-        .x(function(d,i) { return x(i); })
-        .y0(function() { return -50 ; })
-        .y1(function(d) { return -1 * y(d); });
-*/
+    /*
+     var area = d3.svg.area()
+     .x(function(d,i) { return x(i); })
+     .y0(function() { return -50 ; })
+     .y1(function(d) { return -1 * y(d); });
+     */
 
     g.append("svg:path").attr("d", line(data));
 
-        //x-as
+    //x-as
     g.append("svg:line")
         .attr("x1", x(0))
         .attr("y1", -1 * y(0))
         .attr("x2", x(w))
         .attr("y2", -1 * y(0));
 
-        //y-as
+    //y-as
     g.append("svg:line")
         .attr("x1", x(0))
         .attr("y1", -1 * y(0))
@@ -69,7 +67,7 @@ var drawCurve = function(svgSelector, data) {
         .attr("x", 0)
         .attr("y", function(d) { return -2 * y(d)})
         .attr("text-anchor", "middle")
-         .attr("dy", 2);
+        .attr("dy", 2);
 
 
     g.selectAll(".xTicks")

@@ -85,7 +85,7 @@ $app->match('ajax/featureinfo', function(Application $app) {
 	$tempLayers = $app['orm.em']->getRepository(':Layer')->findBy(array());
 	$layers = [];
 	foreach($tempLayers as $layer) {
-		if($layer->hasFeatureInfo() && $_GET['l'.$layer->getId()]=='true') {
+		if($layer->hasFeatureInfo() && (isset($_GET['l'.$layer->getId()]))   =='true') { //isset toegevoegd na foutmelding
 			$layers[$layer->getLegendName()] =
 				$app['orm.em']->getRepository(':Node')->findInCircle($layer, $_GET['x'], $_GET['y'], $_GET['res']);
 		}

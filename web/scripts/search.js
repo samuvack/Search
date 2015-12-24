@@ -1,5 +1,6 @@
-
 function initGeoSearch(layerObjects) {
+
+
     function setHTML(response) {
         console.log(response);
     }
@@ -31,10 +32,10 @@ function initGeoSearch(layerObjects) {
             source: image,
             visible: tlayer.visible
         });
-         if(tlayer.depth_profiling) {
-             depth_profile_images.push(image);
-             depth_profile_layers.push(tlayer);
-         }
+        if(tlayer.depth_profiling) {
+            depth_profile_images.push(image);
+            depth_profile_layers.push(tlayer);
+        }
 
         layers.push(tile);
         layersById[tlayer.id] = tile;
@@ -45,7 +46,7 @@ function initGeoSearch(layerObjects) {
     //layersById[i+1] = archeologiepoly;
 
     var view = new ol.View({
-       // projection: 'EPSG:4326',
+        // projection: 'EPSG:4326',
         center: ol.proj.transform([2.70, 51.34], 'EPSG:4326', 'EPSG:3857'),
         zoom: 9
     });
@@ -71,7 +72,7 @@ function initGeoSearch(layerObjects) {
             new ol.control.ScaleLine(),
             new ol.control.Rotate(),
 
-          /*  new ol.control.OverviewMap(),  */
+            /*  new ol.control.OverviewMap(),  */
 
 
         ],
@@ -83,19 +84,19 @@ function initGeoSearch(layerObjects) {
 
 
 
-/*
-        //create 3d globe view
-         var ol3d = new olcs.OLCesium({
-                map: map,
-                target: '3dmap'
-            });
-            /*commented terrainprovider since problem with displaying features
-             var scene = ol3d.getCesiumScene();
-             var terrainProvider = new Cesium.CesiumTerrainProvider({
-             url: '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
-             });
-             scene.terrainProvider = terrainProvider;*/
-          // console.log(ol3d.setEnabled(false));
+    /*
+     //create 3d globe view
+     var ol3d = new olcs.OLCesium({
+     map: map,
+     target: '3dmap'
+     });
+     /*commented terrainprovider since problem with displaying features
+     var scene = ol3d.getCesiumScene();
+     var terrainProvider = new Cesium.CesiumTerrainProvider({
+     url: '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
+     });
+     scene.terrainProvider = terrainProvider;*/
+    // console.log(ol3d.setEnabled(false));
 
 
     //TODO: DEZE functie heeft weer wanneer een laag zichtbaar is en er dus getfeature info mag weergegeven worden
@@ -110,7 +111,7 @@ function initGeoSearch(layerObjects) {
         var diff = [
             (end[0] - start[0])/steps,
             (end[1] - start[1])/steps
-          ];
+        ];
         console.log(diff);
         var depth_at_points = [];
         var threads = [];
@@ -154,7 +155,8 @@ function initGeoSearch(layerObjects) {
     var enable_depth_profiling = false;
     var enable_info = false;
     var enable_depthpoint = false;
-
+    var enable_output=false;
+    var outputnumber = '1';
     //Dieptepunt
     function depthpoint_profiling(evt) {
         for(var i = 0; i < depth_profile_layers.length; ++i) {
@@ -171,7 +173,6 @@ function initGeoSearch(layerObjects) {
                 }, function(result) {
                     $("#info-depth").text($($(result).find("td")[1]).text());
                     var depth = console.log(parseFloat($($(result).find("td")[1]).text()));
-                    console.log(depth.float());
 
                 });
             }
@@ -209,41 +210,47 @@ function initGeoSearch(layerObjects) {
         }
     });
 
-        map.on('singleclick', function (evt) {
-            var url = 'ajax/featureinfo?x=' + evt.coordinate[0] + '&y=' + evt.coordinate[1] + '&res=' + view.getResolution();
-            var first = true;
-            for (var i = 0; i < layerObjects.length; ++i) {
-                var tlayer = layerObjects[i];
-                if (first) {
-                    url += "?";
-                    first = false;
-                } else {
-                    url += "&";
-                }
-
-                url += "l" + tlayer.id + '=' +  //TODO: DEZE TRUE/FALSE zichtbaarheid dient aangepast te worden met behulp van JAVA BOLEAN
-
-                    visible(tlayer.id);
-
-            }
-            if (enable_info) {
-                        document.getElementById("info").style.display = "block";
-                        ajax(url, 'info', '', '', 'info-contents');
-
-                    }
-
-            if(enable_depthpoint){
-                document.getElementById("depthpoint_box").style.display = "block";
-                ajax(url, 'depthpoint_box', '', '', 'depth-contents');
-                depthpoint_profiling(evt);
+    map.on('singleclick', function (evt) {
+        var url = 'ajax/featureinfo?x=' + evt.coordinate[0] + '&y=' + evt.coordinate[1] + '&res=' + view.getResolution();
+        var first = true;
+        var x= evt.coordinate[0];
+        for (var i = 0; i < layerObjects.length; ++i) {
+            var tlayer = layerObjects[i];
+            if (first) {
+                url += "?";
+                first = false;
+            } else {
+                url += "&";
             }
 
-            //wanneer knop is aangeklikt TODO: DIENT ZELFDE ALS INFO
-            if (enable_depth_profiling)
-                depth_profiling(evt);
+            url += "l" + tlayer.id + '=' +  //TODO: DEZE TRUE/FALSE zichtbaarheid dient aangepast te worden met behulp van JAVA BOLEAN
+
+                visible(tlayer.id);
+
+        }
+        if (enable_info) {
+            document.getElementById("info").style.display = "block";
+            ajax(url, 'info', '', '', 'info-contents');
+
+        }
+
+        if(enable_depthpoint){
+            document.getElementById("depthpoint_box").style.display = "block";
+            ajax(url, 'depthpoint_box', '', '', 'depth-contents');
+            depthpoint_profiling(evt);
+        }
 
 
-        });
+       // if(enable_output){
+        outputnumber = 49;
+            //ajax(url, 'depthpoint_box', '', '', 'depth-contents');
+      //  }
+
+
+        //wanneer knop is aangeklikt TODO: DIENT ZELFDE ALS INFO
+        if (enable_depth_profiling)
+            depth_profiling(evt);
+    });
 
     var draw = null; // global so we can remove it later
     var featureOverlay = null;
@@ -281,10 +288,11 @@ function initGeoSearch(layerObjects) {
         map.addInteraction(draw);
     };
 
-    var removeInteraction = function() {
+        var removeInteraction = function() {
         enable_depth_profiling = false;
         enable_info = false;
         enable_depthpoint=false;
+        enable_output=false;
         $("#depthpoint_box").css( "opacity", 0 );
         if(draw != null) {
             map.removeInteraction(draw);
@@ -292,6 +300,8 @@ function initGeoSearch(layerObjects) {
         draw = null;
 
     };
+
+
 
     $('#polygon-link').click(function(){
         if($(this).hasClass("selected-drawer")) {
@@ -314,6 +324,31 @@ function initGeoSearch(layerObjects) {
         $(this).toggleClass("selected-drawer")
     });
 
+
+
+    $('#output').click(function(){
+        if($(this).hasClass("selected-drawer")) {
+            resetFeatures();
+            removeInteraction();
+        } else {
+            enable_output = true;
+        }
+
+        $(this).toggleClass("selected-drawer")
+
+
+        if($(this).hasClass("selected-drawer")) {
+            $(map).click(function () {
+                test=outputnumber;
+                window.open('admin/node/'+ test, 'Popup', 'top=150px, left=400px width=500px, height=650px, status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
+            });
+        }
+
+    });
+
+
+
+
     $('#depthpoint-link').click(function(){
         if($(this).hasClass("selected-drawer")) {
             resetFeatures();
@@ -332,7 +367,7 @@ function initGeoSearch(layerObjects) {
         } else {
             changeInteraction('LineString');
             enable_depth_profiling = true;
-                    }
+        }
         $(this).toggleClass("selected-drawer")
     });
 
@@ -401,6 +436,8 @@ function initGeoSearch(layerObjects) {
     $("#search-link").click(function() {
         window.open('admin/search','Popup', 'top=150px, left=400px width=500px, height=650px, status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
     });
+
+
 
 
     $(document).ready(function() {
