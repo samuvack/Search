@@ -6,6 +6,7 @@
                 <div class='infoname'>{{ element.name }}</div>
                 {% for relation in element.relations %}
                     <div class='infopar'><b>{{ relation.property.name|capitalize }}:</b>
+
                         {{ render(relation.value,{plain: true}) }}
                     </div>
                 {% endfor %}
