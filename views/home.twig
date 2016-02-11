@@ -47,6 +47,8 @@
 
                     <li id="button_close"></li>
                     <p><h3> Diepteprofiel</h3></p>
+
+                    <p>TAW [m]</p>
                     <svg id="depthsvg">    </svg> <!--hier komt de grafiek -->
 
                 </div>
@@ -56,9 +58,7 @@
                 <li id="share-link" class="popupHoverElement"><div id="two" class="popupBox">Share</div><a></a></li>
                 <li id="download-link" download="map.png" class="popupHoverElement"><div id="two" class="popupBox"><i class="icon-download"></i> Download</div><a></a></li>
                 <li id="question-link" class="popupHoverElement"><div id="two" class="popupBox">Handleiding</div><a></a></li>
-
                 <li id="draw-link" class="popupHoverElement"><div id="two" class="popupBox">Tekenen</div></li>
-
                 <li id="measure-link" class="popupHoverElement"><div id="two" class="popupBox">Meten</div></li>
                 <li id="polygon-link" class="popupHoverElement"><div id="two" class="popupBox">Polygon</div></li>
                 <li id="depthpoint-link" class="popupHoverElement"><div id="two" class="popupBox">Dieptepunt</div></li>
@@ -89,7 +89,7 @@
         <div class="legende_content">
             {% for group in groups %}
                 {% for layer in group.layers %}
-                    <div class="legende_item {{ layer.visible?'':'display-none' }}" id="legende_{{ layer.id }}">'
+                    <div class="legende_item {{ layer.visible?'':'display-none' }}" id="legende_{{ layer.id }}">
                         {{ layer.legendName }}
                         <br>
                         <img src="http://we12s007.ugent.be:8080/geoserver/search/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style={{ layer.style }}">

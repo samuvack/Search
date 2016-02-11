@@ -6,7 +6,7 @@ function initGeoSearch(layerObjects) {
     }
 
     var layers = [
-        new ol.layer.Tile({
+            new ol.layer.Tile({
             source: new ol.source.OSM()
         })
     ];
@@ -18,19 +18,25 @@ function initGeoSearch(layerObjects) {
 
 
 
+    // $(document).ready(function() {
+    $('#Div3').hide();
+    $('#depthpoint_box').hide();
+    //});
+
+
     //TODO: dieptemodel enkel als TileWMS opvragen !!!
     for (var i = 0; i < layerObjects.length; ++i) {
         var tlayer = layerObjects[i];
         var image = new ol.source.TileWMS({
-            url: 'http://we12s007.ugent.be:8080/geoserver/search/wms',
+            url: 'http://we12s007.ugent.be:8080/geoserver/search/wms',//search
             params: {'LAYERS': tlayer.name},
             serverType: 'geoserver'
         });
 
         var tile = new ol.layer.Tile({
-            extent: [240000, 6630000, 500000, 6780000],
+            extent: [200000, 6550000, 670000, 6780000], //6630000 500000 6780000
             source: image,
-            visible: tlayer.visible
+            visible:tlayer.visible
         });
         if(tlayer.depth_profiling) {
             depth_profile_images.push(image);
@@ -112,6 +118,7 @@ function initGeoSearch(layerObjects) {
             (end[0] - start[0])/steps,
             (end[1] - start[1])/steps
         ];
+
         console.log(diff);
         var depth_at_points = [];
         var threads = [];
@@ -138,6 +145,8 @@ function initGeoSearch(layerObjects) {
                         return function (result) {
 
                             depth_at_points[k] = parseFloat($($(result).find("td")[1]).text());
+                            var outputtest= $($(result).find("td")[2]).text();
+                            console.log(outputtest);
                         };
                     })(i)
                 ));
@@ -157,13 +166,16 @@ function initGeoSearch(layerObjects) {
     var enable_depthpoint = false;
     var enable_output=false;
     var outputnumber = '1';
+
+
+
     //Dieptepunt
     function depthpoint_profiling(evt) {
         for(var i = 0; i < depth_profile_layers.length; ++i) {
             var tile = depth_profile_layers[i];
             var image = depth_profile_images[i];
             var viewResolution = /** @type {number} */ (view.getResolution());
-            console.log(evt.coordinate);
+            //console.log(evt.coordinate);
             var url = image.getGetFeatureInfoUrl(
                 evt.coordinate, viewResolution, 'EPSG:3857',
                 {'INFO_FORMAT': 'text/html'});
@@ -213,44 +225,61 @@ function initGeoSearch(layerObjects) {
     map.on('singleclick', function (evt) {
         var url = 'ajax/featureinfo?x=' + evt.coordinate[0] + '&y=' + evt.coordinate[1] + '&res=' + view.getResolution();
         var first = true;
-        var x= evt.coordinate[0];
+        //var x= evt.coordinate[0];
+
         for (var i = 0; i < layerObjects.length; ++i) {
             var tlayer = layerObjects[i];
             if (first) {
                 url += "?";
                 first = false;
             } else {
-                url += "&";
+
+            }
+            if (visible(tlayer.id)) {
+            url += "&";
+            url += "l" + tlayer.id + '=' +  //TODO: DEZE TRUE/FALSE zichtbaarheid dient aangepast te worden met behulp van JAVA BOLEAN
+                visible(tlayer.id);
             }
 
-            url += "l" + tlayer.id + '=' +  //TODO: DEZE TRUE/FALSE zichtbaarheid dient aangepast te worden met behulp van JAVA BOLEAN
+            console.log( "l" + tlayer.id + '=' + visible(tlayer.id));
+            console.log(tlayer.id);
 
-                visible(tlayer.id);
+            $('output.active')
+            {
+                outputnumber=tlayer.id;
+            };
+
+
+
 
         }
+
+
+
+
         if (enable_info) {
             document.getElementById("info").style.display = "block";
             ajax(url, 'info', '', '', 'info-contents');
-
         }
 
         if(enable_depthpoint){
             document.getElementById("depthpoint_box").style.display = "block";
             ajax(url, 'depthpoint_box', '', '', 'depth-contents');
             depthpoint_profiling(evt);
+            console.log(depthpoint_profiling(evt));
         }
 
 
-       // if(enable_output){
-        outputnumber = 49;
-            //ajax(url, 'depthpoint_box', '', '', 'depth-contents');
-      //  }
+
 
 
         //wanneer knop is aangeklikt TODO: DIENT ZELFDE ALS INFO
         if (enable_depth_profiling)
             depth_profiling(evt);
     });
+
+
+
 
     var draw = null; // global so we can remove it later
     var featureOverlay = null;
@@ -292,7 +321,7 @@ function initGeoSearch(layerObjects) {
         enable_depth_profiling = false;
         enable_info = false;
         enable_depthpoint=false;
-        enable_output=false;
+        //enable_output=false;
         $("#depthpoint_box").css( "opacity", 0 );
         if(draw != null) {
             map.removeInteraction(draw);
@@ -330,6 +359,7 @@ function initGeoSearch(layerObjects) {
         if($(this).hasClass("selected-drawer")) {
             resetFeatures();
             removeInteraction();
+
         } else {
             enable_output = true;
         }
@@ -338,9 +368,11 @@ function initGeoSearch(layerObjects) {
 
 
         if($(this).hasClass("selected-drawer")) {
+
             $(map).click(function () {
-                test=outputnumber;
-                window.open('admin/node/'+ test, 'Popup', 'top=150px, left=400px width=500px, height=650px, status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
+
+
+                window.open('admin/node/'+ outputnumber, 'Popup', 'width=' + screen.width + ', height=' + screen.height + ', status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
             });
         }
 
@@ -434,16 +466,13 @@ function initGeoSearch(layerObjects) {
     });
 
     $("#search-link").click(function() {
-        window.open('admin/search','Popup', 'top=150px, left=400px width=500px, height=650px, status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
+        window.open('admin/search','Popup', 'width=' + screen.width + ',height='+ screen.height + ',status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
     });
 
 
 
 
-    $(document).ready(function() {
-        $('#Div3').hide();
-        $('#depthpoint_box').hide();
-    });
+
 
 
     $("#button_close").click(function() {
