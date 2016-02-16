@@ -1,7 +1,0 @@
-build/
-sandbox/
-vendor/
-composer.lock
-composer.phar
-phpunit.xml
-sandbox/config.php
