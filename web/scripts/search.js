@@ -185,9 +185,6 @@ function initGeoSearch(layerObjects) {
         }
     }
 
-
-
-
     var depth_profiling = function(evt) {
         if(firstCoordinates == null) {
             resetFeatures();
@@ -205,7 +202,6 @@ function initGeoSearch(layerObjects) {
             firstCoordinates = null;
         }
     };
-
 
     //Use escape button
     $(document).keyup(function(e) {
@@ -254,6 +250,14 @@ function initGeoSearch(layerObjects) {
         //wanneer knop is aangeklikt TODO: DIENT ZELFDE ALS INFO
         if (enable_depth_profiling)
             depth_profiling(evt);
+
+        if(enable_output) {
+
+            $.get('ajax/closest', params, function(response) {
+                window.open('admin/node/'+ response,
+                    'Popup', 'width=' + screen.width + ', height=' + screen.height + ', status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
+            });
+        }
     });
 
 
@@ -342,18 +346,7 @@ function initGeoSearch(layerObjects) {
             enable_output = true;
         }
 
-        $(this).toggleClass("selected-drawer")
-
-
-        if($(this).hasClass("selected-drawer")) {
-
-            $(map).click(function () {
-
-
-                window.open('admin/node/'+ outputnumber, 'Popup', 'width=' + screen.width + ', height=' + screen.height + ', status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
-            });
-        }
-
+        $(this).toggleClass("selected-drawer");
     });
 
 
@@ -462,6 +455,6 @@ function initGeoSearch(layerObjects) {
     $('#close-info').click(function() {
         $("#info").css( "opacity", 0 );
     });
-    
+
 }
 

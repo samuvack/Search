@@ -6,8 +6,8 @@ allow from all
 
 
     RewriteEngine On
-    RewriteCond  %{DOCUMENT_ROOT}/geosearch/web/$1 -f
-    RewriteRule  ^(.*)$  /geosearch/web/$1  [L,QSA]
+    RewriteCond  %{DOCUMENT_ROOT}/Search/web/$1 -f
+    RewriteRule  ^(.*)$  /Search/web/$1  [L,QSA]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ bootstrap.php [QSA]
 </IfModule>

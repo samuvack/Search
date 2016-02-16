@@ -65,7 +65,8 @@ $app->register(new DoctrineOrmServiceProvider, array(
 		"ST_Transform" => "Jsor\Doctrine\PostGIS\Functions\ST_Transform",
 		"ST_Buffer" => "Jsor\Doctrine\PostGIS\Functions\ST_Buffer",
 		"ST_SetSRID" => "Jsor\Doctrine\PostGIS\Functions\ST_SetSRID",
-		"ST_Point" => "Jsor\Doctrine\PostGIS\Functions\ST_Point"
+		"ST_Point" => "Jsor\Doctrine\PostGIS\Functions\ST_Point",
+		'ST_Distance' => 'Jsor\Doctrine\PostGIS\Functions\ST_Distance'
 	),
 	'orm.auto_generate_proxies' => $app['debug']
 ));
@@ -92,6 +93,21 @@ $app->match('ajax/featureinfo', function(Application $app) {
 	}
 
 	return $app['twig']->render('object.twig', array('layers'=>$layers));
+});
+
+$app->match('ajax/closest', function(Application $app) {
+	$layers = array_filter(
+		$app['orm.em']->getRepository(':Layer')->findBy(array()),
+		function($layer) {
+			return $layer->hasFeatureInfo() && (isset($_GET['l'.$layer->getId()]))  =='true';
+		}
+	);
+
+	$node = $app['orm.em']->getRepository(':Node')->findClosest($layers, $_GET['x'], $_GET['y'], $_GET['res']);
+	if(empty($node)) {
+		throw $this->createNotFoundException('No node nearby.');
+	}
+	return $app->json($node[0]->getId());
 });
 include $config['wiki_dir'] .'/app/common_app.php';
 
