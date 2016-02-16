@@ -1,4 +1,22 @@
+
+
 function initGeoSearch(layerObjects) {
+    var TileWMS = function(options) {
+        this.proxyurl = options.proxyurl;
+        ol.source.TileWMS.call(this, options);
+    };
+
+    TileWMS.prototype = Object.create(ol.source.TileWMS.prototype);
+    (function() {
+        var oldGetGetFeatureInfoUrl = ol.source.TileWMS.prototype.getGetFeatureInfoUrl;
+        TileWMS.prototype.getGetFeatureInfoUrl = function() {
+            var url = oldGetGetFeatureInfoUrl.apply(this, arguments);
+            if(this.proxyurl) {
+                url = this.proxyurl + encodeURIComponent(url);
+            }
+            return url;
+        }
+    })();
     var layers = [
             new ol.layer.Tile({
             source: new ol.source.OSM()
@@ -21,10 +39,12 @@ function initGeoSearch(layerObjects) {
     //TODO: dieptemodel enkel als TileWMS opvragen !!!
     for (var i = 0; i < layerObjects.length; ++i) {
         var tlayer = layerObjects[i];
-        var image = new ol.source.TileWMS({
+        var image = new TileWMS({
+            proxyurl: '/cgi-bin/proxy.cgi',
             url: 'http://we12s007.ugent.be:8080/geoserver/search/wms',//search
             params: {'LAYERS': tlayer.name},
-            serverType: 'geoserver'
+            serverType: 'geoserver',
+            crossOrigin: true
         });
 
         var tile = new ol.layer.Tile({
@@ -125,7 +145,7 @@ function initGeoSearch(layerObjects) {
                 point, viewResolution, 'EPSG:3857',
                 {'INFO_FORMAT': 'text/html'});
             if (url) {
-                threads.push($.get('http://localhost/cgi-bin/proxy.cgi',
+                threads.push($.get('/cgi-bin/proxy.cgi',
                     {
                         url: url
                     },
@@ -174,7 +194,7 @@ function initGeoSearch(layerObjects) {
                 evt.coordinate, viewResolution, 'EPSG:3857',
                 {'INFO_FORMAT': 'text/html'});
             if (url) {
-                $.get('http://localhost/cgi-bin/proxy.cgi', {
+                $.get('/cgi-bin/proxy.cgi', {
                     url: url
                 }, function(result) {
                     $("#info-depth").text($($(result).find("td")[1]).text());
@@ -378,21 +398,18 @@ function initGeoSearch(layerObjects) {
     //TODO: DOWNLOAD
     var exportPNGElement = document.getElementById('download-link');
 
-    if ('download' in exportPNGElement) {
+
         exportPNGElement.addEventListener('click', function(e) {
             map.once('postcompose', function(event) {
                 var canvas = event.context.canvas;
                 exportPNGElement.href = canvas.toDataURL('image/png');
+                var link = $(exportPNGElement).find('a');
+                link.attr('href', canvas.toDataURL('image/png'));
+
+                console.log(canvas.toDataURL('image/png'));
             });
             map.renderSync();
-        }, false);
-    } else {
-        var info = document.getElementById('no-download');
-        /**
-         * display error message
-         */
-        //info.style.display = '';
-    }
+        }, true);
 
 
 
