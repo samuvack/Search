@@ -1,22 +1,6 @@
 
 
 function initGeoSearch(layerObjects) {
-    var TileWMS = function(options) {
-        this.proxyurl = options.proxyurl;
-        ol.source.TileWMS.call(this, options);
-    };
-
-    TileWMS.prototype = Object.create(ol.source.TileWMS.prototype);
-    (function() {
-        var oldGetGetFeatureInfoUrl = ol.source.TileWMS.prototype.getGetFeatureInfoUrl;
-        TileWMS.prototype.getGetFeatureInfoUrl = function() {
-            var url = oldGetGetFeatureInfoUrl.apply(this, arguments);
-            if(this.proxyurl) {
-                url = this.proxyurl + encodeURIComponent(url);
-            }
-            return url;
-        }
-    })();
     var layers = [
             new ol.layer.Tile({
             source: new ol.source.OSM()
@@ -39,8 +23,7 @@ function initGeoSearch(layerObjects) {
     //TODO: dieptemodel enkel als TileWMS opvragen !!!
     for (var i = 0; i < layerObjects.length; ++i) {
         var tlayer = layerObjects[i];
-        var image = new TileWMS({
-            proxyurl: '/cgi-bin/proxy.cgi',
+        var image = new ol.source.TileWMS({
             url: 'http://we12s007.ugent.be:8080/geoserver/search/wms',//search
             params: {'LAYERS': tlayer.name},
             serverType: 'geoserver',
@@ -119,7 +102,7 @@ function initGeoSearch(layerObjects) {
     // console.log(ol3d.setEnabled(false));
 
 
-    //TODO: DEZE functie heeft weer wanneer een laag zichtbaar is en er dus getfeature info mag weergegeven worden
+    //TODO: DEZE functie geeft weer wanneer een laag zichtbaar is en er dus getfeature info mag weergegeven worden
 
     function visible(nr) {
         return ! $('#l'+nr).hasClass('layer');
