@@ -341,7 +341,7 @@ function initGeoSearch(layerObjects) {
 
     };
 
-
+    $("#fblink").attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href));
 
     $('#polygon-link').click(function(){
         if($(this).hasClass("selected-drawer")) {
