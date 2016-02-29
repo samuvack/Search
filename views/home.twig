@@ -24,6 +24,8 @@
     <title>Sea-Arch</title>
 </head>
 <body>
+<div id="logo" class="logo hidden-sm hidden-xs"></div>
+<div id="logo2" class="logo2 hidden-sm hidden-xs"><h4>Archeologisch erfgoed in de Noordzee</h4></div>
 <nav class="navbar navbar-default hidden-sm hidden-xs">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -42,17 +44,6 @@
                 <li id="info-link"class="popupHoverElement"><div id="two" class="popupBox">Info</div></li>
                 <li id="output"class="popupHoverElement"><div id="two" class="popupBox">Relaties</div></li>
 
-                <div id="Div3" style=" ">
-
-
-                    <li id="button_close"></li>
-                    <p><h3> Diepteprofiel</h3></p>
-
-                    <p>TAW [m]</p>
-                    <svg id="depthsvg">    </svg> <!--hier komt de grafiek -->
-
-                </div>
-
                 <li id="fullscreen-link" class="popupHoverElement"><div id="two" class="popupBox">Vergroten</div><a></a></li>
                 <li id="depth-link" class="popupHoverElement"><div id="two" class="popupBox">Diepteprofiel</div><a></a></li>
                 <li id="share-link" class="popupHoverElement">
@@ -66,18 +57,23 @@
                 <li id="measure-link" class="popupHoverElement"><div id="two" class="popupBox">Meten</div></li>
                 <li id="polygon-link" class="popupHoverElement"><div id="two" class="popupBox">Polygon</div></li>
                 <li id="depthpoint-link" class="popupHoverElement"><div id="two" class="popupBox">Dieptepunt</div></li>
-
-
-
             </ul>
         </div>
     </div>
-
-
-
-
-
 </nav>
+<div id="Div3" style=" ">
+    <li id="button_close"></li>
+    <p><h3> Diepteprofiel</h3></p>
+
+    <p>TAW [m]</p>
+    <svg id="depthsvg">    </svg> <!--hier komt de grafiek -->
+</div>
+
+<div id="no-download" class="alert alert-error" style="display: none">
+    This example requires a browser that supports the
+    <a href="http://caniuse.com/#feat=download">link download</a> attribute.
+</div>
+<div class="map-container">
     <span class="layers">
         {% for group in groups %}
             <div class="layertitle">{{ group.name }}</div>
@@ -95,7 +91,6 @@
                 {% endif %}
             {% endfor %}
         {% endfor %}
-
     </span>
 
     <span class="legende hidden-sm hidden-xs display-none" id="leg">
@@ -113,39 +108,27 @@
             {% endfor %}
         </div>
     </span>
-<span id="map" class="map"></span>
+    <span id="map" class="map"></span>
 
-<div id="no-download" class="alert alert-error" style="display: none">
-    This example requires a browser that supports the
-    <a href="http://caniuse.com/#feat=download">link download</a> attribute.
-</div>
+    <span id="ol.control.Zoom" class="ol.control.Zoom"></span>
+    <span id="ol.Zoom" class="ol.Zoom"></span>
 
-<span id="ol.control.Zoom" class="ol.control.Zoom"></span>
-<span id="ol.Zoom" class="ol.Zoom"></span>
+    <div id="info">
+        <span id='close-info'></span>
+        <div id="info-contents">
 
-<div id="info">
-    <span id='close-info'></span>
-    <div id="info-contents">
+        </div>
 
     </div>
 
-</div>
+    <div id="depthpoint_box">
+        <div id="depth-contents">
+        </div>
+        <div id="info-depth">
 
-<div id="depthpoint_box">
-    <div id="depth-contents">
+        </div>
     </div>
-    <div id="info-depth">
-
-    </div>
 </div>
-
-
-
-<div id="logo" class="logo"></div>
-<div id="logo2" class="logo2"><h4>Archeologisch erfgoed in de Noordzee</h4></div>
-
-
-
 <script type="text/javascript">
     initGeoSearch({{layers|json_encode|raw}});
 </script>

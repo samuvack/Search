@@ -337,14 +337,11 @@ function initGeoSearch(layerObjects) {
         }
     });
 
-
     $('#info-link').click(function(){
         if(! $(this).hasClass("selected-drawer")) {
             enable_info = true;
         }
     });
-
-
 
     $('#output').click(function(){
         if(! $(this).hasClass("selected-drawer")) {
@@ -352,15 +349,11 @@ function initGeoSearch(layerObjects) {
         }
     });
 
-
-
-
     $('#depthpoint-link').click(function(){
         if(! $(this).hasClass("selected-drawer")) {
             enable_depthpoint = true;
         }
     });
-
 
     $('#depth-link').click(function(){
         if(! $(this).hasClass("selected-drawer")) {
@@ -369,12 +362,10 @@ function initGeoSearch(layerObjects) {
         }
     });
 
-
     $("ul.nav li").click(function() { // Part II
         $(".selected-drawer").removeClass("selected-drawer");
         $(this).addClass("selected-drawer");
     });
-
 
     //TODO: DOWNLOAD
     var exportPNGElement = document.getElementById('download-link');
