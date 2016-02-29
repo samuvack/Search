@@ -296,9 +296,6 @@ z-index: 5;
     top: 10px;
 }
 
-
-
-
 #Div3 {
     height: 700px;
     width: 1000px;
@@ -502,17 +499,21 @@ z-index: 5;
     top: 10px;
 }
 
-.layer, .layer_active{
+.layer, .layer_active, .categorytitle {
     width:200px;
     text-decoration:none;
     color:white;
     display:block;
-    color: white;
-    padding-left: 30px;
     font-size: 10pt;
     padding-top: 7px;
     padding-bottom:7px;
     cursor:pointer;
+    padding-left: 30px;
+}
+
+
+.category .toggle-layer {
+    padding-left: 45px;
 }
 
 .layer_active{
@@ -593,7 +594,6 @@ text {
 
 
 }
-
 
 .area {
 

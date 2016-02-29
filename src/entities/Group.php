@@ -15,15 +15,15 @@ class Group {
 	/** @Column(type="integer") */
 	private $order_legend;
 	/**
-	 * @OneToMany(targetEntity="Layer", mappedBy="group_id")
+	 * @OneToMany(targetEntity="Category", mappedBy="group")
 	 * @OrderBy({"order_legend" = "ASC"})
 	 **/
-	private $layers;
+	private $categories;
 
 	public function getName() {
 		return $this->name;
 	}
-	public function getLayers() {
-		return $this->layers;
+	public function getCategories() {
+		return $this->categories;
 	}
 }

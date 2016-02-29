@@ -78,10 +78,19 @@
     <span class="layers">
         {% for group in groups %}
             <div class="layertitle">{{ group.name }}</div>
-            {% for layer in group.layers %}
-            <a data-layer-id="{{ layer.id }}"
-               class="toggle-layer layer{{ layer.visible?'_active':''}}" id="l{{ layer.id }}">{{ layer.legendName }}</a>
-        {% endfor %}
+            {% for category in group.categories %}
+                {% if category.visible %}
+                    <div class="category">
+                        <div class="categorytitle">{{ category.name }}</div>
+                {% endif %}
+                    {% for layer in category.layers %}
+                        <a data-layer-id="{{ layer.id }}"
+                           class="toggle-layer layer {{ layer.visible?'layer_active':''}}" id="l{{ layer.id }}">{{ layer.legendName }}</a>
+                    {%  endfor %}
+                {% if category.visible %}
+                    </div>
+                {% endif %}
+            {% endfor %}
         {% endfor %}
 
     </span>
@@ -89,12 +98,14 @@
     <span class="legende hidden-sm hidden-xs display-none" id="leg">
         <div class="legende_content">
             {% for group in groups %}
-                {% for layer in group.layers %}
-                    <div class="legende_item {{ layer.visible?'':'display-none' }}" id="legende_{{ layer.id }}">
-                        {{ layer.legendName }}
-                        <br>
-                        <img src="http://we12s007.ugent.be:8080/geoserver/search/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style={{ layer.style }}">
-                    </div>
+                {% for category in group.categories %}
+                    {% for layer in category.layers %}
+                        <div class="legende_item {{ layer.visible?'':'display-none' }}" id="legende_{{ layer.id }}">
+                            {{ layer.legendName }}
+                            <br>
+                            <img src="http://we12s007.ugent.be:8080/geoserver/search/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style={{ layer.style }}">
+                        </div>
+                    {% endfor %}
                 {% endfor %}
             {% endfor %}
         </div>

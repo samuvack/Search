@@ -9,7 +9,6 @@ class Layer implements \JsonSerializable {
 	 * @Id @Column(type="integer")
 	 * @GeneratedValue
 	 */
-
 	private $id;
 	/** @Column(type="text") */
 	private $name;
@@ -32,12 +31,11 @@ class Layer implements \JsonSerializable {
 	private $depth_profiling;
 
 	/**
-	 * @ManyToOne(targetEntity="Group", inversedBy="layer")
-	 * @JoinColumn(name="group_id")
+	 * @ManyToOne(targetEntity="Category", inversedBy="layers")
+	 * @JoinColumn(name="category_id")
 	 */
+	private $category;
 
-
-	private $group_id;
 	public function getId() {
 		return $this->id;
 	}
@@ -58,9 +56,6 @@ class Layer implements \JsonSerializable {
 		return $this->style;
 	}
 
-	public function getGroup() {
-		return $this->group_id;
-	}
 	public function hasFeatureInfo() {
 		return $this->feature_info;
 	}
