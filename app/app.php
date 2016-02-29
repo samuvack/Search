@@ -66,7 +66,9 @@ $app->register(new DoctrineOrmServiceProvider, array(
 		"ST_Buffer" => "Jsor\Doctrine\PostGIS\Functions\ST_Buffer",
 		"ST_SetSRID" => "Jsor\Doctrine\PostGIS\Functions\ST_SetSRID",
 		"ST_Point" => "Jsor\Doctrine\PostGIS\Functions\ST_Point",
-		'ST_Distance' => 'Jsor\Doctrine\PostGIS\Functions\ST_Distance'
+		'ST_Distance' => 'Jsor\Doctrine\PostGIS\Functions\ST_Distance',
+		'ST_MakePolygon' => 'Jsor\Doctrine\PostGIS\Functions\ST_MakePolygon',
+		'ST_GeomFromText'  => 'Jsor\Doctrine\PostGIS\Functions\ST_GeomFromText'
 	),
 	'orm.auto_generate_proxies' => $app['debug']
 ));
@@ -89,6 +91,20 @@ $app->match('ajax/featureinfo', function(Application $app) {
 		if($layer->hasFeatureInfo() && (isset($_GET['l'.$layer->getId()]))   =='true') { //isset toegevoegd na foutmelding
 			$layers[$layer->getLegendName()] =
 				$app['orm.em']->getRepository(':Node')->findInCircle($layer, $_GET['x'], $_GET['y'], $_GET['res']);
+		}
+	}
+
+	return $app['twig']->render('object.twig', array('layers'=>$layers));
+});
+
+$app->match('ajax/polygon', function(Application $app) {
+	$points = $_GET['points'];
+	$tempLayers = $app['orm.em']->getRepository(':Layer')->findBy(array());
+	$layers = [];
+	foreach($tempLayers as $layer) {
+		if($layer->hasFeatureInfo() && (isset($_GET['l'.$layer->getId()])) =='true') { //isset toegevoegd na foutmelding
+			$layers[$layer->getLegendName()] =
+				$app['orm.em']->getRepository(':Node')->findInPolygon($points, $layer);
 		}
 	}
 

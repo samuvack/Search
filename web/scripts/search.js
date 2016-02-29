@@ -244,6 +244,11 @@ function initGeoSearch(layerObjects) {
         return map;
     }
 
+    function showNodesInfo(response) {
+        $('#info-contents').html(response);
+        $('#info').show();
+    }
+
     map.on('singleclick', function (evt) {
         var params = layerVisibility();
         params.x = evt.coordinate[0];
@@ -251,11 +256,7 @@ function initGeoSearch(layerObjects) {
         params.res =  view.getResolution();
 
         if (enable_info) {
-            $.get('ajax/featureinfo', params, function(response) {
-                    $('#info-contents').html(response);
-                    $('#info').show();
-                }
-            );
+            $.get('ajax/featureinfo', params, showNodesInfo);
         }
 
         if(enable_depthpoint) {
@@ -317,12 +318,20 @@ function initGeoSearch(layerObjects) {
             type: /** @type {ol.geom.GeometryType} */ type
         });
         map.addInteraction(draw);
+        if(type === 'Polygon') {
+            draw.on('drawend', function(event) {
+                var params = layerVisibility();
+                params.points = event.feature.getGeometry().getCoordinates()[0];
+
+                $.get('ajax/polygon', params, showNodesInfo);
+            })
+        }
     };
 
-        var removeInteraction = function() {
+    var removeInteraction = function() {
         enable_depth_profiling = false;
         enable_info = false;
-        enable_depthpoint=false;
+        enable_depthpoint = false;
         //enable_output=false;
         $("#depthpoint_box").css( "opacity", 0 );
         if(draw != null) {
