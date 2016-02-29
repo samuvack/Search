@@ -324,66 +324,55 @@ function initGeoSearch(layerObjects) {
 
     };
 
+    $("ul.nav li").click(function() { // Part I
+        resetFeatures();
+        removeInteraction();
+    });
+
     $("#fblink").attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href));
 
     $('#polygon-link').click(function(){
-        if($(this).hasClass("selected-drawer")) {
-            resetFeatures();
-            removeInteraction();
-        } else {
+        if(! $(this).hasClass("selected-drawer")) {
             changeInteraction('Polygon');
         }
-        $(this).toggleClass("selected-drawer")
     });
 
 
     $('#info-link').click(function(){
-        if($(this).hasClass("selected-drawer")) {
-            resetFeatures();
-            removeInteraction();
-        } else {
+        if(! $(this).hasClass("selected-drawer")) {
             enable_info = true;
         }
-        $(this).toggleClass("selected-drawer")
     });
 
 
 
     $('#output').click(function(){
-        if($(this).hasClass("selected-drawer")) {
-            resetFeatures();
-            removeInteraction();
-
-        } else {
+        if(! $(this).hasClass("selected-drawer")) {
             enable_output = true;
         }
-
-        $(this).toggleClass("selected-drawer");
     });
 
 
 
 
     $('#depthpoint-link').click(function(){
-        if($(this).hasClass("selected-drawer")) {
-            resetFeatures();
-            removeInteraction();
-        } else {
+        if(! $(this).hasClass("selected-drawer")) {
             enable_depthpoint = true;
         }
-        $(this).toggleClass("selected-drawer")
     });
 
 
     $('#depth-link').click(function(){
-        if($(this).hasClass("selected-drawer")) {
-            resetFeatures();
-            removeInteraction();
-        } else {
+        if(! $(this).hasClass("selected-drawer")) {
             changeInteraction('LineString');
             enable_depth_profiling = true;
         }
-        $(this).toggleClass("selected-drawer")
+    });
+
+
+    $("ul.nav li").click(function() { // Part II
+        $(".selected-drawer").removeClass("selected-drawer");
+        $(this).addClass("selected-drawer");
     });
 
 
