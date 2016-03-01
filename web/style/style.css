@@ -320,9 +320,6 @@ z-index: 5;
 
 }
 
-
-
-
 #button_close {
     left: 980px;
     top: 0px;
@@ -333,6 +330,7 @@ z-index: 5;
     background-repeat: no-repeat;
     position: relative;
 }
+
 #polygon-link{
     right: 140px;
     position: absolute;
@@ -591,12 +589,30 @@ line {
 text {
     font-family: Arial;
     font-size: 9pt;
-
-
 }
 
 .area {
 
     /*stroke-width: 0.5;
     */fill: lightsteelblue;
+}
+
+.first-extent {
+    top: 125px;
+}
+
+.second-extent {
+    top: 150px;
+}
+
+.third-extent {
+    top: 175px;
+}
+
+.fourth-extent {
+    top: 200px;
+}
+
+.fifth-extent {
+    top: 225px;
 }

@@ -1,5 +1,3 @@
-
-
 function initGeoSearch(layerObjects) {
     var TileWMS = function(options) {
         this.proxyurl = options.proxyurl;
@@ -28,13 +26,10 @@ function initGeoSearch(layerObjects) {
 
     var layersById = [];
 
-
-
     // $(document).ready(function() {
     $('#Div3').hide();
     $('#depthpoint_box').hide();
     //});
-
 
     //TODO: dieptemodel enkel als TileWMS opvragen !!!
     for (var i = 0; i < layerObjects.length; ++i) {
@@ -61,7 +56,6 @@ function initGeoSearch(layerObjects) {
         layersById[tlayer.id] = tile;
     }
 
-
     //layers.push(archeologiepoly);
     //layersById[i+1] = archeologiepoly;
 
@@ -79,16 +73,45 @@ function initGeoSearch(layerObjects) {
                 projection: 'EPSG:4326',
                 coordinateFormat: ol.coordinate.createStringXY(4)
             }),
-            //new ol.control.Attribution(),
             new ol.control.ZoomToExtent({
-                extent: [
-                    250000, 6630000,
-                    500000, 6770000
+                className: 'first-extent',
+                label: 'A',
+                extent:  [
+                    315888, 6656592,
+                    316710, 6657414
                 ]
             }),
-
-
-
+            new ol.control.ZoomToExtent({
+                className: 'second-extent',
+                label: 'B',
+                extent:  [
+                    315492, 6656313,
+                    316250, 6657097
+                ]
+            }),
+            new ol.control.ZoomToExtent({
+                className: 'third-extent',
+                label: 'C',
+                extent:  [
+                    315047, 6655992,
+                    315824, 6656799
+                ]
+            }),
+            new ol.control.ZoomToExtent({
+                className: 'fourth-extent',
+                label: 'D',
+                extent:  [
+                    314606, 6655702,
+                    315386, 6656501
+                ]
+            }),new ol.control.ZoomToExtent({
+                className: 'fifth-extent',
+                label: 'E',
+                extent:  [
+                    314157, 6655415,
+                    314975, 6656192
+                ]
+            }),
             new ol.control.ScaleLine(),
             new ol.control.Rotate(),
 
@@ -378,9 +401,6 @@ function initGeoSearch(layerObjects) {
         $(this).toggleClass("selected-drawer");
     });
 
-
-
-
     $('#depthpoint-link').click(function(){
         if($(this).hasClass("selected-drawer")) {
             resetFeatures();
@@ -390,7 +410,6 @@ function initGeoSearch(layerObjects) {
         }
         $(this).toggleClass("selected-drawer")
     });
-
 
     $('#depth-link').click(function(){
         if($(this).hasClass("selected-drawer")) {
@@ -403,24 +422,19 @@ function initGeoSearch(layerObjects) {
         $(this).toggleClass("selected-drawer")
     });
 
-
     //TODO: DOWNLOAD
     var exportPNGElement = document.getElementById('download-link');
+    exportPNGElement.addEventListener('click', function(e) {
+        map.once('postcompose', function(event) {
+            var canvas = event.context.canvas;
+            exportPNGElement.href = canvas.toDataURL('image/png');
+            var link = $(exportPNGElement).find('a');
+            link.attr('href', canvas.toDataURL('image/png'));
 
-
-        exportPNGElement.addEventListener('click', function(e) {
-            map.once('postcompose', function(event) {
-                var canvas = event.context.canvas;
-                exportPNGElement.href = canvas.toDataURL('image/png');
-                var link = $(exportPNGElement).find('a');
-                link.attr('href', canvas.toDataURL('image/png'));
-
-                console.log(canvas.toDataURL('image/png'));
-            });
-            map.renderSync();
-        }, true);
-
-
+            console.log(canvas.toDataURL('image/png'));
+        });
+        map.renderSync();
+    }, true);
 
     //TODO: Measuring !!
     function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
@@ -481,6 +495,5 @@ function initGeoSearch(layerObjects) {
     $('#close-info').click(function() {
         $("#info").css( "opacity", 0 );
     });
-
 }
 
