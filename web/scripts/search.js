@@ -414,7 +414,6 @@ function initGeoSearch(layerObjects) {
         $('#legende_'+nr).toggleClass("display-none");
         //div this slaat op div layer <div>
         $this.toggleClass("layer_active");
-        $this.toggleClass("layer");
     }
 
     $('.toggle-layer').click(layer);

@@ -1,9 +1,14 @@
+/* Navbar */
 .logo {
     background-image: url('../images/Logo.png');
     background-size: 126px 100px;
     background-repeat: no-repeat;
     width: 126px;
     height: 100px;
+}
+
+.navbar {
+    margin-bottom: initial;
 }
 
 #logos {
@@ -40,7 +45,7 @@ ul.nav li, .navbar-default ul.nav li a, .navbar-default ul.nav li a:hover {
     color: transparent;
 }
 
-ul.nav li .icon {
+.icon {
     background-size: 20px 20px;
     background-repeat: no-repeat;
     height: 20px;
@@ -101,4 +106,152 @@ ul.nav li .icon {
 
 #legende_knop .icon {
     background-image:  url('../images/Legend.png');
+}
+
+/* Map */
+#map-container {
+    position: relative;
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -5;
+    width: 100%;
+}
+
+/* Layer menu */
+.layers, .layers a {
+    color: transparent;
+}
+
+.layers:hover, .layers:hover a {
+    color: white;
+}
+
+.layertitle {
+    padding-top: 40px;
+    padding-left: 20px;
+    color: rgb(75, 113, 151);
+    font-size: 12pt;
+}
+
+.layer, .layer_active, .categorytitle {
+    width:200px;
+    text-decoration:none;
+    color:white;
+    display:block;
+    font-size: 10pt;
+    padding-top: 7px;
+    padding-bottom:7px;
+    cursor:pointer;
+    padding-left: 30px;
+}
+
+.category .toggle-layer {
+    padding-left: 45px;
+}
+
+.layer_active {
+    border-right: 10px solid #DE6800;
+    width: 190px;
+}
+
+.layer:hover {
+    background-color:#373C5A;
+}
+
+.layer_active:hover {
+    background-color:#FFAD65;
+}
+
+.layers {
+    display: block;
+    width: 33px;
+    top: 5px;
+    border-radius: 2px;
+    background-image: url('../images/index.png');
+    left: 35px;
+    height: 33px;
+    overflow: hidden;
+    z-index: 1;
+    position: relative;
+}
+
+.layers:hover {
+    background-image: none;
+    background-color: rgb(37, 42, 58);
+    max-height: 70vh;
+}
+
+.layers:hover, .legende {
+    width: 240px;
+    height: auto;
+    overflow-y: auto;
+    left: 30px;
+    top: 5px;
+    z-index: 1;
+    position: relative;
+
+}
+
+/* Legende */
+.layers:hover + .legende, .display-none {
+    display: none;
+}
+
+.legende {
+    max-height: 65vh;
+    background-color: white;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom:10px;
+    border-right: 1px solid #ddd;
+    border-radius:2px;
+}
+
+.legende_content {
+    padding-top:0;
+    padding-right:10px;
+}
+
+.legende_item {
+    padding-top: 5px;
+    border-bottom: 1px solid #bbb;
+    padding-bottom: 5px;
+    line-height: 35px;
+}
+
+/*D3 chart */
+.form_control{
+    color: grey;
+}
+
+.colored circle {
+    fill:red;
+}
+
+/* Grafiek lijn */
+path {
+    stroke: orange;
+    stroke-width: 1;
+    fill: none;
+    transform: scale(2,2);
+}
+
+line {
+    stroke: black;
+    transform: scale(2,2);
+    stroke-width: 0.5;
+}
+
+text {
+    font-family: Arial, serif;
+    font-size: 9pt;
+}
+
+.area {
+    /*stroke-width: 0.5;*/
+    fill: lightsteelblue;
 }
