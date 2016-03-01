@@ -15,7 +15,7 @@ function initGeoSearch(layerObjects) {
 
 
     // $(document).ready(function() {
-    $('#Div3').hide();
+    $('#depth-profile').hide();
     $('#depthpoint_box').hide();
     //});
 
@@ -105,7 +105,7 @@ function initGeoSearch(layerObjects) {
     //TODO: DEZE functie geeft weer wanneer een laag zichtbaar is en er dus getfeature info mag weergegeven worden
 
     function visible(nr) {
-        return ! $('#l'+nr).hasClass('layer');
+        return $('#l'+nr).hasClass('layer_active');
     }
 
     var depth_profile_layer = function(start, end, image) {
@@ -140,10 +140,7 @@ function initGeoSearch(layerObjects) {
                          * O the joys of multithreading.
                          */
                         return function (result) {
-
                             depth_at_points[k] = parseFloat($($(result).find("td")[1]).text());
-                            var outputtest= $($(result).find("td")[2]).text();
-                            console.log(outputtest);
                         };
                     })(i)
                 ));
@@ -152,7 +149,9 @@ function initGeoSearch(layerObjects) {
 
         // Wait for all AJAX calls to return
         $.when.apply($, threads).done(function() {
-            drawCurve("#depthsvg",depth_at_points );
+            $("#depth-profile").find(".spinner").hide();
+            $("#depthsvg").show();
+            drawCurve("#depthsvg",depth_at_points);
         });
 
     };
@@ -189,10 +188,11 @@ function initGeoSearch(layerObjects) {
     }
 
     var depth_profiling = function(evt) {
-        if(firstCoordinates == null) {
+        if(firstCoordinates === null) {
             resetFeatures();
             firstCoordinates = evt.coordinate;
         } else {
+            var found = false;
             draw.finishDrawing();
             for (var i = 0; i < depth_profile_images.length; ++i) {
                 if(! visible(depth_profile_layers[i].id)) {
@@ -200,9 +200,15 @@ function initGeoSearch(layerObjects) {
                 }
                 var image = depth_profile_images[i];
                 depth_profile_layer(firstCoordinates, evt.coordinate, image);
-                $('#Div3').show();
+                $('#depth-profile').show();
+                $("#depthsvg").hide();
+                $("#depth-profile").find(".spinner").show();
+
+                found = true;
             }
             firstCoordinates = null;
+            if(!found)
+                alert('There is no active layer with depth info.');
         }
     };
 
@@ -222,7 +228,7 @@ function initGeoSearch(layerObjects) {
             if(visible(tlayer.id)) {
                 map['l' + tlayer.id] = visible(tlayer.id);
             }
-            outputnumber=tlayer.id;
+            outputnumber = tlayer.id;
         }
         return map;
     }
@@ -248,9 +254,7 @@ function initGeoSearch(layerObjects) {
                 $('#depthpoint_box').show();
             });
             depthpoint_profiling(evt);
-            console.log(depthpoint_profiling(evt));
         }
-
         //wanneer knop is aangeklikt TODO: DIENT ZELFDE ALS INFO
         if (enable_depth_profiling)
             depth_profiling(evt);
@@ -429,7 +433,7 @@ function initGeoSearch(layerObjects) {
     });
 
     $("#button_close").click(function() {
-        $('#Div3').hide();
+        $('#depth-profile').hide();
     });
 
 
@@ -439,9 +443,8 @@ function initGeoSearch(layerObjects) {
 
     $('#legende_knop').click(toggle_legende);
 
-
     $('#close-info').click(function() {
-        $("#info").css( "opacity", 0 );
+        $("#info").hide()
     });
 
 }

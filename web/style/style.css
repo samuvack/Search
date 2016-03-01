@@ -1,3 +1,8 @@
+body, html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
 /* Navbar */
 .logo {
     background-image: url('../images/Logo.png');
@@ -117,7 +122,6 @@ ul.nav li, .navbar-default ul.nav li a, .navbar-default ul.nav li a:hover {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: -5;
     width: 100%;
 }
 
@@ -254,4 +258,123 @@ text {
 .area {
     /*stroke-width: 0.5;*/
     fill: lightsteelblue;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* IE/Edge */
+    user-select: none;           /* non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+/* Info */
+
+#close-info {
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    background-image: url('../images/Close_white.png');
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+    top: 0;
+    right: 0;
+}
+
+
+#info {
+    width:230px;
+    background-color: rgb(37, 42, 58);
+    position: fixed;
+    right: 0;
+    z-index: 1000;
+    height: 100%;
+    display:none;
+    color: white;
+    overflow: auto;
+    top: 152px;
+}
+
+.infotitle {
+    padding-top: 10px;
+    padding-left: 10px;
+    color: rgb(75, 113, 151);
+    font-size: 12pt;
+    font-weight:bold;
+}
+
+.infoobject{
+    margin-left:15px;
+    margin-right:5px;
+    border-left: 2px solid #DE6800;
+    margin-top:10px;
+    margin-bottom:10px;
+    padding:3px;
+}
+
+.infoname {
+    font-weight:bold;
+    background-color:#373C5A;
+    font-size: 9pt;
+    padding-top:2px;
+    padding-bottom:2px;
+}
+
+.infopar {
+    font-size: 8pt;
+    padding-top:2px;
+    padding-bottom:2px;
+}
+
+.infopar a {
+    color:	#DE6800;
+    text-decoration:none;
+}
+
+.infopar a:hover {
+    text-decoration:none;
+}
+
+#depth-profile {
+    height: 80vh;
+    width: 80vw;
+    margin: auto;
+    color: cornflowerblue;
+    z-index: 5;
+    position: static;
+    background: #e9e9e9;
+    text-align: center;
+    border: 1px solid #999;
+}
+
+#depthsvg {
+    display: inline-block;
+    height: 85%;
+    width: 100%;
+}
+
+#button_close {
+    float: right;
+    height: 20px;
+    width: 20px;
+    background-image: url('../images/button_close.png');
+    background-size: 15px 15px;
+    background-repeat: no-repeat;
+}
+
+/* Spinner */
+.glyphicon.spinner {
+    animation: spin 1s infinite linear;
+    -webkit-animation: spin2 1s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg); }
+    to { transform: scale(1) rotate(360deg); }
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
 }

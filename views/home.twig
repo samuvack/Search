@@ -68,11 +68,12 @@
         </div>
     </div>
 </nav>
-<div id="Div3" style=" ">
+<div id="depth-profile" style=" ">
     <li id="button_close"></li>
     <p><h3> Diepteprofiel</h3></p>
 
     <p>TAW [m]</p>
+    <i class="glyphicon glyphicon-refresh spinner btn-lg"></i>
     <svg id="depthsvg">    </svg> <!--hier komt de grafiek -->
 </div>
 
@@ -100,7 +101,7 @@
         {% endfor %}
     </span>
 
-    <div class="legende hidden-sm hidden-xs display-none" id="leg">
+    <div class="legende hidden-sm hidden-xs display-none noselect" id="leg">
         <div class="legende_content">
             {% for group in groups %}
                 {% for category in group.categories %}
