@@ -1,21 +1,21 @@
 
 
 var drawCurve = function(svgSelector, data) {
-    var w = 400,
-        h = 200,
+    var $element = $(svgSelector);
+    var w = $element.width()/2,
+        h = $element.height()/2,
         margin = 10,
-        marginx = 10,
-        marginy = 10,
-        y = d3.scale.linear().domain([d3.min(data), 0]).range([marginy, h - marginy]),
-        x = d3.scale.linear().domain([0, data.length]).range([marginx, w - marginx]);
+        y = d3.scale.linear().domain([d3.min(data), 0]).range([margin, h - margin]),
+        x = d3.scale.linear().domain([0, data.length]).range([margin, w - margin]);
 
-    d3.select(svgSelector).selectAll("*").remove();
     var vis = d3.select(svgSelector)
         .attr("width", w)
         .attr("height", h);
+    vis.selectAll("*").remove();
+    console.log(w,h);
 
     var g = vis.append("svg:g")
-        .attr("transform", "translate(100, 400)");
+        .attr("transform", "translate("+margin+","+(2*h)+")");
 
 
     var line = d3.svg.line()

@@ -24,7 +24,11 @@
     <title>Sea-Arch</title>
 </head>
 <body>
-<nav class="navbar navbar-default hidden-sm hidden-xs">
+<div id="logos">
+    <div id="logo" class="logo hidden-sm hidden-xs"></div>
+    <div id="logo2" class="logo2 hidden-sm hidden-xs"><h4>Archeologisch erfgoed in de Noordzee</h4></div>
+</div>
+<nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -35,49 +39,49 @@
             <!-- <a class="navbar-brand" href="/">GeoSearch</a> -->
         </div>
         <div class="collapse navbar-collapse" id="navbar">
-            <ul class="nav navbar-nav">
-                <li id="legende_knop" class="popupHoverElement"><div id="two" class="popupBox">Legende</div></li>
-                <li id="insert-link"class="popupHoverElement"><div id="two" class="popupBox">Toevoegen</div></li>
-                <li id="search-link" class="popupHoverElement"><div id="two" class="popupBox">Zoek</div></li>
-                <li id="info-link"class="popupHoverElement"><div id="two" class="popupBox">Info</div></li>
-                <li id="output"class="popupHoverElement"><div id="two" class="popupBox">Relaties</div></li>
-
-                <div id="Div3" style=" ">
-
-
-                    <li id="button_close"></li>
-                    <p><h3> Diepteprofiel</h3></p>
-
-                    <p>TAW [m]</p>
-                    <svg id="depthsvg">    </svg> <!--hier komt de grafiek -->
-
-                </div>
-
-                <li id="fullscreen-link" class="popupHoverElement"><div id="two" class="popupBox">Vergroten</div><a></a></li>
-                <li id="depth-link" class="popupHoverElement"><div id="two" class="popupBox">Diepteprofiel</div><a></a></li>
-                <li id="share-link" class="popupHoverElement">
+            <ul class="nav navbar-nav navbar-left">
+                <li id="legende_knop" class="popupHoverElement" title="Legende"><div class="two icon">Legende</div></li>
+                <li id="insert-link" class="popupHoverElement" title="Toevoegen"><div class="two icon">Toevoegen</div></li>
+                <li id="search-link" class="popupHoverElement" title="Zoeken"><div class="two icon">Zoek</div></li>
+                <li id="info-link" class="popupHoverElement" title="Info"><div class="two icon">Info</div></li>
+                <li id="output" class="popupHoverElement" title="Relaties"><div class="two icon">Relaties</div></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="fullscreen-link" class="popupHoverElement" title="Vergroten"><div class="two icon">Vergroten</div></li>
+                <li id="depth-link" class="popupHoverElement" title="Diepteprofiel"><div class="two icon">Diepteprofiel</div></li>
+                <li id="share-link" class="popupHoverElement" title="Delen">
                     <a id="fblink" target="_blank">
-                        <div id="two" class="popupBox">Share</div>
-                    </a></li>
-                <li id="download-link" class="popupHoverElement">
-                    <div id="two" class="popupBox"><i class="icon-download"></i> Download</div><a download="map.png"></a></li>
-                <li id="question-link" class="popupHoverElement"><div id="two" class="popupBox">Handleiding</div><a></a></li>
-                <li id="draw-link" class="popupHoverElement"><div id="two" class="popupBox">Tekenen</div></li>
-                <li id="measure-link" class="popupHoverElement"><div id="two" class="popupBox">Meten</div></li>
-                <li id="polygon-link" class="popupHoverElement"><div id="two" class="popupBox">Polygon</div></li>
-                <li id="depthpoint-link" class="popupHoverElement"><div id="two" class="popupBox">Dieptepunt</div></li>
-
-
-
+                        <div class="three icon">Share</div>
+                    </a>
+                </li>
+                <li id="download-link" class="popupHoverElement" title="Downloaden">
+                    <a download="map.png"><div class="three icon">
+                            <i class="icon-download"></i> Download</div>
+                    </a>
+                </li>
+                <li id="question-link" class="popupHoverElement" title="Handleiding"><div class="two icon">Handleiding</div></li>
+                <li id="draw-link" class="popupHoverElement" title="Tekenen"><div class="two icon">Tekenen</div></li>
+                <li id="measure-link" class="popupHoverElement" title="Meten"><div class="two icon">Meten</div></li>
+                <li id="polygon-link" class="popupHoverElement" title="Polygon"><div class="two icon">Polygon</div></li>
+                <li id="depthpoint-link" class="popupHoverElement" title="Dieptepunt"><div class="two icon">Dieptepunt</div></li>
             </ul>
         </div>
     </div>
-
-
-
-
-
 </nav>
+<div id="depth-profile" style=" ">
+    <li id="button_close"></li>
+    <h3 class="hidden-xs"> Diepteprofiel</h3>
+
+    <p class="hidden-sm hidden-xs">TAW [m]</p>
+    <i class="glyphicon glyphicon-refresh spinner btn-lg"></i>
+    <svg id="depthsvg">    </svg> <!--hier komt de grafiek -->
+</div>
+
+<div id="no-download" class="alert alert-error" style="display: none">
+    This example requires a browser that supports the
+    <a href="http://caniuse.com/#feat=download">link download</a> attribute.
+</div>
+<div id="map-container">
     <span class="layers">
         {% for group in groups %}
             <div class="layertitle">{{ group.name }}</div>
@@ -95,10 +99,9 @@
                 {% endif %}
             {% endfor %}
         {% endfor %}
-
     </span>
 
-    <span class="legende hidden-sm hidden-xs display-none" id="leg">
+    <div class="legende hidden-sm hidden-xs display-none noselect" id="leg">
         <div class="legende_content">
             {% for group in groups %}
                 {% for category in group.categories %}
@@ -112,40 +115,28 @@
                 {% endfor %}
             {% endfor %}
         </div>
-    </span>
-<span id="map" class="map"></span>
+    </div>
+    <span id="map" class="map"></span>
 
-<div id="no-download" class="alert alert-error" style="display: none">
-    This example requires a browser that supports the
-    <a href="http://caniuse.com/#feat=download">link download</a> attribute.
-</div>
+    <span id="ol.control.Zoom" class="ol.control.Zoom"></span>
+    <span id="ol.Zoom" class="ol.Zoom"></span>
 
-<span id="ol.control.Zoom" class="ol.control.Zoom"></span>
-<span id="ol.Zoom" class="ol.Zoom"></span>
+    <div id="info">
+        <span id='close-info'></span>
+        <div id="info-contents">
 
-<div id="info">
-    <span id='close-info'></span>
-    <div id="info-contents">
+        </div>
 
     </div>
 
-</div>
+    <div id="depthpoint_box">
+        <div id="depth-contents">
+        </div>
+        <div id="info-depth">
 
-<div id="depthpoint_box">
-    <div id="depth-contents">
+        </div>
     </div>
-    <div id="info-depth">
-
-    </div>
 </div>
-
-
-
-<div id="logo" class="logo"></div>
-<div id="logo2" class="logo2"><h4>Archeologisch erfgoed in de Noordzee</h4></div>
-
-
-
 <script type="text/javascript">
     initGeoSearch({{layers|json_encode|raw}});
 </script>
