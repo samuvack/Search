@@ -411,7 +411,7 @@ function initGeoSearch(layerObjects) {
     function layer() {
         var $this = $(this);
         var nr = $this.data('layer-id');
-        layersById[nr].setVisible($this.hasClass("layer"));
+        layersById[nr].setVisible(!$this.hasClass("layer_active"));
         //bijvoorbeeld id legende_1 ==> toggleClass
         // (Add or remove one or more classes from each element in the set of matched elements,
         // depending on either the class's presence or the value of the state argument.)
