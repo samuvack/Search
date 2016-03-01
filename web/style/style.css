@@ -378,3 +378,23 @@ text {
     from { -webkit-transform: rotate(0deg); }
     to { -webkit-transform: rotate(360deg); }
 }
+
+.first-extent {
+    top: 125px;
+}
+
+.second-extent {
+    top: 150px;
+}
+
+.third-extent {
+    top: 175px;
+}
+
+.fourth-extent {
+    top: 200px;
+}
+
+.fifth-extent {
+    top: 225px;
+}
