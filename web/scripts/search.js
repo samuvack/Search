@@ -48,6 +48,11 @@ function initGeoSearch(layerObjects) {
         zoom: 9
     });
 
+    window.focusTo = function focusTo(x, y) {
+        view.setCenter(ol.proj.fromLonLat([x, y]));
+        view.setZoom(10);
+    };
+
     var map = new ol.Map({
         controls: [
 
@@ -468,4 +473,3 @@ function initGeoSearch(layerObjects) {
         $("#info").hide()
     });
 }
-
