@@ -188,10 +188,9 @@ function initGeoSearch(layerObjects) {
     var enable_depth_profiling = false;
     var enable_info = false;
     var enable_depthpoint = false;
+    var enable_measuring = false;
     var enable_output=false;
     var outputnumber = '1';
-
-
 
     //Dieptepunt
     function depthpoint_profiling(evt) {
@@ -266,6 +265,39 @@ function initGeoSearch(layerObjects) {
         $('#info').show();
     }
 
+    function mapFormatLength(projection, coordinates) {
+        var length;
+        length = 0;
+        for (var i = 0, ii = coordinates.length - 1; i < ii; ++i) {
+            var c1 = ol.proj.transform(coordinates[i], projection, 'EPSG:4326');
+            var c2 = ol.proj.transform(coordinates[i + 1], projection, 'EPSG:4326');
+            length += (new ol.Sphere(6378137)).haversineDistance(c1, c2);
+        }
+        var output;
+        if (length > 1000) {
+            output = (Math.round(length / 1000 * 100) / 100) +
+                ' ' + 'km';
+        } else {
+            output = (Math.round(length * 100) / 100) +
+                ' ' + 'm';
+        }
+        return output;
+    }
+
+    function measure(evt) {
+        if(firstCoordinates === null) {
+            resetFeatures();
+            firstCoordinates = [evt.coordinate];
+        } else {
+            draw.finishDrawing();
+            firstCoordinates.push(evt.coordinate);
+            alert("The distance between theses points is: "
+                + mapFormatLength('EPSG:3857', firstCoordinates)
+                + ".");
+            firstCoordinates = null;
+        }
+    }
+
     map.on('singleclick', function (evt) {
         var params = layerVisibility();
         params.x = evt.coordinate[0];
@@ -286,6 +318,10 @@ function initGeoSearch(layerObjects) {
         //wanneer knop is aangeklikt TODO: DIENT ZELFDE ALS INFO
         if (enable_depth_profiling)
             depth_profiling(evt);
+
+        if(enable_measuring) {
+            measure(evt);
+        }
 
         if(enable_output) {
 
@@ -372,6 +408,13 @@ function initGeoSearch(layerObjects) {
     $('#info-link').click(function(){
         if(! $(this).hasClass("selected-drawer")) {
             enable_info = true;
+        }
+    });
+
+    $("#measure-link").click(function() {
+        if(! $(this).hasClass("selected-drawer")) {
+            changeInteraction('LineString');
+            enable_measuring = true;
         }
     });
 
