@@ -390,8 +390,10 @@ function initGeoSearch(layerObjects) {
     });
 
     $("ul.nav li").click(function() { // Part II
+        var hasClass = $(this).hasClass("selected-drawer");
         $(".selected-drawer").removeClass("selected-drawer");
-        $(this).addClass("selected-drawer");
+        if(! hasClass)
+            $(this).addClass("selected-drawer");
     });
 
     //TODO: DOWNLOAD
