@@ -91,7 +91,7 @@
                         <div class="categorytitle">{{ category.name }}</div>
                 {% endif %}
                     {% for layer in category.layers %}
-                        <a data-layer-id="{{ layer.id }}"
+                        <a data-layer-id="{{ layer.id }}" data-reference="{{ layer.reference }}"
                            class="toggle-layer layer {{ layer.visible?'layer_active':''}}" id="l{{ layer.id }}">{{ layer.legendName }}</a>
                     {%  endfor %}
                 {% if category.visible %}
@@ -134,6 +134,15 @@
         </div>
         <div id="info-depth">
 
+        </div>
+    </div>
+    <div id="reference-container" class="layer-panel hidden-xs hidden-sm">
+        <div id="reference-content">
+        </div>
+    </div>
+    <div id="layer-info-container" class="layer-panel hidden-xs hidden-sm">
+        <div id="layer-info-content">
+            Testje
         </div>
     </div>
 </div>

@@ -398,3 +398,40 @@ text {
 .fifth-extent {
     top: 225px;
 }
+
+#reference-container, #layer-info-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#layer-info-content, #reference-content {
+    color: white;
+    background-color: blue;
+    cursor: pointer;
+}
+
+#reference-container {
+    position: fixed;
+    bottom: 0;
+}
+
+#reference-content {
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    padding: 10px 15px 5px 15px;
+}
+
+#layer-info-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#layer-info-content {
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    padding: 5px 15px 10px 15px;
+}

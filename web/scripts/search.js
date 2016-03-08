@@ -433,10 +433,24 @@ function initGeoSearch(layerObjects) {
     function deg2rad(deg) {
         return deg * (Math.PI/180)
     }
+    var layer_panel = $('.layer-panel');
+    layer_panel.hide();
+    layer_panel.click(function() {
+        $('.layer-panel').hide();
+    });
 
     function layer() {
         var $this = $(this);
         var nr = $this.data('layer-id');
+        var reference = $this.data('reference');
+        var info = $this.data('layer-info')
+        if(reference.length > 0 && ! $this.hasClass("layer_active") ) {
+            $('.layer-panel').show();
+            $('#reference-content').text(reference);
+            $('#layer-info-content').text(info);
+        } else {
+            $('.layer-panel').hide();
+        }
         layersById[nr].setVisible(!$this.hasClass("layer_active"));
         //bijvoorbeeld id legende_1 ==> toggleClass
         // (Add or remove one or more classes from each element in the set of matched elements,

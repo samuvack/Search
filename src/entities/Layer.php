@@ -27,6 +27,12 @@ class Layer implements \JsonSerializable {
 	/** @Column(type="integer") */
 	private $order_legend;
 
+	/** @Column(type="text") */
+	private $reference;
+
+	/** @Column(type="text") */
+	private $info;
+
 	/** @Column(type="boolean") */
 	private $depth_profiling;
 
@@ -59,6 +65,15 @@ class Layer implements \JsonSerializable {
 	public function hasFeatureInfo() {
 		return $this->feature_info;
 	}
+
+	public function getReference() {
+		return $this->reference;
+	}
+
+	public function getInfo() {
+		return $this->info;
+	}
+
 	/**
 	 * (PHP 5 &gt;= 5.4.0)<br/>
 	 * Specify data which should be serialized to JSON
