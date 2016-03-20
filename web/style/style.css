@@ -435,3 +435,8 @@ text {
     border-bottom-right-radius: 15px;
     padding: 5px 15px 10px 15px;
 }
+
+
+.selected-drawer {
+    background-color: grey;
+}
