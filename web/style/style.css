@@ -177,25 +177,25 @@ ul.nav li, .navbar-default ul.nav li a, .navbar-default ul.nav li a:hover {
     top: 5px;
     border-radius: 2px;
     background-image: url('../images/index.png');
-    left: 35px;
     height: 33px;
     overflow: hidden;
     z-index: 1;
     position: relative;
+    float: right;
 }
 
 .layers:hover {
     background-image: none;
     background-color: rgb(37, 42, 58);
     max-height: 70vh;
+    top: initial;
+    left: initial;
 }
 
 .layers:hover, .legende {
     width: 240px;
     height: auto;
     overflow-y: auto;
-    left: 30px;
-    top: 5px;
     z-index: 1;
     position: relative;
 
@@ -214,6 +214,8 @@ ul.nav li, .navbar-default ul.nav li a, .navbar-default ul.nav li a:hover {
     padding-bottom:10px;
     border-right: 1px solid #ddd;
     border-radius:2px;
+    left: 30px;
+    top: 5px;
 }
 
 .legende_content {
@@ -285,7 +287,8 @@ text {
 #info {
     width:230px;
     background-color: rgb(37, 42, 58);
-    position: absolute;
+    float: right;
+    position: relative;
     right: 0;
     z-index: 1000;
     height: 100%;

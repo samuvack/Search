@@ -82,6 +82,13 @@
     <a href="http://caniuse.com/#feat=download">link download</a> attribute.
 </div>
 <div id="map-container">
+    <div id="info">
+        <span id='close-info'></span>
+        <div id="info-contents">
+
+        </div>
+
+    </div>
     <span class="layers">
         {% for group in groups %}
             <div class="layertitle">{{ group.name }}</div>
@@ -120,14 +127,6 @@
 
     <span id="ol.control.Zoom" class="ol.control.Zoom"></span>
     <span id="ol.Zoom" class="ol.Zoom"></span>
-
-    <div id="info">
-        <span id='close-info'></span>
-        <div id="info-contents">
-
-        </div>
-
-    </div>
 
     <div id="depthpoint_box">
         <div id="depth-contents">
