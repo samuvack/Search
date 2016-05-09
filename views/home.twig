@@ -88,10 +88,10 @@
             {% for category in group.categories %}
                 {% if category.visible %}
                     <div class="category">
-                        <div class="categorytitle">{{ category.name }}</div>
+                        <div data-category="{{ category.name }}" class="categorytitle">{{ category.name }}</div>
                 {% endif %}
                     {% for layer in category.layers %}
-                        <a data-layer-id="{{ layer.id }}" data-reference="{{ layer.reference }}"
+                        <a data-layer-id="{{ layer.id }}" data-reference="{{ layer.reference }}" data-category="{{ category.name }}"
                            class="toggle-layer layer {{ layer.visible?'layer_active':''}}" id="l{{ layer.id }}">{{ layer.legendName }}</a>
                     {%  endfor %}
                 {% if category.visible %}

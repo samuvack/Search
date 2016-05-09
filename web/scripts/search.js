@@ -444,6 +444,16 @@ function initGeoSearch(layerObjects) {
             $(this).addClass("selected-drawer");
     });
 
+    $(".categorytitle").click(function() {
+        var category = $(this).data("category");
+        $(".toggle-layer").each(function() {
+            var $el = $(this);
+            if($el.data("category") == category) {
+                $el.click();
+            }
+        })
+    });
+
     //TODO: DOWNLOAD
     var exportPNGElement = document.getElementById('download-link');
     exportPNGElement.addEventListener('click', function(e) {
@@ -469,8 +479,8 @@ function initGeoSearch(layerObjects) {
                 Math.sin(dLon/2) * Math.sin(dLon/2)
             ;
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        var distance = R * c; // Distance in km
-        return distance;
+         // Distance in km
+        return R * c;
     }
 
     function deg2rad(deg) {
@@ -486,7 +496,7 @@ function initGeoSearch(layerObjects) {
         var $this = $(this);
         var nr = $this.data('layer-id');
         var reference = $this.data('reference');
-        var info = $this.data('layer-info')
+        var info = $this.data('layer-info');
         if(reference.length > 0 && ! $this.hasClass("layer_active") ) {
             $('.layer-panel').show();
             $('#reference-content').text(reference);
