@@ -22,7 +22,7 @@ function initGeoSearch(layerObjects) {
             url: 'http://we12s007.ugent.be:8080/geoserver/search/wms',//search
             params: {
                 LAYERS: tlayer.name,
-                TIME: '0/2003'
+                TIME: buildTIMEParameter(-150000, new Date().getFullYear())
             },
             serverType: 'geoserver',
             crossOrigin: true
@@ -50,11 +50,16 @@ function initGeoSearch(layerObjects) {
             var period = brush.extent();
             for (var i = 1; i < layers.length; ++i) {
                 layers[i].getSource().updateParams({
-                    TIME: transform(Math.round(period[1]))+"/"+ transform(Math.round(period[0]))
+                    TIME: buildTIMEParameter(period[1], period[0])
                 });
             }
         }
     }, 1000);
+
+    function buildTIMEParameter(start, end) {
+        const TIME_TRANSLATION = 0;
+        return (transform(Math.round(start)) + TIME_TRANSLATION)+"/"+ (transform(Math.round(end))+TIME_TRANSLATION);
+    }
 
     var margin = {top: 10, right: 10, bottom: 40, left: 40},
         width = 960 - margin.left - margin.right,
