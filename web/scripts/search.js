@@ -1,6 +1,6 @@
 function initGeoSearch(layerObjects) {
     var layers = [
-            new ol.layer.Tile({
+        new ol.layer.Tile({
             source: new ol.source.OSM()
         })
     ];
@@ -20,7 +20,10 @@ function initGeoSearch(layerObjects) {
         var tlayer = layerObjects[i];
         var image = new ol.source.TileWMS({
             url: 'http://we12s007.ugent.be:8080/geoserver/search/wms',//search
-            params: {'LAYERS': tlayer.name},
+            params: {
+                LAYERS: tlayer.name,
+                TIME: '0/2003'
+            },
             serverType: 'geoserver',
             crossOrigin: true
         });
@@ -28,15 +31,89 @@ function initGeoSearch(layerObjects) {
         var tile = new ol.layer.Tile({
             extent: [200000, 6550000, 670000, 6780000], //6630000 500000 6780000
             source: image,
-            visible:tlayer.visible
+            visible: tlayer.visible
         });
-        if(tlayer.depth_profiling) {
+        if (tlayer.depth_profiling) {
             depth_profile_images.push(image);
             depth_profile_layers.push(tlayer);
         }
 
         layers.push(tile);
         layersById[tlayer.id] = tile;
+    }
+
+    var changedTime = false;
+
+    setInterval(function () {
+        if(changedTime) {
+            changedTime = false;
+            var period = brush.extent();
+            for (var i = 1; i < layers.length; ++i) {
+                layers[i].getSource().updateParams({
+                    TIME: transform(Math.round(period[1]))+"/"+ transform(Math.round(period[0]))
+                });
+            }
+        }
+    }, 1000);
+
+    var margin = {top: 10, right: 10, bottom: 40, left: 40},
+        width = 960 - margin.left - margin.right,
+        height = 100 - margin.top - margin.bottom;
+
+    var x = d3.scale.log().range([0, width]);
+    var xAxis = d3.svg.axis().scale(x).orient("bottom").tickFormat(function (d) {
+            return x.tickFormat(20, d3.format(",d"))(transform(d))
+        })
+        .tickValues([-150000, -100000, -10000, -1000, 0, 1000, 2000, new Date().getFullYear()].map(reverse_transform));
+
+    var brush = d3.svg.brush()
+        .x(x)
+        .on("brush", brushed);
+
+    var svg = d3.select("svg#timeline")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
+
+    svg.append("defs").append("clipPath")
+        .attr("id", "clip")
+        .append("rect")
+        .attr("width", width)
+        .attr("height", height);
+
+    var context = svg.append("g")
+        .attr("class", "context")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    x.domain([150000, 1]);
+
+    context.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis)
+        .selectAll("text")
+        .style("text-anchor", "start")
+        .attr("dx", "1em")
+        .attr("dy", "-.5em")
+        .attr("transform", "rotate(-90)" );
+
+    context.append("g")
+        .attr("class", "x brush")
+        .call(brush)
+        .selectAll("rect")
+        .attr("y", -6)
+        .attr("height", height + 7);
+
+
+    function brushed() {
+        changedTime = true;
+    }
+
+    function transform(number) {
+        return new Date().getFullYear() + 1 - number;
+    }
+
+    function reverse_transform(year) {
+        return -(year - 1 - new Date().getFullYear());
     }
 
     //layers.push(archeologiepoly);
@@ -64,7 +141,7 @@ function initGeoSearch(layerObjects) {
             new ol.control.ZoomToExtent({
                 className: 'first-extent',
                 label: 'A',
-                extent:  [
+                extent: [
                     315888, 6656592,
                     316710, 6657414
                 ]
@@ -72,7 +149,7 @@ function initGeoSearch(layerObjects) {
             new ol.control.ZoomToExtent({
                 className: 'second-extent',
                 label: 'B',
-                extent:  [
+                extent: [
                     315492, 6656313,
                     316250, 6657097
                 ]
@@ -80,7 +157,7 @@ function initGeoSearch(layerObjects) {
             new ol.control.ZoomToExtent({
                 className: 'third-extent',
                 label: 'C',
-                extent:  [
+                extent: [
                     315047, 6655992,
                     315824, 6656799
                 ]
@@ -88,14 +165,14 @@ function initGeoSearch(layerObjects) {
             new ol.control.ZoomToExtent({
                 className: 'fourth-extent',
                 label: 'D',
-                extent:  [
+                extent: [
                     314606, 6655702,
                     315386, 6656501
                 ]
-            }),new ol.control.ZoomToExtent({
+            }), new ol.control.ZoomToExtent({
                 className: 'fifth-extent',
                 label: 'E',
-                extent:  [
+                extent: [
                     314157, 6655415,
                     314975, 6656192
                 ]
@@ -111,8 +188,6 @@ function initGeoSearch(layerObjects) {
         target: 'map',
         view: view
     });
-
-
 
 
     /*
@@ -133,24 +208,24 @@ function initGeoSearch(layerObjects) {
     //TODO: DEZE functie geeft weer wanneer een laag zichtbaar is en er dus getfeature info mag weergegeven worden
 
     function visible(nr) {
-        return $('#l'+nr).hasClass('layer_active');
+        return $('#l' + nr).hasClass('layer_active');
     }
 
-    var depth_profile_layer = function(start, end, image) {
+    var depth_profile_layer = function (start, end, image) {
         var viewResolution = /** @type {number} */ (view.getResolution());
         var steps = 40; //aantal onderverdeling
         var diff = [
-            (end[0] - start[0])/steps,
-            (end[1] - start[1])/steps
+            (end[0] - start[0]) / steps,
+            (end[1] - start[1]) / steps
         ];
 
         console.log(diff);
         var depth_at_points = [];
         var threads = [];
-        for(var i = 0; i < steps; ++i) {
+        for (var i = 0; i < steps; ++i) {
             var point = [
-                start[0] + i*diff[0],
-                start[1] + i*diff[1]
+                start[0] + i * diff[0],
+                start[1] + i * diff[1]
             ];
             var url = image.getGetFeatureInfoUrl(
                 point, viewResolution, 'EPSG:3857',
@@ -160,7 +235,7 @@ function initGeoSearch(layerObjects) {
                     {
                         url: url
                     },
-                    (function(k) {
+                    (function (k) {
                         /*
                          * We need two functions here because the inner function gets evaluated
                          * after the AJAX request is complete, but at this time i has long been changed.
@@ -176,10 +251,10 @@ function initGeoSearch(layerObjects) {
         }
 
         // Wait for all AJAX calls to return
-        $.when.apply($, threads).done(function() {
+        $.when.apply($, threads).done(function () {
             $("#depth-profile").find(".spinner").hide();
             $("#depthsvg").show();
-            drawCurve("#depthsvg",depth_at_points);
+            drawCurve("#depthsvg", depth_at_points);
         });
 
     };
@@ -189,12 +264,12 @@ function initGeoSearch(layerObjects) {
     var enable_info = false;
     var enable_depthpoint = false;
     var enable_measuring = false;
-    var enable_output=false;
+    var enable_output = false;
     var outputnumber = '1';
 
     //Dieptepunt
     function depthpoint_profiling(evt) {
-        for(var i = 0; i < depth_profile_layers.length; ++i) {
+        for (var i = 0; i < depth_profile_layers.length; ++i) {
             var tile = depth_profile_layers[i];
             var image = depth_profile_images[i];
             var viewResolution = /** @type {number} */ (view.getResolution());
@@ -205,7 +280,7 @@ function initGeoSearch(layerObjects) {
             if (url) {
                 $.get('/cgi-bin/proxy.cgi', {
                     url: url
-                }, function(result) {
+                }, function (result) {
                     $("#info-depth").text($($(result).find("td")[1]).text());
                     var depth = console.log(parseFloat($($(result).find("td")[1]).text()));
 
@@ -214,15 +289,15 @@ function initGeoSearch(layerObjects) {
         }
     }
 
-    var depth_profiling = function(evt) {
-        if(firstCoordinates === null) {
+    var depth_profiling = function (evt) {
+        if (firstCoordinates === null) {
             resetFeatures();
             firstCoordinates = evt.coordinate;
         } else {
             var found = false;
             draw.finishDrawing();
             for (var i = 0; i < depth_profile_images.length; ++i) {
-                if(! visible(depth_profile_layers[i].id)) {
+                if (!visible(depth_profile_layers[i].id)) {
                     continue;
                 }
                 var image = depth_profile_images[i];
@@ -234,17 +309,17 @@ function initGeoSearch(layerObjects) {
                 found = true;
             }
             firstCoordinates = null;
-            if(!found)
+            if (!found)
                 alert('There is no active layer with depth info.');
         }
     };
 
     //Use escape button
-    $(document).keyup(function(e) {
+    $(document).keyup(function (e) {
         if (e.keyCode == 27) { // escape key maps to keycode `27`
             // <DO YOUR WORK HERE>
             resetFeatures();
-            $("#info").css( "opacity", 0 );
+            $("#info").css("opacity", 0);
         }
     });
 
@@ -252,7 +327,7 @@ function initGeoSearch(layerObjects) {
         var map = {};
         for (var i = 0; i < layerObjects.length; ++i) {
             var tlayer = layerObjects[i];
-            if(visible(tlayer.id)) {
+            if (visible(tlayer.id)) {
                 map['l' + tlayer.id] = visible(tlayer.id);
             }
             outputnumber = tlayer.id;
@@ -285,7 +360,7 @@ function initGeoSearch(layerObjects) {
     }
 
     function measure(evt) {
-        if(firstCoordinates === null) {
+        if (firstCoordinates === null) {
             resetFeatures();
             firstCoordinates = [evt.coordinate];
         } else {
@@ -302,14 +377,14 @@ function initGeoSearch(layerObjects) {
         var params = layerVisibility();
         params.x = evt.coordinate[0];
         params.y = evt.coordinate[1];
-        params.res =  view.getResolution();
+        params.res = view.getResolution();
 
         if (enable_info) {
             $.get('ajax/featureinfo', params, showNodesInfo);
         }
 
-        if(enable_depthpoint) {
-            $.get('ajax/featureinfo', params, function(response) {
+        if (enable_depthpoint) {
+            $.get('ajax/featureinfo', params, function (response) {
                 $('#depth-contents').html(response);
                 $('#depthpoint_box').show();
             });
@@ -319,26 +394,24 @@ function initGeoSearch(layerObjects) {
         if (enable_depth_profiling)
             depth_profiling(evt);
 
-        if(enable_measuring) {
+        if (enable_measuring) {
             measure(evt);
         }
 
-        if(enable_output) {
+        if (enable_output) {
 
-            $.get('ajax/closest', params, function(response) {
-                window.open('admin/node/'+ response,
+            $.get('ajax/closest', params, function (response) {
+                window.open('admin/node/' + response,
                     'Popup', 'width=' + screen.width + ', height=' + screen.height + ', status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
             });
         }
     });
 
 
-
-
     var draw = null; // global so we can remove it later
     var featureOverlay = null;
-    var resetFeatures = function() {
-        if(featureOverlay != null)
+    var resetFeatures = function () {
+        if (featureOverlay != null)
             featureOverlay.getFeatures().clear();
     };
     featureOverlay = new ol.FeatureOverlay({
@@ -360,7 +433,7 @@ function initGeoSearch(layerObjects) {
     });
     map.addOverlay(featureOverlay);
 
-    var changeInteraction = function(type) {
+    var changeInteraction = function (type) {
         resetFeatures();
 
         removeInteraction();
@@ -369,8 +442,8 @@ function initGeoSearch(layerObjects) {
             type: /** @type {ol.geom.GeometryType} */ type
         });
         map.addInteraction(draw);
-        if(type === 'Polygon') {
-            draw.on('drawend', function(event) {
+        if (type === 'Polygon') {
+            draw.on('drawend', function (event) {
                 var params = layerVisibility();
                 params.points = event.feature.getGeometry().getCoordinates()[0];
 
@@ -379,76 +452,76 @@ function initGeoSearch(layerObjects) {
         }
     };
 
-    var removeInteraction = function() {
+    var removeInteraction = function () {
         enable_depth_profiling = false;
         enable_info = false;
         enable_depthpoint = false;
         //enable_output=false;
-        $("#depthpoint_box").css( "opacity", 0 );
-        if(draw != null) {
+        $("#depthpoint_box").css("opacity", 0);
+        if (draw != null) {
             map.removeInteraction(draw);
         }
         draw = null;
 
     };
 
-    $("ul.nav li").click(function() { // Part I
+    $("ul.nav li").click(function () { // Part I
         resetFeatures();
         removeInteraction();
     });
 
     $("#fblink").attr('href', 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href));
 
-    $('#polygon-link').click(function(){
-        if(! $(this).hasClass("selected-drawer")) {
+    $('#polygon-link').click(function () {
+        if (!$(this).hasClass("selected-drawer")) {
             changeInteraction('Polygon');
         }
     });
 
-    $('#info-link').click(function(){
-        if(! $(this).hasClass("selected-drawer")) {
+    $('#info-link').click(function () {
+        if (!$(this).hasClass("selected-drawer")) {
             enable_info = true;
         }
     });
 
-    $("#measure-link").click(function() {
-        if(! $(this).hasClass("selected-drawer")) {
+    $("#measure-link").click(function () {
+        if (!$(this).hasClass("selected-drawer")) {
             changeInteraction('LineString');
             enable_measuring = true;
         }
     });
 
-    $('#output').click(function(){
-        if(! $(this).hasClass("selected-drawer")) {
+    $('#output').click(function () {
+        if (!$(this).hasClass("selected-drawer")) {
             enable_output = true;
         }
     });
 
-    $('#depthpoint-link').click(function(){
-        if(! $(this).hasClass("selected-drawer")) {
+    $('#depthpoint-link').click(function () {
+        if (!$(this).hasClass("selected-drawer")) {
             enable_depthpoint = true;
         }
     });
 
-    $('#depth-link').click(function(){
-        if(! $(this).hasClass("selected-drawer")) {
+    $('#depth-link').click(function () {
+        if (!$(this).hasClass("selected-drawer")) {
             changeInteraction('LineString');
             enable_depth_profiling = true;
         }
     });
 
-    $("ul.nav li").click(function() { // Part II
+    $("ul.nav li").click(function () { // Part II
         var hasClass = $(this).hasClass("selected-drawer");
         $(".selected-drawer").removeClass("selected-drawer");
-        if(! hasClass)
+        if (!hasClass)
             $(this).addClass("selected-drawer");
     });
 
-    $(".categorytitle").click(function() {
+    $(".categorytitle").click(function () {
         var category = $(this).data("category");
-        $(".toggle-layer").each(function() {
+        $(".toggle-layer").each(function () {
             var $el = $(this);
-            if($el.data("category") == category) {
+            if ($el.data("category") == category) {
                 $el.click();
             }
         })
@@ -456,8 +529,8 @@ function initGeoSearch(layerObjects) {
 
     //TODO: DOWNLOAD
     var exportPNGElement = document.getElementById('download-link');
-    exportPNGElement.addEventListener('click', function(e) {
-        map.once('postcompose', function(event) {
+    exportPNGElement.addEventListener('click', function (e) {
+        map.once('postcompose', function (event) {
             var canvas = event.context.canvas;
             exportPNGElement.href = canvas.toDataURL('image/png');
             var link = $(exportPNGElement).find('a');
@@ -469,26 +542,27 @@ function initGeoSearch(layerObjects) {
     }, true);
 
     //TODO: Measuring !!
-    function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+    function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
         var R = 6371; // Radius of the earth in km
-        var dLat = deg2rad(lat2-lat1);  // deg2rad below
-        var dLon = deg2rad(lon2-lon1);
+        var dLat = deg2rad(lat2 - lat1);  // deg2rad below
+        var dLon = deg2rad(lon2 - lon1);
         var a =
-                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
                 Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-                Math.sin(dLon/2) * Math.sin(dLon/2)
+                Math.sin(dLon / 2) * Math.sin(dLon / 2)
             ;
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-         // Distance in km
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        // Distance in km
         return R * c;
     }
 
     function deg2rad(deg) {
-        return deg * (Math.PI/180)
+        return deg * (Math.PI / 180)
     }
+
     var layer_panel = $('.layer-panel');
     layer_panel.hide();
-    layer_panel.click(function() {
+    layer_panel.click(function () {
         $('.layer-panel').hide();
     });
 
@@ -497,7 +571,7 @@ function initGeoSearch(layerObjects) {
         var nr = $this.data('layer-id');
         var reference = $this.data('reference');
         var info = $this.data('layer-info');
-        if(reference.length > 0 && ! $this.hasClass("layer_active") ) {
+        if (reference.length > 0 && !$this.hasClass("layer_active")) {
             $('.layer-panel').show();
             $('#reference-content').text(reference);
             $('#layer-info-content').text(info);
@@ -508,7 +582,7 @@ function initGeoSearch(layerObjects) {
         //bijvoorbeeld id legende_1 ==> toggleClass
         // (Add or remove one or more classes from each element in the set of matched elements,
         // depending on either the class's presence or the value of the state argument.)
-        $('#legende_'+nr).toggleClass("display-none");
+        $('#legende_' + nr).toggleClass("display-none");
         //div this slaat op div layer <div>
         $this.toggleClass("layer_active");
     }
@@ -516,16 +590,16 @@ function initGeoSearch(layerObjects) {
     $('.toggle-layer').click(layer);
 
     // TODO: generify
-    $("#insert-link").click(function() {
-        window.open('admin/insert','Popup', 'top=150px, left=400px width=500px, height=650px, status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
+    $("#insert-link").click(function () {
+        window.open('admin/insert', 'Popup', 'top=150px, left=400px width=500px, height=650px, status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
 
     });
 
-    $("#search-link").click(function() {
-        window.open('admin/search','Popup', 'width=' + screen.width + ',height='+ screen.height + ',status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
+    $("#search-link").click(function () {
+        window.open('admin/search', 'Popup', 'width=' + screen.width + ',height=' + screen.height + ',status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
     });
 
-    $("#button_close").click(function() {
+    $("#button_close").click(function () {
         $('#depth-profile').hide();
     });
 
@@ -536,7 +610,7 @@ function initGeoSearch(layerObjects) {
 
     $('#legende_knop').click(toggle_legende);
 
-    $('#close-info').click(function() {
+    $('#close-info').click(function () {
         $("#info").hide()
     });
 }

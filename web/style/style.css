@@ -240,20 +240,20 @@ ul.nav li, .navbar-default ul.nav li a, .navbar-default ul.nav li a:hover {
 }
 
 /* Grafiek lijn */
-path {
+#depthsvg path {
     stroke: orange;
     stroke-width: 1;
     fill: none;
     transform: scale(2,2);
 }
 
-line {
+#depthsvg line {
     stroke: black;
     transform: scale(2,2);
     stroke-width: 0.5;
 }
 
-text {
+#depthsvg text {
     font-family: Arial, serif;
     font-size: 9pt;
 }
@@ -442,4 +442,24 @@ text {
 
 .selected-drawer {
     background-color: grey;
+}
+
+#timeline {
+    position: absolute;
+    bottom: 130px;
+    left: 100px;
+    font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.brush .extent {
+    stroke: #fff;
+    fill-opacity: .125;
+    shape-rendering: crispEdges;
 }
