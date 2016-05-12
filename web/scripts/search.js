@@ -461,7 +461,7 @@ function initGeoSearch(layerObjects) {
         enable_depth_profiling = false;
         enable_info = false;
         enable_depthpoint = false;
-        //enable_output=false;
+        enable_output = false;
         $("#depthpoint_box").css("opacity", 0);
         if (draw != null) {
             map.removeInteraction(draw);
