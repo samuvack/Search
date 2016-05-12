@@ -130,9 +130,16 @@ function initGeoSearch(layerObjects) {
         zoom: 9
     });
 
-    window.focusTo = function focusTo(x, y) {
+    window.focusTo = function focusTo(x, y, layer) {
         view.setCenter(ol.proj.fromLonLat([x, y]));
         view.setZoom(10);
+
+        var $layer = $("#l"+layer);
+        if(! $layer.hasClass("layer_active")) {
+            $layer.click();
+        }
+
+        $('#search-link').removeClass("selected-drawer");
     };
 
     var map = new ol.Map({
