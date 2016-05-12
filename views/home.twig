@@ -116,7 +116,7 @@
                         <div class="legende_item {{ layer.visible?'':'display-none' }}" id="legende_{{ layer.id }}">
                             {{ layer.legendName }}
                             <br>
-                            <img src="http://we12s007.ugent.be:8080/geoserver/search/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style={{ layer.style }}">
+                            <img src="//crest.ugent.be/geoserver/search/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&STRICT=false&style={{ layer.style }}">
                         </div>
                     {% endfor %}
                 {% endfor %}
