@@ -19,7 +19,7 @@ function initGeoSearch(layerObjects) {
     for (var i = 0; i < layerObjects.length; ++i) {
         var tlayer = layerObjects[i];
         var image = new ol.source.TileWMS({
-            url: 'http://we12s007.ugent.be:8080/geoserver/search/wms',//search
+            url: '//crest.ugent.be/geoserver/search/wms',//search
             params: {
                 LAYERS: tlayer.name,
                 TIME: buildTIMEParameter(150000, 1)
