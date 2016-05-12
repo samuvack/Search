@@ -524,12 +524,29 @@ function initGeoSearch(layerObjects) {
 
     $(".categorytitle").click(function () {
         var category = $(this).data("category");
-        $(".toggle-layer").each(function () {
-            var $el = $(this);
-            if ($el.data("category") == category) {
-                $el.click();
+        var hasActive = false;
+        var hasInactive = false;
+        var layers = $(".toggle-layer").filter(function() {
+            return $(this).data("category") == category;
+        });
+        layers.each(function() {
+            if($(this).hasClass('layer_active')) {
+                hasActive = true;
+            } else {
+                hasInactive = true;
             }
-        })
+        });
+
+        if(hasActive && hasInactive) {
+            layers.each(function () {
+                if(! $(this).hasClass('layer_active'))
+                    $(this).click();
+            });
+        } else {
+            layers.each(function () {
+                $(this).click();
+            });
+        }
     });
 
     //TODO: DOWNLOAD
