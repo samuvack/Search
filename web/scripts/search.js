@@ -235,6 +235,7 @@ function initGeoSearch(layerObjects) {
         var depth_at_points = [];
         var threads = [];
         for(var j = 0; j < images.length; ++j) {
+            var image = images[j];
             var curve = [];
             for (var i = 0; i < steps; ++i) {
                 var point = [
