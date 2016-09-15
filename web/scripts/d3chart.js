@@ -1,18 +1,18 @@
 
 
 var drawCurve = function(svgSelector, data) {
+    var flat_data = [].concat.apply([], data);
     var $element = $(svgSelector);
     var w = $element.width()/2,
         h = $element.height()/2,
         margin = 10,
-        y = d3.scale.linear().domain([d3.min(data), 0]).range([margin, h - margin]),
-        x = d3.scale.linear().domain([0, data.length]).range([margin, w - margin]);
+        y = d3.scale.linear().domain([d3.min(flat_data), 0]).range([margin, h - margin]),
+        x = d3.scale.linear().domain([0, data[0].length]).range([margin, w - margin]);
 
     var vis = d3.select(svgSelector)
         .attr("width", w)
         .attr("height", h);
     vis.selectAll("*").remove();
-    console.log(w,h);
 
     var g = vis.append("svg:g")
         .attr("transform", "translate("+margin+","+(2*h)+")");
@@ -29,7 +29,9 @@ var drawCurve = function(svgSelector, data) {
      .y1(function(d) { return -1 * y(d); });
      */
 
-    g.append("svg:path").attr("d", line(data));
+    for(var i = 0; i < data.length; ++i) {
+        g.append("svg:path").attr("d", line(data[i]));
+    }
 
     //x-as
     g.append("svg:line")
@@ -43,7 +45,7 @@ var drawCurve = function(svgSelector, data) {
         .attr("x1", x(0))
         .attr("y1", -1 * y(0))
         .attr("x2", x(0))
-        .attr("y2", -2 * y(d3.min(data))+20); //Aangezien het geschaald is x2, maar de waarden gelijk blijven ..
+        .attr("y2", -2 * y(d3.min(flat_data))+20); //Aangezien het geschaald is x2, maar de waarden gelijk blijven ..
 
 
     //X-as labels
@@ -87,12 +89,4 @@ var drawCurve = function(svgSelector, data) {
         .attr("x1", x(-0.1))
         .attr("y2", function(d) { return -1 * y(d); })
         .attr("x2", x(0));
-
-
-
-
-
-
-
-
 };

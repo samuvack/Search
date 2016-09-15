@@ -266,7 +266,7 @@ function initGeoSearch(layerObjects) {
         $.when.apply($, threads).done(function () {
             $("#depth-profile").find(".spinner").hide();
             $("#depthsvg").show();
-            drawCurve("#depthsvg", depth_at_points);
+            drawCurve("#depthsvg", [ depth_at_points ]);
         });
 
     };
