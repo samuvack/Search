@@ -323,12 +323,12 @@ function initGeoSearch(layerObjects) {
                 $("#depthsvg").hide();
                 $("#depth-profile").find(".spinner").show();
             }
-            firstCoordinates = null;
             if (!image.length == 0) {
                 alert('There is no active layer with depth info.');
             } else {
                 depth_profile_layer(firstCoordinates, evt.coordinate, images);
             }
+            firstCoordinates = null;
         }
     };
 
