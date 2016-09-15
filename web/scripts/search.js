@@ -223,7 +223,7 @@ function initGeoSearch(layerObjects) {
         return $('#l' + nr).hasClass('layer_active');
     }
 
-    var depth_profile_layer = function (start, end, image) {
+    var depth_profile_layer = function (start, end, images) {
         var viewResolution = /** @type {number} */ (view.getResolution());
         var steps = 40; //aantal onderverdeling
         var diff = [
@@ -234,39 +234,44 @@ function initGeoSearch(layerObjects) {
         console.log(diff);
         var depth_at_points = [];
         var threads = [];
-        for (var i = 0; i < steps; ++i) {
-            var point = [
-                start[0] + i * diff[0],
-                start[1] + i * diff[1]
-            ];
-            var url = image.getGetFeatureInfoUrl(
-                point, viewResolution, 'EPSG:3857',
-                {'INFO_FORMAT': 'text/html'});
-            if (url) {
-                threads.push($.get('/cgi-bin/proxy.cgi',
-                    {
-                        url: url
-                    },
-                    (function (k) {
-                        /*
-                         * We need two functions here because the inner function gets evaluated
-                         * after the AJAX request is complete, but at this time i has long been changed.
-                         *
-                         * O the joys of multithreading.
-                         */
-                        return function (result) {
-                            depth_at_points[k] = parseFloat($($(result).find("td")[1]).text());
-                        };
-                    })(i)
-                ));
+        for(var j = 0; j < images.length; ++j) {
+            var curve = [];
+            for (var i = 0; i < steps; ++i) {
+                var point = [
+                    start[0] + i * diff[0],
+                    start[1] + i * diff[1]
+                ];
+                var url = image.getGetFeatureInfoUrl(
+                    point, viewResolution, 'EPSG:3857',
+                    {'INFO_FORMAT': 'text/html'});
+                if (url) {
+                    threads.push($.get('/cgi-bin/proxy.cgi',
+                        {
+                            url: url
+                        },
+                        (function (k, c) {
+                            /*
+                             * We need two functions here because the inner function gets evaluated
+                             * after the AJAX request is complete, but at this time i has long been changed.
+                             *
+                             * O the joys of multithreading.
+                             */
+                            return function (result) {
+                                c[k] = parseFloat($($(result).find("td")[1]).text());
+                            };
+                        })(i, curve)
+                    ));
+                }
             }
+
+            depth_at_points.push(curve);
         }
 
         // Wait for all AJAX calls to return
         $.when.apply($, threads).done(function () {
             $("#depth-profile").find(".spinner").hide();
             $("#depthsvg").show();
-            drawCurve("#depthsvg", [ depth_at_points ]);
+            drawCurve("#depthsvg", depth_at_points);
         });
 
     };
@@ -306,23 +311,24 @@ function initGeoSearch(layerObjects) {
             resetFeatures();
             firstCoordinates = evt.coordinate;
         } else {
-            var found = false;
             draw.finishDrawing();
+            var images = [];
             for (var i = 0; i < depth_profile_images.length; ++i) {
                 if (!visible(depth_profile_layers[i].id)) {
                     continue;
                 }
                 var image = depth_profile_images[i];
-                depth_profile_layer(firstCoordinates, evt.coordinate, image);
+                images.push(image);
                 $('#depth-profile').show();
                 $("#depthsvg").hide();
                 $("#depth-profile").find(".spinner").show();
-
-                found = true;
             }
             firstCoordinates = null;
-            if (!found)
+            if (!image.length == 0) {
                 alert('There is no active layer with depth info.');
+            } else {
+                depth_profile_layer(firstCoordinates, evt.coordinate, images);
+            }
         }
     };
 
