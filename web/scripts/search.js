@@ -723,6 +723,7 @@ function initGeoSearch(layerObjects) {
 
 
     function toggle_legende() {
+        $('#legende_knop').toggleClass('legend-visible');
         $("#leg").toggleClass('display-none');
     }
 
