@@ -498,36 +498,54 @@ ul.nav li, .navbar-default ul.nav li a, .navbar-default ul.nav li a:hover {
 
 .nieuwste-tijd {
     fill: red;
+    color: red;
 }
 
 .nieuwe-tijd {
     fill: orange;
+    color: orange;
 }
 
 .middeleeuwen {
     fill: green;
+    color: green;
 }
 
 .romeinse-tijd {
     fill: purple;
+    color: purple;
 }
 
 .ijzertijd {
     fill: blue;
+    color: blue;
 }
 
 .bronstijd {
     fill: yellow;
+    color: yellow;
 }
 
 .einde-neolithicum {
-    fill: white;
+    fill: darkolivegreen;
+    color: darkolivegreen;
 }
 
 .begin-neolithicum {
     fill: cyan;
+    color: cyan;
 }
 
 .paleolithicum {
     fill: black;
+    color: black;
+}
+
+.timeline-legende {
+    position: relative;
+    width: 240px;
+    left: 30px;
+    z-index: 1;
+    top: 20px;
+    background-color: white;
 }
