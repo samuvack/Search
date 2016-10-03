@@ -542,10 +542,5 @@ ul.nav li, .navbar-default ul.nav li a, .navbar-default ul.nav li a:hover {
 }
 
 #timeline-legende {
-    position: relative;
-    width: 240px;
-    left: 30px;
-    z-index: 1;
-    top: 20px;
-    background-color: white;
+    margin-top: 15px;
 }
