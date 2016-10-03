@@ -96,6 +96,9 @@ function initGeoSearch(layerObjects) {
 
     x.domain([150000, 1]);
 
+    var periods_pane = context.append("g")
+        .attr("class", "timeperiods");
+
     context.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
@@ -112,8 +115,6 @@ function initGeoSearch(layerObjects) {
         .selectAll("rect")
         .attr("y", -6)
         .attr("height", height + 7);
-    var periods_pane = context.append("g")
-        .attr("class", "timeperiods");
 
     var periods = {
         'Nieuwste tijd': {
