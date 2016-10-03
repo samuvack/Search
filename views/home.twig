@@ -40,30 +40,56 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav navbar-left">
-                <li id="legende_knop" class="popupHoverElement" title="Legende"><div class="two icon">Legende</div></li>
-                <li id="insert-link" class="popupHoverElement" title="Toevoegen"><div class="two icon">Toevoegen</div></li>
-                <li id="search-link" class="popupHoverElement" title="Zoeken"><div class="two icon">Zoek</div></li>
-                <li id="info-link" class="popupHoverElement" title="Info"><div class="two icon">Info</div></li>
-                <li id="output" class="popupHoverElement" title="Relaties"><div class="two icon">Relaties</div></li>
+                <li id="legende_knop" class="popupHoverElement" title="Legende">
+                    <div class="two icon">Legende</div>
+                </li>
+                <li id="insert-link" class="popupHoverElement" title="Toevoegen">
+                    <div class="two icon">Toevoegen</div>
+                </li>
+                <li id="search-link" class="popupHoverElement" title="Zoeken">
+                    <div class="two icon">Zoek</div>
+                </li>
+                <li id="info-link" class="popupHoverElement" title="Info">
+                    <div class="two icon">Info</div>
+                </li>
+                <li id="output" class="popupHoverElement" title="Relaties">
+                    <div class="two icon">Relaties</div>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li id="fullscreen-link" class="popupHoverElement" title="Vergroten"><div class="two icon">Vergroten</div></li>
-                <li id="depth-link" class="popupHoverElement" title="Diepteprofiel"><div class="two icon">Diepteprofiel</div></li>
+                <li id="fullscreen-link" class="popupHoverElement" title="Vergroten">
+                    <div class="two icon">Vergroten</div>
+                </li>
+                <li id="depth-link" class="popupHoverElement" title="Diepteprofiel">
+                    <div class="two icon">Diepteprofiel</div>
+                </li>
                 <li id="share-link" class="popupHoverElement" title="Delen">
                     <a id="fblink" target="_blank">
                         <div class="three icon">Share</div>
                     </a>
                 </li>
                 <li id="download-link" class="popupHoverElement" title="Downloaden">
-                    <a download="map.png"><div class="three icon">
-                            <i class="icon-download"></i> Download</div>
+                    <a download="map.png">
+                        <div class="three icon">
+                            <i class="icon-download"></i> Download
+                        </div>
                     </a>
                 </li>
-                <li id="question-link" class="popupHoverElement" title="Handleiding"><div class="two icon">Handleiding</div></li>
-                <li id="draw-link" class="popupHoverElement" title="Tekenen"><div class="two icon">Tekenen</div></li>
-                <li id="measure-link" class="popupHoverElement" title="Meten"><div class="two icon">Meten</div></li>
-                <li id="polygon-link" class="popupHoverElement" title="Polygon"><div class="two icon">Polygon</div></li>
-                <li id="depthpoint-link" class="popupHoverElement" title="Dieptepunt"><div class="two icon">Dieptepunt</div></li>
+                <li id="question-link" class="popupHoverElement" title="Handleiding">
+                    <div class="two icon">Handleiding</div>
+                </li>
+                <li id="draw-link" class="popupHoverElement" title="Tekenen">
+                    <div class="two icon">Tekenen</div>
+                </li>
+                <li id="measure-link" class="popupHoverElement" title="Meten">
+                    <div class="two icon">Meten</div>
+                </li>
+                <li id="polygon-link" class="popupHoverElement" title="Polygon">
+                    <div class="two icon">Polygon</div>
+                </li>
+                <li id="depthpoint-link" class="popupHoverElement" title="Dieptepunt">
+                    <div class="two icon">Dieptepunt</div>
+                </li>
             </ul>
         </div>
     </div>
@@ -74,7 +100,7 @@
 
     <p class="hidden-sm hidden-xs">TAW [m]</p>
     <i class="glyphicon glyphicon-refresh spinner btn-lg"></i>
-    <svg id="depthsvg">    </svg> <!--hier komt de grafiek -->
+    <svg id="depthsvg"></svg> <!--hier komt de grafiek -->
 </div>
 
 <div id="no-download" class="alert alert-error" style="display: none">
@@ -93,18 +119,20 @@
         {% for group in groups %}
             <div class="layertitle">{{ group.name }}</div>
             {% for category in group.categories %}
-                {% if category.visible %}
-                    <div class="category">
-                        <div data-category="{{ category.name }}" class="categorytitle">{{ category.name }}</div>
-                {% endif %}
-                    {% for layer in category.layers %}
-                        <a data-layer-id="{{ layer.id }}" data-layer-info="{{ layer.info }}" data-reference="{{ layer.reference }}" data-category="{{ category.name }}"
-                           class="toggle-layer layer {{ layer.visible?'layer_active':''}}" id="l{{ layer.id }}">{{ layer.legendName }}</a>
-                    {%  endfor %}
-                {% if category.visible %}
-                    </div>
-                {% endif %}
+            {% if category.visible %}
+                <div class="category">
+                <div data-category="{{ category.name }}" class="categorytitle">{{ category.name }}</div>
+            {% endif %}
+            {% for layer in category.layers %}
+                <a data-layer-id="{{ layer.id }}" data-layer-info="{{ layer.info }}"
+                   data-reference="{{ layer.reference }}" data-category="{{ category.name }}"
+                   class="toggle-layer layer {{ layer.visible?'layer_active':'' }}"
+                   id="l{{ layer.id }}">{{ layer.legendName }}</a>
             {% endfor %}
+            {% if category.visible %}
+                </div>
+            {% endif %}
+        {% endfor %}
         {% endfor %}
     </span>
 
@@ -136,8 +164,10 @@
             </ol>
         </div>
 
-        <div id="info-depth">
-
+        <div>
+            <h5>Diepte</h5>
+            <div id="info-depth">
+            </div>
         </div>
     </div>
 
@@ -160,7 +190,7 @@
     <svg id="timeline" class="hidden-sm hidden-xs noselect"></svg>
 </div>
 <script type="text/javascript">
-    initGeoSearch({{layers|json_encode|raw}});
+    initGeoSearch({{ layers|json_encode|raw }});
 </script>
 </body>
 </html>
