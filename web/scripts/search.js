@@ -22,8 +22,7 @@ function initGeoSearch(layerObjects) {
         var image = new ol.source.TileWMS({
             url: '//crest.ugent.be/geoserver/search/wms',//search
             params: {
-                LAYERS: tlayer.name,
-                TIME: buildTIMEParameter(150000, 1)
+                LAYERS: tlayer.name
             },
             serverType: 'geoserver',
             crossOrigin: true
