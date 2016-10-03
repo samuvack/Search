@@ -540,6 +540,7 @@ function initGeoSearch(layerObjects) {
         enable_info = false;
         enable_depthpoint = false;
         enable_output = false;
+        enable_measuring = false;
         $("#depthpoint_box").css("opacity", 0);
         if (draw != null) {
             map.removeInteraction(draw);
