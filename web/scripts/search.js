@@ -353,7 +353,9 @@ function initGeoSearch(layerObjects) {
     function depthpoint_profiling(evt) {
         for (var i = 0; i < depth_profile_layers.length; ++i) {
             var tile = depth_profile_layers[i];
-            var image = depth_profile_images[i];
+            if(! visible(tile.id)) continue;
+
+                var image = depth_profile_images[i];
             var viewResolution = /** @type {number} */ (view.getResolution());
             //console.log(evt.coordinate);
             var url = image.getGetFeatureInfoUrl(
