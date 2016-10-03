@@ -491,3 +491,43 @@ ul.nav li, .navbar-default ul.nav li a, .navbar-default ul.nav li a:hover {
         display: none;
     }
 }
+
+#timeline .timeperiods {
+    opacity: .4;
+}
+
+.nieuwste-tijd {
+    fill: red;
+}
+
+.nieuwe-tijd {
+    fill: orange;
+}
+
+.middeleeuwen {
+    fill: green;
+}
+
+.romeinse-tijd {
+    fill: purple;
+}
+
+.ijzertijd {
+    fill: blue;
+}
+
+.bronstijd {
+    fill: yellow;
+}
+
+.einde-neolithicum {
+    fill: white;
+}
+
+.begin-neolithicum {
+    fill: cyan;
+}
+
+.paleolithicum {
+    fill: black;
+}
