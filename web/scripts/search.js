@@ -112,7 +112,65 @@ function initGeoSearch(layerObjects) {
         .selectAll("rect")
         .attr("y", -6)
         .attr("height", height + 7);
+    var periods_pane = context.append("g")
+        .attr("class", "timeperiods");
 
+    var periods = {
+        'Nieuwste tijd': {
+            start: 1789,
+            end: new Date().getFullYear(),
+            class: 'nieuwste-tijd'
+        },
+        'Nieuwe tijd': {
+            end: 1789,
+            start: 1500,
+            class: 'nieuwe-tijd'
+        },
+        Middeleeuwen: {
+            start: 476,
+            end: 1500,
+            class: 'middeleeuwen'
+        },
+        'Romeinse tijd': {
+            start: -57,
+            end: 476,
+            class: 'romeinse-tijd'
+        },
+        Ijzertijd: {
+            start: -800,
+            end: -57,
+            class: 'ijzertijd'
+        },
+        Bronstijd: {
+            start: -2000,
+            end: -800,
+            class: 'bronstijd'
+        },
+        'Einde Neolithicum': {
+            start: -3000,
+            end: -2000,
+            class: 'einde-neolithicum'
+        },
+        'Begin Neolithicum': {
+            start: -9000,
+            end: -3000,
+            class: 'begin-neolithicum'
+        },
+        Paleolithicum: {
+            start: -150000,
+            end: -9000,
+            class: 'paleolithicum'
+        }
+    };
+
+    for( var key in periods ) {
+        periods_pane.append('rect')
+            .attr("x", x(transform(periods[key].start)))
+            .attr("y", 0)
+            .attr("height", 50)
+            .attr("width", x(transform(periods[key].end)) - x(transform(periods[key].start)))
+            .attr("class", periods[key].class);
+    }
 
     function brushed() {
         changedTime = true;
