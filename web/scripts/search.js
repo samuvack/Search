@@ -66,9 +66,9 @@ function initGeoSearch(layerObjects) {
         return (transform(Math.round(start)) + TIME_TRANSLATION)+"/"+ (transform(Math.round(end))+TIME_TRANSLATION);
     }
 
-    var margin = {top: 10, right: 10, bottom: 40, left: 40},
+    var margin = {top: 40, right: 10, bottom: 40, left: 40},
         width = 960 - margin.left - margin.right,
-        height = 100 - margin.top - margin.bottom;
+        height = 130 - margin.top - margin.bottom;
 
     var x = d3.scale.log().range([0, width]);
     var xAxis = d3.svg.axis().scale(x).orient("bottom").tickFormat(function (d) {
