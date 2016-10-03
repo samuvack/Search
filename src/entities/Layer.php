@@ -36,6 +36,8 @@ class Layer implements \JsonSerializable {
 	/** @Column(type="boolean") */
 	private $depth_profiling;
 
+    /** @Column(type="boolean") */
+    private $timeline;
 	/**
 	 * @ManyToOne(targetEntity="Category", inversedBy="layers")
 	 * @JoinColumn(name="category_id")
@@ -86,7 +88,8 @@ class Layer implements \JsonSerializable {
 			'id'=>$this->id,
 			'name'=>$this->name,
 			'visible'=>$this->visible,
-			'depth_profiling' => $this->depth_profiling
+			'depth_profiling' => $this->depth_profiling,
+            'timeline' => $this->timeline
 		];
 	}
 }
