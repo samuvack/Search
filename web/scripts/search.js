@@ -689,14 +689,16 @@ function initGeoSearch(layerObjects) {
     }
 
     function set_timeline() {
-        var timeline = $('#timeline');
+        var $timeline = $('#timeline');
+        var $timeline_legend = $('#timeline-legende');
         for(var i = 0; i < timeline_layers.length; ++i) {
             if (visible(timeline_layers[i].id)) {
-                return timeline.show();
+                return $timeline.show() && $timeline_legend.show();
             }
         }
 
-        timeline.hide();
+        $timeline.hide();
+        $timeline_legend.hide();
     }
 
     $('.toggle-layer').click(layer);
