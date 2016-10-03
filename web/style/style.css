@@ -23,8 +23,17 @@ body, html {
     margin: 0 5px;
 }
 
+#logos div {
+    display: inline-block;
+}
+
+#left-logos {
+    display: flex;
+    align-items: flex-start;
+}
+
 .logo2 {
-    text-align: right;
+    text-align: left;
     max-width: 15ch;
     padding: 1px;
     color: darkslategrey;

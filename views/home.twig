@@ -24,9 +24,18 @@
     <title>Sea-Arch</title>
 </head>
 <body>
-<div id="logos">
-    <div id="logo" class="logo hidden-sm hidden-xs"></div>
-    <div id="logo2" class="logo2 hidden-sm hidden-xs"><h4>Archeologisch erfgoed in de Noordzee</h4></div>
+<div id="logos" class="hidden-sm hidden-xs">
+    <div id="left-logos">
+        <div id="logo" class="logo"></div>
+        <div id="logo2" class="logo2"><h4>Archeologisch erfgoed in de Noordzee</h4></div>
+    </div>
+    <div class="associations">
+        <img src="{{ app.request.basepath }}/images/logo_deltares_small.jpg"/>
+        <img src="{{ app.request.basepath }}/images/logo_iwt_small.jpg"/>
+        <img src="{{ app.request.basepath }}/images/logo_onroerenderfgoed_small.jpg"/>
+        <img src="{{ app.request.basepath }}/images/logo_ugent_small.jpg"/>
+        <img src="{{ app.request.basepath }}/images/logo_vliz_small.jpg"/>
+    </div>
 </div>
 <nav class="navbar navbar-default">
     <div class="container-fluid">
