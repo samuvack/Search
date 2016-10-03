@@ -121,7 +121,7 @@ $app->match('ajax/closest', function(Application $app) {
 
 	$node = $app['orm.em']->getRepository(':Node')->findClosest($layers, $_GET['x'], $_GET['y'], $_GET['res']);
 	if(empty($node)) {
-		throw $this->createNotFoundException('No node nearby.');
+		throw $app->createNotFoundException('No node nearby.');
 	}
 	return $app->json($node[0]->getId());
 });
