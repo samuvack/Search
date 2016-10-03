@@ -7,6 +7,7 @@ function initGeoSearch(layerObjects) {
 
     var depth_profile_layers = [];
     var depth_profile_images = [];
+    var timeline_layers = [];
 
     var layersById = [];
 
@@ -36,6 +37,10 @@ function initGeoSearch(layerObjects) {
         if (tlayer.depth_profiling) {
             depth_profile_images.push(image);
             depth_profile_layers.push(tlayer);
+        }
+
+        if(tlayer.timeline) {
+            timeline_layers.push(tlayer);
         }
 
         layers.push(tile);
@@ -621,6 +626,18 @@ function initGeoSearch(layerObjects) {
         $('#legende_' + nr).toggleClass("display-none");
         //div this slaat op div layer <div>
         $this.toggleClass("layer_active");
+        set_timeline();
+    }
+
+    function set_timeline() {
+        var timeline = $('#timeline');
+        for(var i = 0; i < timeline_layers.length; ++i) {
+            if (visible(timeline_layers[i].id)) {
+                return timeline.show();
+            }
+        }
+
+        timeline.hide();
     }
 
     $('.toggle-layer').click(layer);
@@ -649,4 +666,6 @@ function initGeoSearch(layerObjects) {
     $('#close-info').click(function () {
         $("#info").hide()
     });
+
+    set_timeline();
 }
