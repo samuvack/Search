@@ -526,6 +526,7 @@ function initGeoSearch(layerObjects) {
         });
         map.addInteraction(draw);
         if (type === 'Polygon') {
+            draw.on('drawstart', resetFeatures);
             draw.on('drawend', function (event) {
                 var params = layerVisibility();
                 params.points = event.feature.getGeometry().getCoordinates()[0];
