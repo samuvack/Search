@@ -98,7 +98,7 @@
                         <div data-category="{{ category.name }}" class="categorytitle">{{ category.name }}</div>
                 {% endif %}
                     {% for layer in category.layers %}
-                        <a data-layer-id="{{ layer.id }}" data-layer-timeline="{{ layer.timeline }}"data-layer-info="{{ layer.info }}" data-reference="{{ layer.reference }}" data-category="{{ category.name }}"
+                        <a data-layer-id="{{ layer.id }}" data-layer-info="{{ layer.info }}" data-reference="{{ layer.reference }}" data-category="{{ category.name }}"
                            class="toggle-layer layer {{ layer.visible?'layer_active':''}}" id="l{{ layer.id }}">{{ layer.legendName }}</a>
                     {%  endfor %}
                 {% if category.visible %}
