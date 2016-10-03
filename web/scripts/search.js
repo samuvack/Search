@@ -365,9 +365,9 @@ function initGeoSearch(layerObjects) {
                 $.get('/cgi-bin/proxy.cgi', {
                     url: url
                 }, function (result) {
-                    $("#info-depth").text($($(result).find("td")[1]).text());
-                    var depth = console.log(parseFloat($($(result).find("td")[1]).text()));
-
+                    $info_depth = $("#info-depth");
+                    $info_depth.text($($(result).find("td")[1]).text());
+                    $info_depth.show();
                 });
             }
         }
@@ -544,7 +544,7 @@ function initGeoSearch(layerObjects) {
         enable_depthpoint = false;
         enable_output = false;
         enable_measuring = false;
-        $("#depthpoint_box").css("opacity", 0);
+        $("#depthpoint_box").hide();
         if (draw != null) {
             map.removeInteraction(draw);
         }
