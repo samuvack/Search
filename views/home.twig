@@ -137,6 +137,14 @@
     </span>
 
     <div class="legende hidden-sm hidden-xs display-none noselect" id="leg">
+        <div id="depthpoint_box">
+            <h5>Diepte</h5>
+
+            <div id="depth-contents">
+            </div>
+            <div id="info-depth">
+            </div>
+        </div>
         <div class="legende_content">
             {% for group in groups %}
                 {% for category in group.categories %}
@@ -163,12 +171,6 @@
                 <li class="paleolithicum">Paleolithicum</li>
             </ol>
         </div>
-
-        <div>
-            <h5>Diepte</h5>
-            <div id="info-depth">
-            </div>
-        </div>
     </div>
 
     <span id="map" class="map"></span>
@@ -176,10 +178,7 @@
     <span id="ol.control.Zoom" class="ol.control.Zoom"></span>
     <span id="ol.Zoom" class="ol.Zoom"></span>
 
-    <div id="depthpoint_box">
-        <div id="depth-contents">
-        </div>
-    </div>
+
     <div id="reference-container" class="layer-panel hidden-xs hidden-sm">
         <div id="reference-content">
         </div>
