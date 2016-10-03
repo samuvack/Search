@@ -388,7 +388,7 @@ function initGeoSearch(layerObjects) {
                 $("#depthsvg").hide();
                 $("#depth-profile").find(".spinner").show();
             }
-            if (!image.length == 0) {
+            if (!images.length == 0) {
                 alert('There is no active layer with depth info.');
             } else {
                 depth_profile_layer(firstCoordinates, evt.coordinate, images);
