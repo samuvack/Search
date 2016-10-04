@@ -294,7 +294,6 @@ function initGeoSearch(layerObjects) {
             (end[1] - start[1]) / steps
         ];
 
-        console.log(diff);
         var depth_at_points = [];
         var threads = [];
         for(var j = 0; j < images.length; ++j) {
