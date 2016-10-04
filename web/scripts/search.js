@@ -195,7 +195,7 @@ function initGeoSearch(layerObjects) {
 
     window.focusTo = function focusTo(x, y, layer) {
         view.setCenter(ol.proj.fromLonLat([x, y]));
-        view.setZoom(10);
+        view.setZoom(14);
 
         var $layer = $("#l"+layer);
         if(! $layer.hasClass("layer_active")) {
