@@ -286,7 +286,7 @@ function initGeoSearch(layerObjects) {
         return $('#l' + nr).hasClass('layer_active');
     }
 
-    var depth_profile_layer = function (start, end, images) {
+    var depth_profile_layer = function (start, end, layers) {
         var viewResolution = /** @type {number} */ (view.getResolution());
         var steps = 40; //aantal onderverdeling
         var diff = [
@@ -296,8 +296,8 @@ function initGeoSearch(layerObjects) {
 
         var depth_at_points = [];
         var threads = [];
-        for(var j = 0; j < images.length; ++j) {
-            var image = images[j];
+        for(var j = 0; j < layers.length; ++j) {
+            var image = layers[j].image;
             var curve = [];
             for (var i = 0; i < steps; ++i) {
                 var point = [
@@ -327,7 +327,10 @@ function initGeoSearch(layerObjects) {
                 }
             }
 
-            depth_at_points.push(curve);
+            depth_at_points.push({
+                data: curve,
+                layer: layers[j].layer
+            });
         }
 
         // Wait for all AJAX calls to return
@@ -377,21 +380,23 @@ function initGeoSearch(layerObjects) {
             firstCoordinates = evt.coordinate;
         } else {
             draw.finishDrawing();
-            var images = [];
+            var layers = [];
             for (var i = 0; i < depth_profile_images.length; ++i) {
                 if (!visible(depth_profile_layers[i].id)) {
                     continue;
                 }
-                var image = depth_profile_images[i];
-                images.push(image);
+                layers.push({
+                    layer: depth_profile_layers[i],
+                    image: depth_profile_images[i]
+                });
                 $('#depth-profile').show();
                 $("#depthsvg").hide();
                 $("#depth-profile").find(".spinner").show();
             }
-            if (images.length == 0) {
+            if (layers.length == 0) {
                 alert('There is no active layer with depth info.');
             } else {
-                depth_profile_layer(firstCoordinates, evt.coordinate, images);
+                depth_profile_layer(firstCoordinates, evt.coordinate, layers);
             }
             firstCoordinates = null;
         }

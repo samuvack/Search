@@ -1,13 +1,13 @@
-
-
-var drawCurve = function(svgSelector, data) {
-    var flat_data = [].concat.apply([], data);
+var drawCurve = function(svgSelector, layers) {
+    var flat_data = [].concat.apply([], layers.map(function(i) {
+        return i.data;
+    }));
     var $element = $(svgSelector);
     var w = $element.width()/2,
         h = $element.height()/2,
         margin = 10,
         y = d3.scale.linear().domain([d3.min(flat_data), 0]).range([margin, h - margin]),
-        x = d3.scale.linear().domain([0, data[0].length]).range([margin, w - margin]);
+        x = d3.scale.linear().domain([0, layers[0].data.length]).range([margin, w - margin]);
 
     var vis = d3.select(svgSelector)
         .attr("width", w)
@@ -29,8 +29,14 @@ var drawCurve = function(svgSelector, data) {
      .y1(function(d) { return -1 * y(d); });
      */
 
-    for(var i = 0; i < data.length; ++i) {
-        g.append("svg:path").attr("d", line(data[i]));
+    for(var i = 0; i < layers.length; ++i) {
+        g.append("svg:path").attr("d", line(layers[i].data));
+        var index = Math.floor(Math.random()*(layers[i].data.length - 2))+1; // Random element, not first or last
+        var depth = layers[i].data[index]+10;
+        g.append("text")
+            .attr('x', x(index))
+            .attr('y', -1 * y(depth))
+            .text(layers[i].layer.name);
     }
 
     //x-as
