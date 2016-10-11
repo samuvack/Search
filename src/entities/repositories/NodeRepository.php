@@ -18,7 +18,7 @@ class NodeRepository extends EntityRepository {
 	public function findInPolygon($points, $layer = 1) {
 		$points = implode(',',
 			array_map(function($point) {
-				return implode(' ', $point);
+				return implode(' ', array_map(floatval, $point));
 			}, $points)
 		);
 
