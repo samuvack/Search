@@ -729,4 +729,6 @@ function initGeoSearch(layerObjects) {
     $('#close-info').click(function () {
         $("#info").hide()
     });
+
+    $('#info-link').click();
 }
