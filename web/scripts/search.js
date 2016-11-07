@@ -676,15 +676,23 @@ function initGeoSearch(layerObjects) {
     function layer() {
         var $this = $(this);
         var nr = $this.data('layer-id');
-        var reference = $this.data('reference');
-        var info = $this.data('layer-info');
+        var reference = $this.data('reference').trim();
+        var info = $this.data('layer-info').trim();
         if (reference.length > 0 && !$this.hasClass("layer_active")) {
-            $('.layer-panel').show();
+            $('#reference-container').show();
             $('#reference-content').text(reference);
+        } else {
+            $('#reference-container').hide();
+            $('#layer-info-container').hide(); // Hide when changing, if need to be shown, this will be redrawn
+        }
+
+        if (info.length > 0 && !$this.hasClass("layer_active")) {
+            $('#layer-info-container').show();
             $('#layer-info-content').text(info);
         } else {
-            $('.layer-panel').hide();
+            $('#layer-info-container').hide();
         }
+
         layersById[nr].setVisible(!$this.hasClass("layer_active"));
         //bijvoorbeeld id legende_1 ==> toggleClass
         // (Add or remove one or more classes from each element in the set of matched elements,
