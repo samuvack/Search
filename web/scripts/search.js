@@ -52,9 +52,14 @@ function initGeoSearch(layerObjects) {
         if(changedTime) {
             changedTime = false;
             var period = brush.extent();
+            if(period[1] - period[0] < 1) {
+                var param = undefined;
+            } else {
+                param = buildTIMEParameter(period[1], period[0]);
+            }
             for (var i = 1; i < layers.length; ++i) {
                 layers[i].getSource().updateParams({
-                    TIME: buildTIMEParameter(period[1], period[0])
+                    TIME: param
                 });
             }
         }
