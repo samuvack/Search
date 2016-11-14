@@ -40,11 +40,16 @@ body, html {
 }
 
 .navbar-default ul.nav li > a {
-    padding: 15px;
+    margin: 15px;
+    padding: 0;
 }
 
 .navbar-default ul.nav li > .icon {
     margin: 15px;
+}
+
+.navbar-default ul.nav li .icon {
+    padding-left: 30px;
 }
 
 .navbar-collapse.collapse.in {
@@ -56,14 +61,12 @@ body, html {
 }
 
 ul.nav li, .navbar-default ul.nav li a, .navbar-default ul.nav li a:hover {
-    color: transparent;
+    color: black;
 }
 
 .icon {
     background-size: 20px 20px;
     background-repeat: no-repeat;
-    height: 20px;
-    width: 20px;
 }
 
 
