@@ -218,7 +218,7 @@ function initGeoSearch(layerObjects) {
                 projection: 'EPSG:4326',
                 coordinateFormat: ol.coordinate.createStringXY(4)
             }),
-            new ol.control.ZoomToExtent({
+            /*new ol.control.ZoomToExtent({
                 className: 'first-extent',
                 label: 'A',
                 extent: [
@@ -256,7 +256,7 @@ function initGeoSearch(layerObjects) {
                     314157, 6655415,
                     314975, 6656192
                 ]
-            }),
+            }),*/
             new ol.control.ScaleLine(),
             new ol.control.Rotate(),
 
