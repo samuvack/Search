@@ -76,9 +76,19 @@ function initGeoSearch(layerObjects) {
 
     var x = d3.scale.log().range([0, width]);
     var xAxis = d3.svg.axis().scale(x).orient("bottom").tickFormat(function (d) {
-            return x.tickFormat(20, d3.format(",d"))(transform(d))
+            console.log(transform(d))
+            var year =  x.tickFormat(30, d3.format(".d"))(transform(d));
+            console.log(year)
+            year= parseInt(year)
+            console.log(year)
+
+            if( year < 0) {
+                year = Math.abs(year)+ " AD";
+            }
+
+            return year;
         })
-        .tickValues([-150000, -100000, -10000, -1000, 0, 1000, 2000, new Date().getFullYear()].map(reverse_transform));
+        .tickValues([-150000, -100000, -9000, -3000, -800, -57, 476, 1000, 1500, 1789, 2000, new Date().getFullYear()].map(reverse_transform));
 
     var brush = d3.svg.brush()
         .x(x)
@@ -182,7 +192,7 @@ function initGeoSearch(layerObjects) {
         extent = [transform(Math.max(transform(extent[0]), 0)), transform(Math.max(transform(extent[1]), 0))];
         brush.extent(extent);
         changedTime = true;
-        brush(d3.select(".brush")); // redraw brush
+        brush(d3.select(".brush")); // redraw brushg
     }
 
     function transform(number) {
