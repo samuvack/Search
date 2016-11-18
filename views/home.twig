@@ -184,7 +184,12 @@
     <div id="layer-info-container" class="layer-panel hidden-xs hidden-sm">
         <div id="layer-info-content"></div>
     </div>
-    <svg id="timeline" class="hidden-sm hidden-xs noselect"></svg>
+    <div id="timeline-wrapper">
+        <div>
+            Selecteer periode
+        </div>
+        <svg id="timeline" class="hidden-sm hidden-xs noselect"></svg>
+    </div>
 </div>
 <script type="text/javascript">
     initGeoSearch({{ layers|json_encode|raw }});
