@@ -83,7 +83,9 @@ function initGeoSearch(layerObjects) {
             console.log(year)
 
             if( year < 0) {
-                year = Math.abs(year)+ " AD";
+                year = Math.abs(year)+ " BC";
+            } else {
+                year = year + " AD";
             }
 
             return year;
