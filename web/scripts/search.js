@@ -716,7 +716,7 @@ function initGeoSearch(layerObjects) {
     });
 
     $("#search-link").click(function () {
-        window.open('admin/search', 'Popup', 'width=' + screen.width + ',height=' + screen.height + ',status=no, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
+        window.open('admin/search', 'Popup', 'width=' + screen.width + ',height=' + screen.height + ',status=no, height=700, width=300, location=no, titlebar=no, toolbar=yes,menubar=no, scrollbars=yes');
     });
 
     $("#button_close").click(function () {
