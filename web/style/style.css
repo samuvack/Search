@@ -362,7 +362,7 @@ ul.nav li, .navbar-default ul.nav li a, .navbar-default ul.nav li a:hover {
     margin: 10vh 10vw;
     top: 0;
     color: cornflowerblue;
-    z-index: 5;
+    z-index: 1100;
     position: fixed;
     background: #e9e9e9;
     text-align: center;
