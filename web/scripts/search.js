@@ -178,7 +178,11 @@ function initGeoSearch(layerObjects) {
     }
 
     function brushed() {
+        var extent = brush.extent();
+        extent = [transform(Math.max(transform(extent[0]), 0)), transform(Math.max(transform(extent[1]), 0))];
+        brush.extent(extent);
         changedTime = true;
+        brush(d3.select(".brush")); // redraw brush
     }
 
     function transform(number) {
